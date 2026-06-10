@@ -1,0 +1,236 @@
+Descripción Star
+En esta actividad,  realizarás una serie de consultas sencillas de selección y modificaciones en la Base de Datos, utilizando el lenguaje SQL (DML y DQL).
+
+Objetivos Event personal
+Realizar consultas de selección, inserción, actualización y eliminación (CRUD) a una base de datos usando filtros, agrupación, ordenación y funciones de SQL.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo la actividad son:
+
+1. Leer y comprender los recursos.
+2. Leer atentamente la rúbrica de evaluación.
+3. Realizar un documento PDF que incluya los apartados de la sección A (Parte teórica).
+
+SECCIÓN A. PARTE TEÓRICA
+
+1. Repasar las sentencias de SQL de tipo Data Manipulation Languaje  (DML) y Data Query Languaje (DQL) que permiten manipular los datos de las tablas, respondiendo a las siguientes preguntas:
+
+¿Cuál es el objetivo de las instrucciones siguientes:
+
+INSTRUCCIÓN (SENTENCIA)
+
+OBJETIVO
+
+SELECT
+
+UPDATE
+
+DELETE
+
+INSERT
+
+¿Qué carácter se usa para delimitar los valores de los campos tipo texto y/o fecha durante su utilización en una consulta?
+
+¿Qué pasa si un campo tipo texto contiene un apostrofe? Ejemplo: Apellido = D’Onofrio.
+¿Cómo se manipula la información en estos casos?
+
+Un cualificador es la parte inicial de un identificador, compuesto por una estructura que indica la ruta donde se encuentra una tabla o columna en concreto, separando cada objeto por puntos.
+
+¿Por qué se usan los cualificadores y qué orden se sigue en SQL?
+¿Qué carácter se utiliza cuando es necesario delimitar los nombres de objeto?
+
+Las instrucciones o sentencias SQL están formadas por cláusulas (algunas de ellas obligatorias). Una cláusula tiene una estructura y realiza una función dentro de una instrucción. A este respecto, escribe el orden de escritura correcto en el cual se deben añadir a las instrucciones DML/DQL las cláusulas siguientes (no todas las cláusulas se incluyen en todas las sentencias).
+ORDER BY, LIMIT, GROUP BY, TOP, DISTINCT, HAVING, INTO, SET, FROM, WHERE
+
+Para ello, crea una tabla por tipo de sentencia (las sentencias están en el punto a) y llénala según el orden de las cláusulas. Ejemplo:
+
+SENTENCIA SELECT
+
+CLÁUSULA
+
+ORDEN
+
+OBJETIVO
+
+FROM
+
+1
+
+Realizar consultas sobre los datos almacenados en la BBDD
+
+WHERE
+
+2
+
+etc...
+
+
+2. Rellena la siguiente tabla de operadores de MySQL.
+
+OPERADOR
+
+OBJETIVO
+
+| |, OR
+
+&&, AND
+
+NOT
+
+BETWEEN
+
+=
+
+<
+
+<=
+
+>
+
+>=
+
+!=
+
+IN
+
++
+
+-
+
+*
+
+/, DIV
+
+%, MOD
+
+LIKE
+
+3. Rellena la siguiente tabla de funciones de MySQL indicando a qué tipo de datos se aplica y dando un ejemplo.
+
+FUNCTION
+
+OBJETIVO, EJEMPLO
+
+TIPO DE DATOS
+
+UPPER
+
+LEFT
+
+CURRENT_DATE
+
+DATE_ADD
+
+DAY
+
+MONTH
+
+YEAR
+
+ROUND
+
+CONCAT
+
+FORMAT
+
+4. ¿Qué indica un valor NULL en una tabla? ¿Cómo se consulta si en un campo existen valores nulos?
+
+5. ¿Qué son funciones agregadas y con qué cláusula se usan? ¿Cuáles funciones agregadas proporciona el SQL?
+
+SECCIÓN B. PARTE PRÁCTICA
+
+La parte práctica se entregará en un archivo SQL Para ello, pegamos las sentencias utilizadas del punto 2 en adelante, en un documento al cual llamarás AA4(FP.055)_Apellido1Apellido2_Nombre_Instrucciones.sql y el cual podrás crear con cualquier editor de código ligero..
+
+1. Ejecutar el script de la actividad (FP.055_AA4_script.sqlDescargar (FP.055_AA4_script.sql) que se encuentra en el Aula Virtual para crear la BBDD. Lo puedes encontrar en apartado Contenidos en la A4.
+
+2. Realiza las siguientes consultas:
+
+Muestra un listado de las competiciones, mostrando el nombre de la competición y la localidad donde se realiza,  cuya inscripción sea menor a 40 eur, ordenando el listado por la cantidad del premio que recibe el ganador.
+Muestra un listado de las actividades  o entranamientos que se realizan  en las que se obtenga certificado oficial y  esten clasificadas como entrenamiento para competición.
+Actualiza la cuota mensual de aquellas becas cuyo precio de la matrícula este por debajo de 40. Incrementa esta cuota en un 10%.
+Inserta 4 nuevos deportistas  (uno de los cuales deberás ser tú). Dos  de ellos deberán competir en almenos una competición. Desactiva la FK si es necesario.
+Elimina de la tabla socios aquellos socios que contengan los códigos postales 28026, 41005 y 15024. Desactiva la FK si es necesario.
+Muestra en un listado los siguientes datos para los socios que tienen la beca <18 : idSocio, Nombre completo (en una sola columna), edad. El listado deberá mostrarse ordenado por la edad.
+Actualiza el plan de todos los socios que superen la edad de 24 años y tengan asociado la beca Joven <24. Estos socios pasaran automáticamente a la beca tardes.
+Muestra el número de actividades que ha impartido cada entrenador en el 2023.
+Muestra aquellas actividades que se realizan a las 11:00 de la mañana.
+Contar cuántas instalaciones tiene registrado el CAR en la tabla de instalaciones. Al ejecutar la consulta, deberá presentar la siguiente salida, donde n, es el número de instalaciones.
+
+Número de instalaciones
+
+n
+
+
+Mostrar en un listado como el siguiente, el estimado de cobro del CAR por concepto de cuota mensual para los siguientes planes. Utiliza la función FORMAT para que los datos de Cuota Mensual y Total se muestren con 2 decimales y punto entre los miles.
+Beca
+
+Número de socios
+
+Cuota mensual
+
+Total
+
+BECA COMPLETA
+
+BECA PARCIAL
+
+BECA TARDES
+
+BECA   <18 años
+
+BECA <24 años
+
+ 
+
+3. Crear un documento SQL con la resolución de la sentencias DML de la sección B  tomando como base la plantilla del Aula Virtual:
+AAn(FP.055)_Apellido1Apellido2_Nombre_Instrucciones[Plantilla].sql
+
+4. Exporta la Base de Datos, tanto estructura como datos a un archivo que denominamos: AA4(FP.055)_Apellido1Apellido2_Nombre_BBDD.sql, tal como hiciste en la actividad anterior (opción Server-Data Export).
+
+Se requiere Event personal
+Deberás tener instalado el motor de Base de Datos MySQL 8 en tu ordenador (servidor local) y así como la herramienta MySQL Workbench utilizados en la AA3.
+Adicionalmente, deberás hacer uso de un editor de código ligero que usarás para editar la plantilla donde se incluirán las 10 consultas de la parte práctica.
+Recursos Básicos Book
+Material de estudio de Oracle Academy (PDF aula)
+MySQL 8.0 Reference Manual  /  Functions and Operators
+Editores de código:
+Notepad ++
+Visual Studio Code
+Bluefish
+Atom
+Emacs
+Uso de recursos desglosado por secciones
+Curso: DP Database Programming with SQL Alumno – Español. 
+
+     DP 1-3 Anatomía de una Sentencia SQL
+     DP 2-1 Columnas, Caracteres y Filas
+     DP 2-2 Limitación de Filas Seleccionadas
+     DP 2-3 Operadores de Comparación
+     DP 3-1 Comparaciones Lógicas y Reglas de Precedencia
+     DP 3-2 Ordenamiento de Filas
+     DP 3-3 Introducción a las Funciones
+     DP 4-1 Manipulación de Mayúsculas/Minúsculas y de Caracteres
+     DP 4-2 Funciones Numéricas
+     DP 4-3 Funciones de Fecha
+     DP 5-1 Funciones de Conversión
+     DP 5-2 Funciones NULL
+     DP 6-2 Cláusulas JOIN
+     DP 8-1 Funciones de Grupo
+     DP 8-2 COUNT, DISTINCT, NVL (En MySQL IFNULL.) 
+     DP 9-1 Uso de las Cláusulas GROUP BY y HAVING
+     DP 12-1 Sentencias INSERT
+     DP 12-2 Actualización de valores de columna (UPDATE) y supresión de filas (DELETE)
+
+Criterios de evaluación  Checkmark
+La puntuación máxima de la actividad es un 20. 
+La puntuación mínima para superarla es de 10 sobre 20.
+
+Indicaciones para la entrega de la actividad Checkmark
+Hacerlo por el canal indicado en el aula virtual.
+Formato: PDF.
+Nombre del archivo:
+Se entrega un archivo PDF con la resolución de la teoría y dos archivos .SQL. Uno con la exportación de la Base de Datos y otro con las instrucciones solicitadas en la parte práctica.
+    AA4(FP.055)_Apellido1Apellido2_Nombre.pdf.
+    AA4(FP.055)_Apellido1Apellido2_Nombre_BBDD.sql
+    AA4(FP.055)_Apellido1Apellido2_Nombre_Instrucciones.sql
+
+Extensión recomendada: PDF de 5-7 páginas

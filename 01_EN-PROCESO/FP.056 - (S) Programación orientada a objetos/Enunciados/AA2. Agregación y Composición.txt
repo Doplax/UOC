@@ -1,0 +1,97 @@
+
+
+
+Descripción Star
+Esta actividad plantea un conjunto de ejercicios a resolver. Cada uno de los ejercicios plantea situaciones diferentes que se describen en el enunciado de cada apartado aplicando conceptos de las relaciones de Agregación y Composición en la programación orientada a objetos.
+
+Objetivos Event personal
+El objetivo principal de la actividad es:
+Aplicar los principios de la programación orientada a objetos y generar diagramas de clase, definiendo clases, atributos y métodos en Java así como documentar las clases realizadas en Java.
+Caso práctico Pencil
+En el diagrama de clases de este caso práctico es una ampliación de la actividad AA1, en este caso además de los conceptos de la primera actividad podemos observar los conceptos agregación y composición.
+
+Para que el diagrama ayude mejor a su comprensión y claridad, no se han representado los métodos constructores, getters, setters ni la sobrescritura de métodos heredados de la clase Object, como toString(), pero en el momento de codificar o traducir este diagrama a código en Java, sí que se tendrán que incluir en el código.
+
+La relación de los conceptos de este caso práctico con los cursos de Oracle Academy son los siguientes:
+
+-Curso Fundamentos de Java. Sección 8. Sobre Collections (ArrayLists)
+
+-Otras informaciones sobre Collections en internet.
+
+........
+
+ 
+
+AA2_C_DiagramaClases.jpg
+
+A partir de la primera actividad, en este caso práctico se han añadido las clases siguientes:
+
+Flota
+
+La empresa de alquiler de vehículos tiene los vehículos distribuidos en flotas, cada flota tiene asignados un conjunto de vehículos y aunque no se contemple en esta actividad, un vehículo solo puede pertenecer a una flota, pero podría moverse para cambiar de flota.
+
+Así pues, la relación entre Flota y Vehículo es de agregación, ya que una flota está compuesta por vehículos. ¿Por qué es una relación de agregación y no de composición? Un vehículo puede ser de una flota u de otra, de hecho, un vehículo en un momento dado puede cambiar de flota para pasar a formar parte de otra flota. Fijaros que en el típico ejemplo de composición de un libro que está compuesto por páginas, una página solo puede pertenecer a un libro en concreto y la página no puede cambiar de libro, no tendría sentido.
+
+En Java ¿Cómo codificaremos que un objeto de clase Flota pueda contener un conjunto de objetos de tipo Vehículo? Para poder realizarlo incorporaremos un atributo de tipo Colección ArrayList en el cual podremos almacenar los objetos de tipo Vehículo.
+
+Una misma flota de vehículos puede estar asignada a varias agencias, por ejemplo, en la ciudad de Zaragoza pueden existir varias agencias de la empresa de alquiler, pero pueden compartir una misma flota de vehículos.
+
+Para contemplar que una flota pueda estar asignada a varias agencias ¿Incorporaremos un atributo de tipo Arraylist en la clase Flota para almacenar objetos de tipo agencia o bien pondremos un atributo de tipo Flota en la clase Agencia? Si observamos el diagrama de clases ¿Cómo se indica la navegabilidad? El símbolo de la flecha nos indica que se tiene que acceder a la clase Flota desde la clase Agencia, así pues, solo deberemos incorporar el atributo de tipo Flota en la clase Agencia. ¿Podríamos añadir además un ArrayList en la clase Flota para almacenar objetos de tipo Agencia? La codificación en Java debe ser fiel al diagrama de clases, debe ser una traducción del diagrama de clases a código Java, tal como se indica, la navegabilidad es unidireccional, desde la agencia hacia la flota, por lo tanto, no se puede añadir una colección ArrayList la clase Flota. Solo si la relación en el diagrama de clases fuese bidireccional se podría realizar, pero cabe destacar que debemos evitar las relaciones bidireccionales ya que fácilmente conllevan a inconsistencias en los datos.
+
+VehiculosRent
+
+Esta clase identifica a la empresa de alquiler de vehículos. Los clientes lo son de la empresa, no de las agencias, así pues, existe una relación de uno a muchos entre las clases VehiculosRent y Cliente con navegabilidad hacia la clase Cliente, esto nos indica que en la clase VehiculosRent debe existir un atributo de tipo ArrayList para almacenar los clientes.
+
+El alquiler de los vehículos lo realizan las agencias, se podría considerar que la empresa lo componen agencias, así pues, hay una relación de composición entre las clases VehiculosRent y Agencia ya que una agencia solo pertenece a esta empresa y no a otra. ¿Cómo y dónde se almacenarán las agencias? Pues teniendo en cuenta la navegabilidad indicada en el diagrama de clases incorporaremos un ArrayList en la clase VehiculosRent para almacenar los objetos de tipo Agencia.
+
+Las flotas, lo son de la empresa, no de las agencias, por lo tanto existe una relación de uno a muchos entre las clases VehiculosRent y Flota.
+
+Fijémonos que entre las clases VehiculosRent y Clientes no se trata de una relación de composición, sino que se trata de una relación de uno a muchos, esto es debido que la empresa tiene clientes, pero no está compuesta de clientes. Es decir, la empresa está compuesta por agencias y tiene clientes y flotas de vehículos. La diferencia puede parecer sutil, pero en cualquier caso en la clase VehiculosRent habrá tres atributos de tipo ArrayList, uno para cada uno de los tres tipos de clases Cliente, Agencia y Flota.
+
+ 
+
+Actividades del caso práctico:
+
+En el diagrama de clases la clase Flota se relaciona con las clases Agencia y VehiculosRent. ¿Por qué según el diagrama las flotas lo son de la empresa y no de las agencias o de la empresa y las agencias a la vez? Razona la respuesta.
+¿Qué cambios se deberían realizar en el diagrama de clases y en el código en Java para que un contrato de alquiler pudiera contemplar que en un mismo contrato se pudieran alquilar varios vehículos a la vez?
+Abre el proyecto AA2_AlquilerVehiculos realizado en Java que se suministra con la actividad y completa las opciones del menú:
+Codifica en Java el diagrama de clases añadiendo las nuevas clases y relaciones.
+Implementar los métodos siguientes en la clase Flota que se puedan realizar desde pantalla/consola, se tiene que poder introducir todos los datos por pantalla:
+addVehiculos: añade un objeto de tipo vehículo que recibe el método como parámetro de entrada en el ArrayList.
+listVehiculos: muestra todos los vehículos almacenados en el ArrayList.
+removeVehiculo: busca un objeto de tipo Vehículo cuya matricula se corresponda con el parámetro de entrada “matricula” que recibe método como parámetro y lo elimina del ArrayList.
+Generar la documentación de las clases desarrolladas en el paso anterior utilizando Javadoc.
+Incluir el ejecutable .jar del proyecto.
+Realiza un vídeo explicando por audio la ejecución de todo el programa en todas sus opciones (2-3 minutos). Utiliza una herramienta de grabación de vídeo/audio de captura de pantalla y súbela a Youtube, incluye el link en el documento final. Importante: comparte el vídeo como oculto, no privado.
+AUTOEVALUACIÓN: Revisa la rúbrica incluida al final de esta actividad y autoevalúate indicando qué puntuación te asignarías en cada punto de la rúbrica. 
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo la actividad son:
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Seguir los cursos de Oracle Academy Fundamentos de Java y JP Java Programming Learner.
+Revisar la funcionalidad que se expone en el caso práctico y realiza las actividades que se indican en él.
+Explicar, en un documento de texto, los pasos realizados en la actividad, qué parte de la actividad está realizada y cuál está por finalizar, los problemas con los que te has encontrado y cómo los has resuelto, así como los comentarios que creas necesarios. Recuerda incluir la autoevaluación. Puedes copiar y pegar la rúbrica y marcar cómo te autoevaluarías.
+Se requiere Event personal
+Los requisitos indispensables para realizar la actividad son:
+
+Consultar las fuentes de información disponibles en el aula virtual.
+Investigar otras fuentes de información.
+Recursos Básicos   Book
+Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de información disponibles a continuación:
+
+Proyecto AA2_AlquilerVehiculosDescargar Proyecto AA2_AlquilerVehiculos
+Material de estudio Oracle Academy (PDF aula)
+Oracle Academy (web)
+Manual de uso de Oracle Academy. Manual del EstudianteDescargar Manual de uso de Oracle Academy. Manual del Estudiante. UOC-JE (pdf)
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 20.
+La puntuación mínima para superarlo es de 10 sobre 20.
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual (2 ficheros a entregar), si falta alguno de los elementos será "No entregado":
+Por un lado incluir el documento PDF con la resolución de los ejercicios y el enlace al vídeo. Extensión: 3-5 páginas.
+Por otro lado, entregar (formato: zip o rar) el proyecto completo con todos los ficheros del programa.
+Nombre de los archivos: AA2(FP446)_Apellido1Apellido2_Nombre

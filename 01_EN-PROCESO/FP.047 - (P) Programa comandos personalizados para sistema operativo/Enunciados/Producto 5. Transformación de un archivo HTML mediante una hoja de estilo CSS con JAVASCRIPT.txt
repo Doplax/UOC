@@ -1,0 +1,44 @@
+Descripción Star
+A partir del documento XML generado en el producto 4, crear una web usando HTML, CSS i JavaScript que muestre la configuración actual de vuestro dispositivo de red y un botón que al pulsarlo muestre el HTML formateado correctamente con la hoja de estilo  XSLT en un formato atractivo para el usuario humano.
+
+Objetivos Event personal
+El objetivo principal del producto es:
+
+Crear una web HTML que muestre configuración del dispositivo del archivo XML correctamente formateado, a partir de un botón o similar programado con JavaScript que al pulsarlo nos parezca la información correspondiente al archivo XML del producto anterior en la página web
+Crear una hoja de estilo CSS para la transformación y presentación de un archivo formato HTML.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Crear una hoja de estilo CSS para mostrar la información almacenada en el documento XML generado en el producto 4, de forma que maquete usando la estructura de una tabla la información contenida en el XML de una forma atractiva para un usuario que la requiera generando un archivo en formato HTML.
+Crear una página web que muestre la configuración del dispositivo i un botón (programado con JavaScript) que permita cargar el XML creado en el producto 4 con la configuración CSS correspondiente.
+Preparar un documento PDF con la resolución de los ejercicios.
+Preparar, para la entrega, un documento comprimido que incluya el documento PDF, el fichero XML, archivo HTML y la hoja de estilo CSS.
+Se requiere Event personal
+Los requisitos indispensables para realizar el producto son:
+
+Haber realizado los productos 1, 2, 3 y 4.
+Conocer la tecnología XML y Javascript.
+Conocer y construir lenguajes de transformación CSS.
+Conocer básicamente la gramática HTML y Javascript.
+Realizar la entrega de la transformación HTML en formato CSS.
+Recursos Básicos   Book
+Para llevar a cabo el producto puedes apoyarte en los materiales y fuentes de información indicados a continuación así como los disponibles en el espacio “Recursos de Aprendizaje” del aula.
+
+Videos educativos UOC lenguaje de transformación XSL
+XSLT online editor
+XSL W3schools
+Recursos de aprendizaje adicionales vinculados a los productos
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 10.  
+La puntuación mínima para superarlo es de 5 sobre 10. 
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega del producto deberás:
+
+Hacerlo por el canal indicado en el aula virtual.
+Formato: zip o rar, en el contenido se deberá incluir el documento PDF con la  resolución de los ejercicios y los ficheros xsl y xml.
+Nombre del archivo: producto5(FP440)_Apellido1Apellido2_Nombre
+Extensión recomendada: 3-5 páginas.

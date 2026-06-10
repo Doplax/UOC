@@ -1,0 +1,91 @@
+
+
+
+Descripción Star
+Esta actividad plantea un conjunto de ejercicios a resolver. Cada uno de los ejercicios plantea situaciones diferentes que se describen en el enunciado de cada apartado aplicando conceptos de la programación orientada a objetos.
+
+Objetivos Event personal
+El objetivo principal de la actividad es:
+Aplicar los principios de la programación orientada a objetos y generar diagramas de clase, definiendo clases, atributos y métodos en Java así como documentar las clases realizadas en Java.
+Caso práctico Pencil
+Una empresa WoodShops se dedica a la venta de productos de madera y quiere gestionar el almacén de sus tiendas.
+
+La empresa dispone de una sede central y está compuesta por un conjunto de tiendas de forma que cada tienda tiene su propio almacén, es decir un almacén por tienda.
+
+Los productos se almacenan en las tiendas, de forma que un mismo producto puede existir en varios almacenes, pero no todos los productos tienen porqué existir en todos los almacenes.
+
+De cada producto queremos almacenar el código del producto, la descripción, el proveedor, el precio de venta y el stock, cada tienda o almacén almacena sus productos, por lo tanto, un mismo producto puede tener un stock y un precio de venta distinto en cada tienda.
+
+Hay tres tipos de productos:
+
+Tablero:
+
+De los tableros además queremos saber la altura, la anchura y el tipo de tablero, los tipos de tablero pueden ser, por ejemplo: Aglomerado, Contrachapado, MDF, etc.
+
+Barniz:
+
+Sobre los barnices además debemos almacenar los mililitros y el tipo de color del barniz, como colores pueden ser, por ejemplo: Incoloro, Caoba, Nogal, etc.
+
+ Articulo:
+
+Como artículos se refiere al resto de productos y guardaremos el tipo de articulo de que se trata, que pueden ser, por ejemplo: Estantería, Mesa, Silla, Armario, etc.
+
+ Teniendo en cuenta que cada producto lo suministra un proveedor, de los proveedores queremos almacenar el nif y el nombre, obviamente cada proveedor puede suministrar varios productos.
+
+ Se deben implementar las opciones siguientes que se puedan realizar desde pantalla/consola, todos los datos se introducen por pantalla:
+
+Añadir nuevos productos en cada tienda
+Listar los productos de una tienda con la opción de seleccionar por los tres tipos de producto: tablero, barniz o artículo.
+Dado un código de producto, mostrar el stock de cada una de las tiendas en que exista el producto.
+Actividades del caso práctico:
+
+En este caso práctico se pueden identificar tres enumeraciones distintas.
+¿Qué es una enumeración?
+¿Cuáles son las tres enumeraciones?
+¿Cómo se representan en el diagrama de clases?
+¿Cómo se codifican en Java?
+Realiza el diagrama de clases con notación UML que represente las especificaciones y elementos que componen el sistema de información del sistema expuesto en el caso práctico e inclúyelo en el documento final.
+Abre el proyecto AA3_WoodShops realizado en Java que se suministra con la actividad:
+Codifica en Java el diagrama de clases. Se debe definir y añadir en Java las clases, atributos, constructores, getters y setters así como los métodos y contemplar las opciones que se indican las especificaciones.
+Implementar un método para la carga de datos iniciales.
+Crea las opciones del menú necesarias.
+Generar la documentación de las clases desarrolladas en el paso anterior utilizando Javadoc.
+Realiza un vídeo explicando por audio la ejecución de todo el programa en todas sus opciones (2-3 minutos). Utiliza una herramienta de grabación de vídeo/audio de captura de pantalla y súbela a Youtube, incluye el link en el documento final. Importante: comparte el vídeo como oculto, no privado.
+Incluye un apartado en tu informe que contenga:
+Listado de partes a las que habéis dedicado más tiempo o que consideráis que tienen mayor dificultad
+Listado de puntos del enunciado que no habéis conseguido hacer
+Listado de cosas que se podrían mejorar en vuestro resultado final
+AUTOEVALUACIÓN: Revisa la rúbrica incluida al final de esta actividad y autoevalúate indicando qué puntuación te asignarías en cada punto de la rúbrica. 
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo la actividad son:
+
+Leer detenidamente estas instrucciones e identificar los requisitos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Investigar y estudiar qué son las Enumeraciones, cómo se representan en el diagrama de clases y cómo se codifican en Java.
+Revisar la funcionalidad que se expone en el caso práctico y realizar las actividades que se indican en él.
+Explicar, en un documento de texto, los pasos realizados en la actividad, qué parte de la actividad está realizada y cuál está por finalizar, los problemas con los que te has encontrado y cómo los has resuelto, así como los comentarios que creas necesarios. Recuerda incluir la autoevaluación. Puedes copiar y pegar la rúbrica y marcar cómo te autoevaluarías.
+Se requiere Event personal
+Los requisitos indispensables para realizar la actividad son:
+
+Consultar las fuentes de información disponibles en el aula virtual.
+Investigar otras fuentes de información.
+Recursos Básicos Book
+Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de información disponibles a continuación:
+
+Proyecto AA3_WoodShopsDescargar Proyecto AA3_WoodShops
+Material de estudio Oracle Academy (PDF aula)
+Oracle Academy (web)
+Manual de uso de Oracle Academy. Manual del EstudianteDescargar Manual de uso de Oracle Academy. Manual del Estudiante. UOC-JE (pdf)
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 20.
+La puntuación mínima para superarlo es de 10 sobre 20.
+
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual (2 ficheros a entregar), si falta alguno de los elementos será "No entregado":
+Por un lado incluir el documento PDF con la resolución de los ejercicios y el enlace al vídeo. Extensión: 3-5 páginas.
+Por otro lado, entregar (formato: zip o rar) el proyecto completo con todos los ficheros del programa.
+Nombre de los archivos: AA3(FP446)_Apellido1Apellido2_Nombre

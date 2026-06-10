@@ -1,0 +1,46 @@
+Descripción Star
+Dado que ya estás preparado para crear aplicaciones de consola escritas en Python usando Visual Studio Code, en este producto desarrollarás una aplicación en Python, la funcionalidad de la cual es que adquieras destrezas en lo referente a editar archivos de texto.
+
+Objetivos Event personal
+El objetivo principal del producto es:
+
+Desarrollar una pequeña aplicación escrita en Python.
+Adquirir las destrezas necesarias en lo referente a la edición de archivos de texto y en el lanzamiento y control desde una aplicación de comandos simples de la consola de Windows.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Realizar una pequeña aplicación de consola escrita en Python que implementará las siguientes funcionalidades. 
+Mostrar inicialmente un menú que permita seleccionar a cuál de las diferentes funcionalidades implementadas en la aplicación se va a acceder y que serán las siguientes:
+Comprobar e informar por pantalla sobre cuáles de una lista de máquinas referenciadas por su IP escrita en un archivo de texto, contestan positivamente a un ping lanzado por la aplicación que estás programando. Se recomienda generar un submenú donde se solicite el nombre y ubicación de dicho archivo.
+Informar sobre cuál/es son las MAC de los dispositivos adaptadores de red instalados en el sistema y almacene en un archivo informacionlocal.txt.
+Mostrar y guardar en un fichero llamado adaptador.txt, la configuración de red de la máquina local para un adaptador que previamente se preguntará al usuario. Mostrar con un submenú los adaptadores posibles donde el usuario escogerá.
+Diseñar una función que lea el contenido de un archivo de texto que consiste en una serie de direcciones IP cada una de las cuales ocupa una línea de éste. La ruta y nombre del archivo de texto se preguntarán al usuario e inicialmente se mostrará el contenido de este por pantalla. Finalmente lanzará un ping para cada una de las IP’s y determinará e informará sobre cuáles de las anteriores responden afirmativamente a este comando. (Menú punto 1)
+Informar sobre cuál/es son las MAC de los dispositivos adaptadores de red instalados en el sistema y almacene en un archivo informacionlocal.txt.  Guardar el archivo y no borrar. (Menú punto 2)
+Diseñar una función cuya funcionalidad que muestre los adaptadores de red de la máquina local. Se mostrará y almacenará en un archivo adaptador.txt la información para un adaptador de red; él cual, se preguntará previamente al usuario (elegido por el usuario) su IP, máscara, y puerta de enlace. El resto de configuraciones de red no se han de mostrar esta información. Para realizar lo anterior la función lanzará un comando de dos que le proporcionará la información que necesita junto con otra que no se considera relevante, y será capaz de extraer y mostrar la que se ha detallado. (menú punto3)
+Realizar la aplicación modularizada, al menos ha de contar con las funciones descritas en los puntos anteriores, con su código bien comentado. Haz uso de todos los archivos temporales que requieras.
+Preparar un documento PDF con la resolución de los ejercicios.
+Preparar, para la entrega, un documento comprimido que incluya el documento PDF y el proyecto completo de la aplicación programada en Python.
+Se requiere Event personal
+Los requisitos indispensables para realizar el producto son:
+
+Tener instalado Visual Studio Code en la máquina host.
+Tomar capturas de pantalla de la realización de los ejercicios.
+Recursos Básicos   Book
+Para llevar a cabo el producto puedes apoyarte en los materiales y fuentes de información indicados a continuación así como los disponibles en el espacio “Recursos de Aprendizaje” del aula.
+
+Curso Web
+
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 30. 
+
+La puntuación mínima para superarlo es de 15 sobre 30.
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega del producto deberás:
+●     Hacerlo por el canal indicado en el aula virtual.
+●     Formato: zip o rar, en el contenido se deberá incluir el documento PDF con la resolución de los ejercicios y los ficheros del programa en Python.
+●     Nombre del archivo: producto2(FP047)_Apellido1Apellido2_Nombre
+●     Extensión recomendada: 3-5 páginas.

@@ -1,0 +1,47 @@
+
+
+Descripción Star
+Para convertir nuestra aplicación en una aplicación real, debemos almacenar nuestros datos en una base de datos, es decir, hacer persistente nuestra información. Para ello incluiremos uno de los servicios más tendentes y usados hoy en día, una base de datos en la nube segura y accesible desde cualquier aplicación como es Firebase.
+
+Objetivos Event personal
+Integrar Firebase como base de datos en la nube para la gestión de datos para una aplicación frontend. 
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Crear un nuevo repositorio nuevo en Github en el que se incluya al consultor y al equipo. Para cada producto se tendrá que crear un github independiente, nunca se trabajará en el mismo para que de tiempo al consultor de corregir el trabajo sin que ya se vaya adelantando código del siguiente producto. Además, en el gitignore se tiene que indicar que la carpeta node_modules no estará incluida.
+Realizar las oportunas correcciones a partir del Producto 1, si las hubiera, propuestas por el consultor para el correcto funcionamiento
+Realizar una rotación del Scrum Master o Coordinador si lo creéis conveniente para que todos los miembros del equipo realicen este rol.
+Planificar las actividades del Producto 2 dentro de Trello indicando a quién le corresponde y el tiempo estimado.
+Crear un nuevo proyecto en Firebase agregando al proyecto a los compañeros del equipo.
+Crear una nueva base de datos con los datos de al menos 10 ítems con todos los datos planteados en el Producto 1.  En el caso del proyecto ejemplo EQUIPO BASKET se creará una nueva colección con los datos que estaban almacenados en el array PLAYERS.
+Modificar los permisos para que se pueda realizar lecturas y escrituras contra la base de datos.
+Instalar @angular/fire y Firebase al proyecto si no estaba ya instalado
+Modificar la Aplicación para:
+Poder conectarse a la base de datos
+Poder suscribirse a los datos sustituyendo la información que se cargaba directamente desde el array en local
+Modificar el componente de la interfaz ítem y lista para que se puedan modificar, borrar y añadir datos. Debe haber un icono de borrar al lado de cada ítem en el componente Listado. Además, en el componente detalle debe haber un botón de editar para poder editar todos los campos y guardarlos. También, en el componente Listado, debe haber un botón nuevo para poder añadir un nuevo item.
+Conectar las modificaciones realizadas con la base de datos.
+Copiar el enlace de Github en un documento de texto para su entrega.
+Subir todo el proyecto a CodeSandbox y que compile ahí para así evitar problemas de compilación en el ordenador del consultor. Poner el enlace al documento de entrega. Si el proyecto no está funcionando y correctamente compilado en CodeSandbox, se bajarán 2 puntos de la nota final.
+ 
+
+Se requiere Event personal
+Los requisitos indispensables para realizar el producto son: 
+
+Tener finalizado el Producto 1 con un mínimo de funcionalidades o correcciones marcadas por el consultor.
+Recursos Básicos   Book
+Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de información disponibles el documento "Recursos de aprendizaje vinculados a los productos".
+
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 35.  
+La puntuación mínima para superarlo es de 17,5 sobre 35. 
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual.
+Formato: DOC o PDF con la documentación del proyecto junto con los enlaces GIT y CodeSandbox. Archivo comprimido de todo el proyecto sin la carpeta node_modules.
+Nombre del archivo: producto2(FP067)_Apellido1Apellido2_Nombre

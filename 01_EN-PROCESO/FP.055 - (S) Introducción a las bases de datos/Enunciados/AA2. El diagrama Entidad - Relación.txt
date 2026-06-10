@@ -1,0 +1,159 @@
+Descripción Star
+En esta actividad vamos a realizar un modelo conceptual, hallando previamente las entidades, los atributos y las relaciones que se presentan en el texto.
+
+Finalmente, obtendremos el Diagrama Entidad-Relación o Modelo de Relación de Entidades (como lo llama Oracle en su Academia) en nuestra base de datos.
+
+Objetivos Event personal
+Asentar los conocimientos vistos sobre el diseño de Bases de Datos y ser capaces de realizar un Diagrama Entidad-Relación (Modelo Lógico) utilizando el software Oracle SQL Developer Data Modeler, el cual utiliza la notación Barker adoptada por Oracle Corporation en sus productos de modelado de datos.
+
+Pasos a seguir  Pencil
+Leer y comprender los recursos del seminario.
+Entender los conceptos de entidad, atributo y relación, los diferentes tipos de identificadores principales, y los conceptos de opcionalidad y cardinalidad, así como la forma de representarlos en un Diagrama Entidad-Relación.
+Comprender el enunciado de la actividad.
+Identificar las entidades con sus atributos y seleccionar el identificador principal de cada entidad.
+Identificar las relaciones entre entidades usando un diagrama de matriz.
+Realizar el Modelo Lógico utilizando el software Oracle SQL Developer Data Modeler.
+
+SECCIÓN A. PARTE TEÓRICA
+
+¿Qué es un Modelo Lógico y qué se especifica en él?
+Indicar la diferencia entre Entidad e Instancia y da dos ejemplos que ilustren estos conceptos.
+¿Qué es un atributo y cuál es su objetivo?
+¿Qué es un Identificador Único (UID) y para qué se usa?
+Dado un registro de clientes, proporcionar un ejemplo de atributo obligatorio y opcional y de atributo volátil y no volátil. Explicar por qué es importante seleccionar un atributo no volátil sobre uno volátil.
+Mencionar los cuatro objetivos del Modelo de Relación de Entidades
+¿Qué es una relación entre entidades? 
+Indicar las dos palabras clave que te permitirán deducir la opcionalidad de una relación y da un ejemplo.
+«La cardinalidad de una relación es el número de ocurrencias de una entidad asociadas a una ocurrencia de la otra entidad» (palabra clave: cuántos) ¿Cuántos tipos de cardinalidades hay? Define cada una de ellas y da un ejemplo.
+¿Es posible relacionar a una entidad con ella misma? Da un ejemplo
+¿Cuáles son los componentes de un ERD?
+¿Para qué se utilizan los Diagramas de Matriz?
+Define supertipo y subtipo y da un ejemplo de cada uno.
+¿A qué se llama Relación Redundante?
+¿A qué se denomina Entidad de Intersección?
+¿A qué se denomina UID compuesto? ¿Y UID artificial?
+¿Qué es un UID candidato?
+¿Qué es una relación de jerarquía? ¿Cómo se representa?
+
+Leer y comprender la parte práctica de la segunda parte de la actividad indicado a continuación:
+SECCIÓN B. PARTE PRÁCTICA
+
+ Se desea crear una base de datos para gestionar un CAR ( Centro de Alto Rendimiento)  y los diferentes espacios y actividades que se ofrecen. El CAR cuenta  con diferentes  instalaciones deportivas  cuya  finalidad es la mejora del rendimiento deportivo  de los deportistas de alto nivel.
+
+ A continuación se explican los requerimientos de la misma:
+
+
+Se adjunta la tabla de becas, para un mayor entendimiento del caso:
+ID
+
+Planes
+
+Tipo
+
+Matrícula persona
+
+Cuota mensual
+
+Descripción
+
+1
+
+BECA COMPLETA
+
+A
+
+0€
+
+ 0€
+
+Acceso completo
+
+2
+
+BECA PARCIAL
+
+A
+
+45,00€
+
+20,00€
+
+Acceso  de 11:00 a 18:00
+
+3
+
+BECA TARDES
+
+B
+
+45,00€
+
+45,00€
+
+Acceso de 15:00 a 21:00
+
+4
+
+BECA   <18 años
+
+C
+
+0€
+
+35,00€
+
+Acceso 24h 
+
+5
+
+BECA <24 años
+
+D
+
+15€
+
+45,00€
+
+Cualquier hora máximo 6h diarias
+
+Los deportistas del  CAR entran en unas condiciones según la Beca que han obtenido. Cada deportista es tratado como un socio del CAR y tiene asignado un tipo de beca. Hay  5 tipos de beca diferentes y  se desea guardar para cada tipo , su nombre, la inscripción o matrícula  por persona, el coste mensual y su descripción.
+Los datos comunes a cada socio son: Id_Socio (generado por el centro ), Documento de Identidad, Nombre, Apellido1, Apellido2, Sexo, Fecha de Nacimiento, Beca (de los 5 de la tabla), Fecha Alta, Número de Tarjeta de Acceso, Teléfono, Email, Ciudad, Código Postal y  Observaciones.
+El CAR  no desea perder ningún dato de los socios por lo cual, a los datos comunes se agrega un campo que indique si el socio está activo o no. Es posible que el deportista este lesionado y por tanto no este activo como socio.
+Los socios pueden ir cambiando de becas con el tiempo o perder la beca definitivamente y darse de baja. Cada vez que esto ocurra(un cambio de beca) se desea llevar un registro HISTÓRICO de becas  (Audit Trail) por Socio, donde se indique: idSocio, FechaCambio, BecaAnterior,BecaActual,y  si se trata o no de una Baja Definitiva.
+El CAR ofrece diferentes actividades de entrenamiento (incluidas según la Beca obtenida).
+Para cada actividad  se desea registrar: IdActividad, Actividad, Descripción,  Nivel [Inicial / Básico / Intermedio / Avanzado], duración de la sesión en minutos y varios campos que se deben seleccionar en caso de que la actividad los incluya o no:  certificado oficial, certificado curso, entrenamiento para competición, entrenamiento libre ,  entendiendo que una actividad puede  tener más de una de estas características. Además, dejar un espacio para Observaciones.
+Para las actividades se llenará un HORARIO, que tendrá los siguientes campos: id_Actividad, Instalación, Fecha, Hora, Entrenador, Observaciones. Habrá que tener en cuenta que las actividades no se solapen en una misma instalación, ya que el horario será publicado en la web.
+Cada horario de una actividad concreta tendrá asignado un único ENTRENADOR, que tendrá los siguientes campos:Id_Entrenador, Nombre, Apellido1, Apellido2, Fecha de Nacimiento, Formación.
+Se desea registrar las diferentes INSTALACIONES o salas con las cuenta el CAR. Para cada sala/instalación se desea registrar el id de la instalación, la zona, el nombre, la descripción, el tamaño en m2 y el aforo (número de personas que pueden estar en un área al mismo tiempo).
+Hay que tener en cuenta que las actividades están restringidas según el tipo de beca obtenida. Se desea registrar que actividades están permitidas según la beca.
+Los socios podrán solicitar un SEGUIMIENTO personalizado. Para aquellos socios que lo soliciten, se les llevará un registro donde se guardará: idSocio, Fecha de realización de la actividad y la nota obtenida.
+Los deportistas del CAR participan en diferentes competiciones. Se desea registrar estas participaciones en las diferentes competiciones. Para cada COMPETICIÓN tenemos que registrar su nombre, la localidad donde se realizan, el precio de la inscripción de participación y el premio del ganador. Así mismo, queremos registrar los socios que participan en estas competiciones, en qué fecha lo hacen y la posición que han obtenido en la misma.
+Realizar las actividades de la segunda parte de la actividad listadas a continuación:
+
+Identificar en una tabla como la del siguiente ejemplo las entidades, atributos e identificador principal de cada entidad del caso práctico.
+
+Entidad
+
+Atributos
+
+Identificador principal
+
+ACTORES
+
+ID, nombre, apellidos, país, web_oficial
+
+ID
+
+
+Utilizar un diagrama de matriz para identificar las relaciones existentes entre las diferentes entidades del caso práctico anterior.  Encontrarás un ejemplo en el Curso DD Database Design. DD 3-4 Diagramas de Matriz del curso de Oracle Academy.
+
+Realizar el Modelo Lógico del caso práctico anterior utilizando el software Oracle SQL Developer Data Modeler.
+Curso DFo Database Foundations Alumno – Español. Sección 4. 4-1. Oracle SQL Developer Data Modeler
+
+Realizar un documento PDF que incluya los apartados anteriores:
+
+La respuesta a las preguntas teóricas de la sección A, realizadas de forma breve y concisa 
+Respuesta a los dos primeros puntos del apartado 8, sección B (parte práctica)
+
+Imprimir el ERD realizado en el tercer puntos del apartado 8, sección B (parte práctica) en un documento PDF
+Enviar el documento PDF por el canal establecido.

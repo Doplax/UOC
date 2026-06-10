@@ -1,0 +1,48 @@
+
+
+Descripción Star
+Usando el framework React Native desarrollaremos la interfaz para dispositivos móviles. Aprovechando además el trabajo realizado en los dos primeros productos, podremos transformar las interfaces a “mobile” además de conectarnos a nuestra base de datos en firebase.
+
+Objetivos Event personal
+Conocer y utilizar el framework React Native para el desarrollo de una interfaz móvil.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Preparar el entorno de trabajo:
+Elegir e instalar la herramienta de desarrollo adecuada para el desarrollo con React Native. Normalmente, las mismas herramientas usadas con Angular se pueden reutilizar para el trabajo con React Native.
+Crear un nuevo repositorio nuevo en Github en el que se incluya al consultor y al equipo. Para cada producto se tendrá que crear un github independiente, nunca se trabajará en el mismo para que de tiempo al consultor de corregir el trabajo sin que ya se vaya adelantando código del siguiente producto. Además, en el gitignore se tiene que indicar que la carpeta node_modules no estará incluida.
+Actualizar el espacio de trabajo con Trello
+Diseñar la interfaz partiendo del diseño del Producto 1 donde al menos existan 3 pantallas diferenciadas de muestra de información y donde una de esas zonas sea un reproductor multimedia, con sus correspondientes botones de interacción y las otras dos sean el listado y el detalle.
+Crear el primer componente Inicio que contendrá las dos zonas del Mockup, una para el título superior y la otra zona un listado infinito mediante un FlatList
+Instalar react firebase según las instrucciones del fabricante (https://rnfirebase.io/).
+Incorporar, en el proyecto de react native, los datos de configuración del proyecto de Firebase e inicializar una nueva conexión a través de Firebase.initializeApp
+Comprobar dentro del método componentDidMount, que la llamada a la base de datos usando el método once devuelve todo el array de retos. 
+Incorporar al FlatList los datos de Firebase.
+Instalar react native navigation según las instrucciones del fabricante
+Desarrollar los otros dos componentes con los elementos necesarios para poder visualizar la información de acuerdo al mockup desarrollado.
+Añadir el Stack de navegación con las 3 ventanas que corresponden a los 3 componentes en el App.js
+Configurar el menú superior de navegación para que aparezca un título y tenga un estilo predeterminado de colores.
+Añadir un botón en el menú y su enlace a la ventana inicial
+Copiar el enlace de Github en un documento de texto para su entrega.
+Subir todo el proyecto a CodeSandbox y que compile ahí para así evitar problemas de compilación en el ordenador del consultor. Poner el enlace al documento de entrega. Si el proyecto no está funcionando y correctamente compilado en CodeSandbox, se bajarán 2 puntos de la nota final
+Se requiere Event personal
+Los requisitos indispensables para realizar el producto son: 
+
+Tener finalizado el Producto 2 con un mínimo de funcionalidades o correcciones marcadas por el consultor.
+Tener instalado Angular Material en nuestro proyecto.
+Recursos Básicos   Book
+Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de información disponibles el documento "Recursos de aprendizaje vinculados a los productos".
+
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 35.  
+La puntuación mínima para superarlo es de 17,5 sobre 35. 
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual.
+Formato: DOC o PDF con la documentación del proyecto junto con los enlaces GIT y CodeSandbox. Archivo comprimido de todo el proyecto sin la carpeta node_modules.
+Nombre del archivo: producto3(FP067)_Apellido1Apellido2_Nombre

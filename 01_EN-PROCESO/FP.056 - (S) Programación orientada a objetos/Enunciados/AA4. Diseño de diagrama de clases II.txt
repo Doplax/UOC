@@ -1,0 +1,69 @@
+Descripción Star
+Esta actividad plantea un conjunto de ejercicios a resolver. Cada uno de los ejercicios plantea situaciones diferentes que se describen en el enunciado de cada apartado aplicando conceptos de la programación orientada a objetos.
+
+Objetivos Event personal
+El objetivo principal de la actividad es:
+Aplicar los principios de la programación orientada a objetos y generar diagramas de clase, definiendo clases, atributos y métodos en Java así como documentar las clases realizadas en Java.
+Caso práctico Pencil
+Una vez realizado el diseño de la gestión de los almacenes de la empresa WoodShops nos han pedido ampliar la aplicación y añadir el diseño e implementación de la gestión de las ventas de los productos. Extender de la anterior actividad AA3.
+
+Los clientes lo son de WoodShop y pueden ser clientes registrados o clientes sin registrar, en el caso de este último el cliente es anónimo y no se necesita almacenar ningún dato. Existen dos tipos de clientes registrados, profesionales y WoodFriend. Los datos que necesitamos conocer de todos los clientes es el NIF y el nombre. Los clientes profesionales tienen un descuento en todas las ventas, este descuento es distinto para cada cliente, en cambio los clientes WoodFriend son clientes asiduos a los cuales se les ofrece ofertas especiales, así pues, de este tipo de clientes necesitamos almacenar un código de socio que se les asigna.
+
+Las ventas las realizan las tiendas, cada venta supone un ticket o factura, de cada ticket debemos almacenar un número de ticket, la fecha y el cliente en caso de que sea un cliente registrado, además cada ticket tiene sus líneas de detalle, una línea almacena un producto y la cantidad de unidades compradas de ese producto.
+
+Se deben implementar las opciones siguientes a realizar desde pantalla/consola:
+
+Añadir nuevos clientes en WoodShops.
+Mostrar listado de todos los clientes, indicando el tipo de cliente.
+Añadir ticket de venta en la tienda, al añadir el ticket de venta, además se debe mostrar por pantalla el ticket completo, número, fecha, cliente en caso de ser un cliente registrado, todo el detalle del ticket y el total del importe del ticket teniendo en cuenta el posible descuento en caso de cliente profesional.
+Mostrar un listado de resumen de tickets en la tienda, se debe filtrar entre una fecha de inicio y una fecha fin y se debe mostrar, el número, fecha, cliente en caso de ser cliente registrado, el descuento aplicado si procede y el total del importe del ticket.
+No cabe duda, el usuario de la aplicación debe poder realizar todas estas opciones por pantalla, todos los datos se introducen por pantalla.
+
+Actividades del caso práctico:
+
+Realiza el diagrama de clases que represente las especificaciones y elementos que componen el sistema de información del sistema expuesto en el caso práctico.
+Abre y utiliza el proyecto AA4_WoodShops realizado en Java que se suministra con la actividad (añade lo necesario del AA3):
+Codifica en Java el diagrama de clases. Se debe definir y añadir en Java las clases, atributos, constructores, getters y setters así como los métodos y contemplar las opciones que se indican las especificaciones.
+Implementar un método para la carga de datos iniciales.
+Completa las opciones del menú.
+Generar la documentación de las clases desarrolladas en el paso anterior utilizando Javadoc.
+Realiza un vídeo explicando por audio la ejecución de todo el programa en todas sus opciones (2-3 minutos). Utiliza una herramienta de grabación de vídeo/audio de captura de pantalla y súbela a Youtube, incluye el link en el documento final. Importante: comparte el vídeo como oculto, no privado.
+Incluye un apartado en tu informe que contenga:
+Listado de partes a las que habéis dedicado más tiempo o que consideráis que tienen mayor dificultad.
+Listado de puntos del enunciado que no habéis conseguido hacer.
+Listado de cosas que se podrían mejorar en vuestro resultado final.
+AUTOEVALUACIÓN: Revisa la rúbrica incluida al final de esta actividad y autoevalúate indicando qué puntuación te asignarías en cada punto de la rúbrica. Además, en esta actividad, incluye también una nota numérica entre 0 y 100 de cómo valorarías tu trabajo. 
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo la actividad son:
+
+Leer detenidamente estas instrucciones e identificar los requisitos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Investigar y estudiar qué son, cómo se representan en el diagrama de clases y cómo se codifican en Java las Enumeraciones.
+Revisar la funcionalidad que se expone en el caso práctico y realiza las actividades que se indican en él.
+Explicar, en un documento de texto, los pasos realizados en la actividad, qué parte de la actividad está realizada y cuál está por finalizar, los problemas con los que te has encontrado y cómo los has resuelto, así como los comentarios que creas necesarios. Recuerda incluir la autoevaluación. Puedes copiar y pegar la rúbrica y marcar cómo te autoevaluarías. Indica también tu autoevaluación numérica entre 0 y 100.
+Se requiere Event personal
+Los requisitos indispensables para realizar la actividad son:
+
+Consultar las fuentes de información disponibles en el aula virtual.
+Investigar otras fuentes de información.
+Recursos Básicos Book
+Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de información disponibles a continuación:
+
+Proyecto AA4_WoodShops  (incluir en este proyecto lo que sea necesario de la AA3).Descargar Proyecto AA4_WoodShops  (incluir en este proyecto lo que sea necesario de la AA3).
+Material de estudio Oracle Academy (PDF aula)
+Oracle Academy (web)
+Manual de uso de Oracle Academy. Manual del EstudianteDescargar Manual de uso de Oracle Academy. Manual del Estudiante. UOC-JE (pdf)
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 20.
+La puntuación mínima para superarlo es de 10 sobre 20.
+
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual (2 ficheros a entregar), si falta alguno de los elementos será "No entregado":
+Por un lado incluir el documento PDF con la resolución de los ejercicios y el enlace al vídeo. Extensión: 3-5 páginas.
+Por otro lado, entregar (formato: zip o rar) el proyecto completo con todos los ficheros del programa.
+Nombre de los archivos: AA4(FP446)_Apellido1Apellido2_Nombre
+ 

@@ -1,0 +1,48 @@
+Descripción Star
+Desarrollar una pequeña aplicación que sea capaz de extraer cierta información de diversas máquinas de la red, generar con ella un documento XML.
+
+Objetivos Event personal
+El objetivo principal del producto es:
+
+Desarrollar una aplicación programada en Python que sea capaz de generar un archivo formato XML que contendrá diversas configuraciones de la máquina local.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Programar una pequeña aplicación de consola escrita en Python, la funcionalidad de la cual será generar un fichero XML a partir de los siguientes datos del adaptador de red indicado por el usuario de la aplicación: la IP, máscara, puerta de enlace, el servidor DNS primario, la velocidad media de respuesta de este servidor DNS y del número de saltos a los que este servidor DNS se encuentra detallando también la IP de cada salto.  Mostrar con un submenú los adaptadores posibles donde el usuario escogerá, el que pondremos en el fichero XML
+Hay que tener en cuenta que el XML generado tendrá que ser bien formado, es decir, es decir no ha de tener errores sintácticos.
+Para su correcta realización la aplicación programada en Python debe estar:
+Correctamente modularizada.
+Su código ha de estar bien comentado.
+Preguntar inicialmente el nombre del adaptador de red a analizar.
+Generar el archivo XML con la información detallada anteriormente.
+Preparar un documento PDF con la resolución de los ejercicios.
+Preparar, para la entrega, un documento comprimido que incluya el documento PDF, los ficheros del programa en Python.
+Se requiere Event personal
+Los requisitos indispensables para realizar el producto son:
+
+Haber realizado los productos 1, 2 y 3.
+Tener instalado Visual Studio Community en la máquina host.
+Conocer la tecnología XML.
+Recursos Básicos   Book
+Para llevar a cabo el producto puedes apoyarte en los materiales y fuentes de información indicados a continuación así como los disponibles en el espacio “Recursos de Aprendizaje” del aula.
+
+XML introducción desarrolloweb
+XML tutorial W3schools
+XML online validator
+Recursos de aprendizaje adicionales vinculados a los productos
+Curso Web
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 10. 
+
+La puntuación mínima para superarlo es de 5 sobre 10.
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega del producto deberás:
+
+Hacerlo por el canal indicado en el aula virtual.
+Formato: zip o rar, en el contenido se deberá incluir el documento PDF con la resolución de los ejercicios y los ficheros del programa en C
+Nombre del archivo: producto4(FP440)_Apellido1Apellido2_Nombre
+Extensión recomendada: 3-5 páginas.

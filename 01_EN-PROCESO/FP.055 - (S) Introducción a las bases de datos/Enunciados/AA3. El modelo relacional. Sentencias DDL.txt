@@ -1,0 +1,250 @@
+Descripción Star
+En esta actividad vamos a trasladar el Diagrama de Relación de Entidades realizado en la actividad AA2 a MySQL Workbench para convertirlo en un Modelo Relacional y posteriormente, generar el script .SQL para generar la Base de Datos (modelo físico).
+
+Adicionalmente se realizará un Cuestionario de Evaluación sobre las tres primeras formas normales.
+
+Objetivos Event personal
+Transformar un diagrama de Relación de Entidades (Barker) a un Modelo Relacional Normalizado y posteriormente generar la estructura de la Base de Datos mediante un script .SQL.
+Pasos a seguir  Pencil
+1. Leer y comprender los recursos del seminario.
+2. Generar un documento .PDF con los apartados de la sección A. (Parte Teórica) indicados a continuación:
+
+SECCIÓN A. PARTE TEÓRICA
+
+1. Luego de revisar la Sección 9 del curso DD Database Design Alumno - Español CPD en Oracle Academy, define cada uno de los siguientes elementos y propiedades del modelo relacional e indica con qué elemento del diagrama de relación de entidades (ERD) de la actividad están asociados. Ejemplo: Las tablas se asocian a las entidades.
+
+
+1.1. Elementos del modelo relacional. Completa la siguiente tabla:
+
+Modelo relacional
+
+Sinónimos
+
+Definición corta
+
+Se asocian a (ERD)
+
+Tabla
+
+-
+
+Entidades
+
+Registro
+
+Campo
+
+Clave primaria
+
+Clave candidata
+
+Clave forànea (FOREIGN KEY)
+
+Relación
+
+1.2 Reglas de Integridad del Modelo Relacional. Explica las siguientes reglas:
+
+a. Reglas de Integridad de Modelo
+
+Reglas de Integridad de Entidades
+Regla de Unicidad de la Clave Primaria (PRIMARY KEY). Ejemplo.
+Regla de Entidad de la Clave Primaria. Ejemplo
+¿Qué es Integridad Referencial? Ejemplo
+b. Restricciones Semánticas. Explica las siguientes reglas:
+
+¿Qué se conoce como DOMINIO en el ámbito de las Bases de Datos?
+¿Qué es una restricción de Dominio definida por el usuario? Ejemplo.
+¿Qué es una restricción de Usuario? Ejemplo.
+1.3 Transformación de Relaciones. A partir del video y las secciones DD 9-3 y DD 9-4 del curso DD Database Design Alumno de Oracle Academy, responde a las siguientes preguntas:
+
+Describe la forma en la cual se transforman las relaciones 1:1 del Modelo Entidad-Relación al Modelo Relacional. Pon un ejemplo.
+Describe la forma en la cual se transforman las relaciones 1:n del Modelo Entidad-Relación al Modelo Relacional. Pon un ejemplo.
+Describe la forma en la cual se transforman las relaciones n:m del Modelo Entidad-Relación al Modelo Relacional. Pon un ejemplo.
+2. Sentencias DDL (Data Definition Languaje) de SQL.  Para cada objeto de la primera columna, marca con una x las sentencias que admite:
+
+Instrucción | sentencia
+
+CREATE
+
+ALTER
+
+DROP
+
+RENAME
+
+TRUNCATE
+
+Objetos
+
+Crear
+
+Modificar
+
+Eliminar
+
+Renombrar
+
+Vaciar
+
+DATABASE | SCHEMA
+
+TABLE *
+
+[TEMPORARY TABLE]
+
+INDEX
+
+VIEW
+
+3. Restricciones.La sentencia ALTER TABLE de SQL tiene dos propósitos:
+
+Permite agregar, modificar o eliminar columnas en una tabla.
+Permite agregar y eliminar restricciones (constraints) en una tabla.
+En referencia a las restricciones, completa la siguiente tabla:
+
+RESTRICCIÓN
+
+OBJETIVO
+
+EJEMPLO
+
+PRIMARY KEY
+
+UNIQUE
+
+FOREIGN KEY
+
+CHECK
+
+DEFAULT
+
+4. Claves compuestas y otras propiedades. Indica realizando una captura de pantalla de MySQL Workbench.
+
+¿Cómo se genera una Clave Primaria, Candidata o Foránea cuando está compuesta por más de un campo?
+¿Cómo se pueden agregar los propiedades AUTOINCREMENT y NOT NULL a un campo y qué significan estas dos propiedades?
+5. Tipos de Datos MySQL. MySQL admite una gran variedad de tipos de datos. Entre todos ellos se seleccionaron los que más se utilizan para que completes la tabla siguiente:
+
+Tipo de dato
+
+Grupo (Numérico, Fecha, Cadena)
+
+Capacidad, formato...
+
+BIT
+
+INT
+
+FLOAT
+
+DECIMAL (m,n)
+
+DATE
+
+DATETIME
+
+TIME
+
+CHAR (n)
+
+VARCHAR (n)
+
+ENUM
+
+SET
+
+6. ¿Cuál es la diferencia entre los tipos de campo FLOAT y DECIMAL y cómo se interpretan los parámetros en este último tipo de campo? ¿Y entre CHAR y VARCHAR?
+
+SECCIÓN B. PARTE PRÁCTICA
+
+Instalar el servidor de Base de Datos MySQL y el Gestor de Bases de Datos MySQL Workbench.
+Realizar la transformación del diagrama entidad relación de la segunda actividad al modelo relacional (estructura de tablas) en MySQL Workbench. Tienes que volver a crear  de nuevo las tablas, campos, relaciones pero ahora en Workbench y siguiendo el modelo relacional y asignando las Primary key y  Foreign keys correctamente.
+
+Traslada el ERD de la AA2 a MySQL Workbench y crea el Modelo Relacional con las pautas siguientes, que permitirán apreciar mejor las propiedades de los campos de las tablas y las relaciones:
+
+FP55_AA3_01.PNG
+
+Selecciona Workbench (Simplified) en la opción Object Notation del menú Model en la parte superior del menú.
+Selecciona Crow’s Foot en la opción Relationship Notation del menú Model en la parte superior del menú.
+Realiza una captura de pantalla del modelo Entidad Relación generado, e inclúyela como anexo en el PDF de la actividad.
+
+Crear la Base de Datos en MySQL a partir del script en tu servidor local.
+
+Utilizando la función  Database - Forward Engineering de MySQL Workbench, genera la Base de Datos a partir del Modelo Relacional.
+Cierra la ventana de modelos.
+
+Generar un script .SQL exportando la Base de Datos recién creada.
+
+Conecta con tu servidor local desde MySQL Workbench (clicando sobre Local instance…) y exporta la base de datos .SQL generada en el paso anterior (opción Server-Data Export).
+
+FP55_AA3_02.PNG
+FP55_AA3_03.PNG
+
+Una vez exportado, renombra el script como se pide en las indicaciones para la entrega de la actividad
+
+SECCIÓN C. CUESTIONARIO SOBRE NORMALIZACIÓN
+
+Realizar el cuestionario de evaluación sobre normalización en el Aula Virtual.
+
+Se requiere Event personal
+Deberás tener instalado el motor de Base de Datos MySQL 8 en tu ordenador (servidor local) y adicionalmente deberás tener instalada la herramienta MySQL Workbench.
+
+Recursos Básicos Book
+Material de estudio de Oracle Academy (PDF aula)
+ * Curso DD Database Design Alumno - Español CPD en Oracle Academy
+ * Curso DFo Database Foundations Alumno - Español
+Bases de DatosDescargar Bases de Datos. FUOC
+MySQL y MySQL Workbench para generar el Modelo Relacional.
+Descarga: https://dev.mysql.com/downloads/mysql/
+MySQL Workbench Manual. Modeling Tutorials
+Transformación MER - Tablas
+ 
+Uso de recursos desglosado por secciones
+
+Sección A.  PARTE TEÓRICA
+
+Curso DD Database Design Alumno - Español CPD en Oracle Academy
+
+  DD 9-1 Introducción a los Conceptos de la Base de Datos Relacional
+  DD 9-2 Asignación Básica: Proceso de Transformación
+  DD 9-3 Asignación de Relaciones
+  DD 9-4 Asignación de Subtipos
+
+Bases de Datos. FUOC.
+
+  pág. 64. Punto 2.4 Claves candidatas, primarias y alternativas  
+  pág. 72. Punto 4. Reglas de Integridad y restricciones
+  pág. 119. Punto 1. Sentencias de definición (DDL)
+  pág. 121. Punto 1.2.1 Tipos de Datos
+  pág. 124. Punto 1.2.1 Opción DEFAULT
+  pág. 124. Punto 1.2.4 Restricción de columna: UNIQUE, NOT NULL, etc
+
+Sección B.  PARTE PRÁCTICA
+
+MySQL Workbench Manual. Modeling Tutorials  
+
+  9.3.1 Creating a Model
+  9.3.2 Basic Modeling
+  9.4.1 Forward Engineering
+  6.5.2 SQL Data Export and Import Wizard
+
+Sección C.  CUESTIONARIO DE EVALUACIÓN SOBRE NORMALIZACIÓN
+
+Curso DD Database Design Alumno - Español CPD en Oracle Academy
+
+  DD 6-2 Normalización y Primera Forma Normal
+  DD 6-3 Segunda Forma Normal
+  DD 6-4 Tercera Forma Normal
+
+Criterios de evaluación  Checkmark
+La puntuación máxima de la actividad es un 25. de los cuales 5 puntos se obtendrán de la realización del cuestionario AA3b.
+La puntuación mínima para superarla es de 12,5 sobre 25.
+
+Indicaciones para la entrega de la actividad Checkmark
+Hacerlo por el canal indicado en el aula virtual.
+Formato: PDF.
+Nombre del archivo:
+Se entrega un archivo PDF con la resolución de la teoría y otro .SQL con el script generado en la parte práctica.
+   AA3(FP.055)_Apellido1Apellido2_Nombre.pdf
+   AA3(FP.055)_Apellido1Apellido2_Nombre.sql
+Extensión recomendada: PDF de 5-7 páginas como máximo
+Realiza una captura de pantalla del modelo tablas generado en el Workbench, e inclúyela como anexo en el PDF de la actividad.

@@ -1,0 +1,360 @@
+
+Saltar al contenido de la prueba
+Resultados
+Pol Valle Montes
+Estadísticas de evaluación
+
+85 %
+4,25 de 5 puntos
+4,25
+De 5 puntos
+Tiempo para este intento: 8 minutos 30 segundos
+8 minutos 30 segundos08:30
+Tiempo para este intento
+Tus respuestas:
+Resultados para la pregunta 1.
+1
+0 / 0,25 puntos
+Opción múltiple
+¿Una relación está en 1FN  si  no contiene ningún/a ____________?
+
+Determinante
+, no seleccionado
+Respuesta incorrecta:
+
+Grupo repetitivo
+Respuesta correcta:
+Determinante
+
+Valor nulo en la clave principal
+, no seleccionado
+
+Dependencia funcional
+, no seleccionado
+Resultados para la pregunta 2.
+2
+0,25 / 0,25 puntos
+Opción múltiple
+Una tabla está en 2FN  si la tabla está en 1FN  y… (¿qué otra condición se cumple?)
+Respuesta correcta:
+
+No hay atributos que no dependan funcionalmente de la clave principal de la relación.
+
+No hay dependencias funcionales.
+, no seleccionado
+
+No hay valores nulos en los campos de clave principal.
+, no seleccionado
+
+No hay grupos que se repitan.
+, no seleccionado
+Resultados para la pregunta 3.
+3
+0,25 / 0,25 puntos
+Opción múltiple
+La normalización es:
+Respuesta correcta:
+
+El procedimiento que se realiza para lograr un diseño de Base de Datos que permita un acceso y almacenamiento eficientes de los datos.
+
+La eliminación de todos los datos necesarios de una Base de Datos
+, no seleccionado
+
+La configuración de los campos de las diferentes tablas en una gran base de datos
+, no seleccionado
+
+La función de documentar las actividades que se realizan en la Base de Datos para que éstas puedan ejecutarse de manera controlada.
+, no seleccionado
+Resultados para la pregunta 4.
+4
+0,25 / 0,25 puntos
+Opción múltiple
+¿Cuál de las siguientes declaraciones describe completamente una tabla en 2FN ?
+Respuesta correcta:
+
+Se han eliminado todas las entradas repetidas de datos, los campos de cada tabla están directamente relacionados con la clave principal y no hay campos presentes que no estén relacionados entre sí.
+
+Se han eliminado los campos repetidos y se asigna a la tabla una clave principal
+, no seleccionado
+
+Todos los campos de cada tabla están directamente relacionados con la clave principal
+, no seleccionado
+
+La tabla está en 2FN si no posee dependencias multivaluadas no triviales.
+, no seleccionado
+Resultados para la pregunta 5.
+5
+0,25 / 0,25 puntos
+Opción múltiple
+Un UID ____  es una PK artificial introducida por el diseñador con el propósito de simplificar la asignación de claves primarias a las tablas.
+Respuesta correcta:
+
+artificial
+
+compuesto
+, no seleccionado
+
+candidato
+, no seleccionado
+
+secundario
+, no seleccionado
+Resultados para la pregunta 6.
+6
+0,25 / 0,25 puntos
+Opción múltiple
+Las tablas en ____ funcionarán  adecuadamente en las bases de datos transaccionales comerciales.
+Respuesta correcta:
+
+3FN
+
+0FN
+, no seleccionado
+
+1FN
+, no seleccionado
+
+2FN
+, no seleccionado
+Resultados para la pregunta 7.
+7
+0 / 0,25 puntos
+Opción múltiple
+Una tabla donde todos los atributos  dependen de la clave principal y son independientes entre sí, y ninguna fila contiene dos o más campos multivalor sobre una entidad,  está en ____ .
+
+1FN
+, no seleccionado
+
+2FN
+, no seleccionado
+
+3FN
+, no seleccionado
+Respuesta incorrecta:
+
+4FN
+Respuesta correcta:
+1FN
+Resultados para la pregunta 8.
+8
+0,25 / 0,25 puntos
+Opción múltiple
+Una tabla en ____  no contiene dependencias transitivas.
+Respuesta correcta:
+
+3FN
+
+1FN
+, no seleccionado
+
+2FN
+, no seleccionado
+
+Ninguna es correcta
+, no seleccionado
+Resultados para la pregunta 9.
+9
+0,25 / 0,25 puntos
+Opción múltiple
+Cuando se dice que  una tabla es 3FN 
+Respuesta correcta:
+
+Si y solo si está en 2FN y cada atributo no clave depende no transitivamente de la clave principal
+
+La normalización mejora el rendimiento al reducir la redundancia.
+, no seleccionado
+
+Implica la introducción de redundancia en los datos
+, no seleccionado
+
+Ninguna es correcta
+, no seleccionado
+Resultados para la pregunta 10.
+10
+0,25 / 0,25 puntos
+Opción múltiple
+¿Cuál de las siguientes declaraciones describe completamente una tabla en 2FN ?
+Respuesta correcta:
+
+Cuando se eliminan todas las entradas repetidas de datos y los campos de cada tabla están directamente relacionados con la clave principal y no hay campos presentes que no estén relacionados entre sí
+
+Cuando se han eliminado los campos repetidos y se asigna a la tabla una clave principal
+, no seleccionado
+
+Cuando todos los campos de cada tabla están directamente relacionados con la clave principal.
+, no seleccionado
+
+Cuando las únicas dependencias que existen son las denominadas dependencias de JOIN de una tabla con sus proyecciones.
+, no seleccionado
+Resultados para la pregunta 11.
+11
+0,25 / 0,25 puntos
+Opción múltiple
+¿Qué es una clave foránea?
+Respuesta correcta:
+
+Un atributo de una tabla que se corresponde con el UID primario de otra tabla y permite relacionarlas.
+
+Un identificador único en una base de datos
+, no seleccionado
+
+Un campo que no debe estar en una tabla y que debe eliminarse
+, no seleccionado
+
+Un UID candidato que se ha seleccionado para identificar una entidad
+, no seleccionado
+Resultados para la pregunta 12.
+12
+0,25 / 0,25 puntos
+Opción múltiple
+El modelo ____  visualiza los datos como parte de una tabla o colección de tablas en la que se  deben identificar todos los valores clave.
+Respuesta correcta:
+
+relacional
+
+orientado a objetos
+, no seleccionado
+
+conceptual
+, no seleccionado
+
+externo
+, no seleccionado
+Resultados para la pregunta 13.
+13
+0,25 / 0,25 puntos
+Opción múltiple
+La  identificación de los ____   le permitirá saber dónde se encuentra en el proceso de normalización.
+Respuesta correcta:
+
+formatos normales
+
+UID
+, no seleccionado
+
+atributos
+, no seleccionado
+
+grupos repetidos
+, no seleccionado
+Resultados para la pregunta 14.
+14
+0,25 / 0,25 puntos
+Opción múltiple
+Una ventaja de la normalización es:
+Respuesta correcta:
+
+Con seguridad, el espacio de almacenamiento necesario para una Base de Datos normalizada es menor
+
+Es posible ver detalles anteriores que se han cambiado, como la dirección de un cliente, ya que podemos mirar hacia atrás en una entrada anterior.
+, no seleccionado
+
+El proceso de normalización de una base de datos es muy fácil y no requiere ninguna habilidad.
+, no seleccionado
+
+El CPU y las unidades de disco duro trabajan menos para realizar ciertas consultas
+, no seleccionado
+Resultados para la pregunta 15.
+15
+0,25 / 0,25 puntos
+Opción múltiple
+¿Qué es un campo atómico?
+Respuesta correcta:
+
+Un campo que contiene sólo un elemento de datos
+
+Un campo que contiene varios elementos de datos
+, no seleccionado
+
+Un campo que se repite
+, no seleccionado
+
+Un sinónimo de clave candidata
+, no seleccionado
+Resultados para la pregunta 16.
+16
+0 / 0,25 puntos
+Opción múltiple
+¿Qué característica puede indicar que los datos NO estén en 1FN ?
+
+Todos los datos de la BBDD están en una sola tabla.
+, no seleccionado
+
+Hay redundancia.
+, no seleccionado
+
+Hay una clave principal asignada.
+, no seleccionado
+Respuesta incorrecta:
+
+Hay nombres duplicados.
+Respuesta correcta:
+Todos los datos de la BBDD están en una sola tabla.
+Resultados para la pregunta 17.
+17
+0,25 / 0,25 puntos
+Opción múltiple
+¿Qué permite la normalización a un diseñador de bases de datos?
+Respuesta correcta:
+
+Diseñar su Base de Datos de manera eficiente, eliminando la posibilidad de redundancia e inexactitudes.
+
+Eliminar registros adicionales de las tablas.
+, no seleccionado
+
+Agregar tantos campos como se desee.
+, no seleccionado
+
+Dibujar un ERD.
+, no seleccionado
+Resultados para la pregunta 18.
+18
+0,25 / 0,25 puntos
+Opción múltiple
+Para estar en 2FN : 
+Respuesta correcta:
+
+Cada campo no clave se relaciona con la clave principal
+
+Hay varias entradas en el mismo campo
+, no seleccionado
+
+No hay claves externas
+, no seleccionado
+
+Todos los números están en forma decimal
+, no seleccionado
+Resultados para la pregunta 19.
+19
+0,25 / 0,25 puntos
+Opción múltiple
+Para estar en 3FN :
+Respuesta correcta:
+
+Los registros no dependen de nada más que de la clave primaria de la tabla
+
+No se agregan claves candidatas
+, no seleccionado
+
+Las claves foráneas están limitadas a una sola
+, no seleccionado
+
+Todas las tablas se relacionan entre sí
+, no seleccionado
+Resultados para la pregunta 20.
+20
+0,25 / 0,25 puntos
+Opción múltiple
+¿Qué  ventaja proporciona la 3FN?
+Respuesta correcta:
+
+Elimina los datos redundantes, lo que a su vez ahorra espacio y reduce las anomalías de manipulación.
+
+Permite hacer seguimiento a los datos.
+, no seleccionado
+
+Permite consultar las tablas en SQL.
+, no seleccionado
+
+Evita nuevas actualizaciones.
+, no seleccionado

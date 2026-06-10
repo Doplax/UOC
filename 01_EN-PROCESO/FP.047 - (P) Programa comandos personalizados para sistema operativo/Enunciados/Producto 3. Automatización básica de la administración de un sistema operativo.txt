@@ -1,0 +1,50 @@
+Descripción Star
+Desarrollar una pequeña aplicación que sea capaz de modificar parte de la configuración de red de la máquina local, únicamente en lo que tiene que ver con la resolución de nombres de dominio, para un adaptador que se determinará entre los de una lista de servidores DNS escritos en un archivo de texto, en caso de que el servidor DNS actual no sea el más rápido entre los proporcionados.
+
+Objetivos Event personal
+El objetivo principal del producto es:
+
+Desarrollar una pequeña aplicación que sea capaz modificar la configuración de red de la máquina local cambiando el servidor DNS de esta por el más rápido entre los testeados.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Realizar una pequeña aplicación de consola escrita en Python, la funcionalidad de la cual será actualizar la configuración de red en lo que se refiere a los servidores DNS para un adaptador de red dado a partir de los servidores DNS detallados en un archivo de texto, siempre y cuando el servidor DNS más rápido sea uno de los detallados en ese archivo. Para su correcta realización la aplicación debe estar: 
+Correctamente modularizada.
+Su código ha de estar bien comentado.
+Agrupar las funciones creadas en una librería creada por ti.
+Preguntar inicialmente el nombre y la ruta del archivo web.txt y mostrar  el contenido de este archivo por pantalla. Mostrar la IP de un conjunto de páginas web que se encuentran en un archivo.
+Mostrar la configuración de red completa de la máquina local para los diferentes adaptadores y la almacenará en el archivo configuracionlocal.txt
+Preguntar al usuario el adaptador de red que quiere modificar y mostrar los servidores DNS configurados en este.  Mostrar con un submenú los adaptadores posibles donde el usuario escogerá.
+Abrir el archivo temporal y chequear, entre los dns configurados en el adaptador determinado en el punto 6 y los escritos en ese archivo, cuál de estos es más rápido.
+Cambiar en caso de no tener configurado el DNS más rápido, el DNS del adaptador indicado en el punto 7 por el más veloz.
+En caso de que dos servidores DNS empaten en velocidad, se reconfigurará el DNS por el que esté a un menor número de saltos, puesto que se considera que la cercanía es un punto a tener en cuenta. Indicar por pantalla si se ha modificado o no, número de saltos.
+Preparar un documento PDF con la resolución de los ejercicios.
+Preparar, para la entrega, un documento comprimido que incluya el documento PDF y los ficheros del programa en Python.
+Se requiere Event personal
+Los requisitos indispensables para realizar el producto son:
+
+Haber realizado los productos 1 y 2.
+Tener instalado Visual Studio Community en la máquina host.
+Tomar capturas de pantalla de la realización de los ejercicios.
+Recursos Básicos   Book
+Para llevar a cabo el producto puedes apoyarte en los materiales y fuentes de información indicados a continuación así como los disponibles en el espacio “Recursos de Aprendizaje” del aula.
+
+Nesth
+Tracert
+DNSips.txt (Archivo necesario para el paso 4)
+Recursos de aprendizaje adicionales vinculados a los productos
+Curso Web
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 40. 
+La puntuación mínima para superarlo es de 20 sobre 40.
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega del producto deberás:
+
+Hacerlo por el canal indicado en el aula virtual.
+Formato: zip o rar, en el contenido se deberá incluir el documento PDF con la  resolución de los ejercicios y los ficheros del programa en Python
+Nombre del archivo: producto3(FP440)_Apellido1Apellido2_Nombre
+Extensión recomendada: 3-5 páginas.

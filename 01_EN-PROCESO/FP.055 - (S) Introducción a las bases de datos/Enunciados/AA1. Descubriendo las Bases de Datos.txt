@@ -1,0 +1,202 @@
+Descripción Star
+En esta actividad realizarás una serie de tareas que te permitirán:
+
+Comprender y memorizar la evolución de los diferentes tipos de Bases de Datos y su funcionamiento.
+Entender lo que significa Modelo de Datos
+Comprender en profundidad el Modelo Relacional 
+Familiarizarse con el objetivo que tienen los Sistemas Gestores de Bases De Datos.
+Conocer las responsabilidades de un Administrador de Bases de Datos
+Presentar la Arquitectura ANSI / SPARC
+Objetivos Event personal
+El objetivo principal de la actividad es introducirnos en los conceptos de las Bases de Datos y de los Sistemas Gestores de Bases de Datos, así como descubrir la arquitectura ANSI / SPARC.
+Pasos a seguir  Pencil
+Leer y comprender los recursos
+Realizar un documento PDF que incluya los siguientes apartados. 
+Intenta ser conciso y preciso, pero sin dejar de ilustrar con un ejemplo cada concepto que incluyas.
+
+INTRODUCCIÓN A LAS BASES DE DATOS. CONCEPTOS PREVIOS
+Definir los siguientes conceptos agregando un ejemplo a cada definición para aclararla:
+
+1. ¿Qué es un Dato?
+2. ¿Qué es un fichero plano?
+3. ¿Qué es una Base de Datos y por qué es diferente de un fichero plano?
+4. ¿Cuáles son las características de una Base de Datos?
+5. ¿Qué es un modelo de datos?
+6. ¿Qué es un Sistema Gestor de Base de Datos (SGBD o DBMS)?
+EVOLUCIÓN HISTÓRICA DE LAS BASES DE DATOS
+Rellenar la siguiente tabla comparativa
+(SGBD=Sistema Gestor de Base de Datos):
+
+MODELOS B.B.D.D.
+
+JERÁRQUICO
+
+EN RED
+
+RELACIONAL
+
+NO-SQL
+
+Ilustración
+
+FP55_AA1_B1_ejemplo.PNG
+(ejemplo)
+
+ 
+
+ 
+
+ 
+
+Fecha de aparición
+
+ 
+
+ 
+
+ 
+
+ 
+
+Organización de los datos
+
+ 
+
+ 
+
+ 
+
+ 
+
+Características
+
+ 
+
+ 
+
+ 
+
+ 
+
+Ejemplos SGBD
+
+ 
+
+ 
+
+ 
+
+ 
+
+LOS SISTEMAS GESTORES DE BASES DE DATOS (SGBD o DBMS)
+Responder brevemente las siguientes preguntas:
+
+1. ¿Qué diferencia existe entre un Sistema Gestor de Base de Datos y un Motor de Bases de Datos.
+
+2. Explica a qué se refiere cada uno de los siguientes objetivos de los SGBD:
+
+    1) Independencia física
+    2) Independencia lógica
+    3) Integridad
+    4) Control de redundancia
+    5) Control de concurrencia/simultaneidad
+    6) Respaldo
+    7) Seguridad
+    8) Recuperación
+
+3. Enumera las funciones de un administrador de Base De Datos (DBA)
+
+LA ARQUITECTURA ANSI/SPARC
+
+1. Explica brevemente el objetivo del estándar ANSI/X3/SPARC así como cada nivel de esta arquitectura: interna, conceptual y externa. Incluye una ilustración del mismo.
+2. Incluye una ilustración donde se aprecie los niveles de esta arquitectura.
+
+NOTA: La ilustración puede ser creada por el estudiante o localizada en internet. Si es de la red debe aportarse la URL de la fuente.
+
+LENGUAJE DE CONSULTA ESTRUCTURADO (SQL)
+
+Según la clasificación de Oracle, las sentencias SQL se clasifican  en cinco tipos. Rellena la siguiente tabla e indica el objetivo de cada grupo de sentencias, indicando las sentencias que se incluyen en cada grupo:
+
+TIPO DE SENTENCIA
+
+SIGNIFICADO
+
+OBJETIVO
+
+DDL
+
+ 
+
+ 
+
+DML
+
+ 
+
+ 
+
+DQL
+
+ 
+
+ 
+
+DCL
+
+ 
+
+ 
+
+TCL
+
+ 
+
+ 
+
+
+Revisar el documento y exportarlo a PDF para su entrega.
+
+Se requiere Event personal
+Consultar las fuentes de información disponibles en el aula virtual.
+Incluir las referencias de las fuentes consultadas en el documento de entrega de la actividad.
+Ser conciso y preciso, pero sin dejar de ilustrar con un ejemplo cada concepto que se incluya.
+Recursos Básicos Book
+Bases de DatosDescargar Bases de Datos. FUOC
+Oracle Academy ofrece varios cursos que son un recurso básico para el desarrollo del seminario. En cada actividad se detallan los cursos y las secciones que os resultan útiles para cada apartado. Los cursos son un complemento perfecto al seminario y en concreto los que utilizaremos serán básicamente estos dos:
+
+Curso DD Database Design Alumno - Español CPD en Oracle Academy
+Curso DFo Database Foundations Alumno - Español
+Teneis todos los pdfs de los cursos de Oracle en el aula. 
+
+Material de estudio de Oracle Academy (PDF aula)
+ 
+
+Uso de recursos desglosado por secciones
+
+Sección A.  INTRODUCCIÓN A LAS BASES DE DATOS. CONCEPTOS PREVIOS
+
+Curso DFo. Sección 1. 1-2 Introducción a las bases de datos - Oracle Academy
+Bases de Datos. FUOC. Páginas 17 y 18
+Sección B.  EVOLUCIÓN HISTÓRICA DE LAS BASES DE DATOS 
+
+Curso DFo. Sección 1. 1-3 Tipos de modelos de bases de datos. Oracle Academy
+Sección C.  LOS SISTEMAS GESTORES DE BASES DE DATOS (SGBD)
+
+Curso DFo. Sección 1. 1-2 Introducción a las bases de datos - Oracle Academy
+Bases de Datos. FUOC. Páginas 25 a 31 y 35
+Sección D.  LA ARQUITECTURA ANSI/SPARC.
+
+Bases de Datos. FUOC. Páginas 32 a 39
+Sección E. LENGUAJES DE BASES DE DATOS
+
+Curso DFo. 6-2 Lenguaje de consulta estructurado - Oracle Academy
+Criterios de evaluación  Checkmark
+La puntuación máxima de la actividad es un 20. 
+La puntuación mínima para superarla es de 10 sobre 20.
+
+Indicaciones para la entrega de la actividad Checkmark
+Hacerlo por el canal indicado en el aula virtual.
+Formato: PDF
+Nombre del archivo: AA1(FP.055)_Apellido1Apellido2_Nombre
+Incluir las referencias bibliográficas.
+Extensión recomendada: 6-9 páginas.

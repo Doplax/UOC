@@ -1,0 +1,62 @@
+
+
+
+Descripción Star
+Esta actividad plantea un conjunto de ejercicios a resolver. Cada uno de los ejercicios plantea situaciones diferentes que se describen en el enunciado de cada apartado aplicando conceptos de la programación orientada a objetos.
+
+Objetivos Event personal
+El objetivo principal de la actividad es:
+Aplicar los principios de la programación orientada a objetos y generar diagramas de casos de uso.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo la actividad son:
+
+Leer detenidamente estas instrucciones e identificar los requisitos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula. Como ejemplo el punto "2.3. El modelo resultante" del Módulo 4. Análisis UML.
+Añadir en el código en Java lo realizado en la actividad AA4 y los métodos necesarios para realizar la funcionalidad siguiente por pantalla/consola:
+Mostrar un resumen de ventas por tienda entre una fecha inicio y una fecha fin introducido por pantalla: se debe mostrar la tienda y el total de la suma de los importes de los tickets entre las fechas indicadas por el usuario por pantalla.
+Realiza diagramas de casos de uso que contemplen las especificaciones funcionales que has realizado en las actividades AA3, AA4 y AA5.
+AA3:
+Añadir nuevos productos en cada tienda.
+Listar los productos de una tienda...
+Dado un código de producto, mostrar el stock....
+AA4:
+Añadir nuevos clientes en WoodShops.
+Mostrar listado de todos los clientes...
+Añadir ticket de venta en la tienda....
+Mostrar un listado de resumen de tickets en la tienda...
+AA5:
+Mostrar un resumen de ventas por tienda....
+Con cada uno de estos casos de uso, suficiente. Hay que fijarse que los puntos suspensivos dan mucha información relevante de cada caso de uso.... y efectivamente se deben relacionar actores, extends, includes, precondiciones, postcondiciones... hay ejemplos en los recursos y mucho más que podéis encontrar.
+
+Codificar en Java la implementación indicada en el paso 4.
+Realiza un vídeo explicando por audio la ejecución de todo el programa en todas sus opciones (2-3 minutos). Utiliza una herramienta de grabación de vídeo/audio de captura de pantalla y súbela a Youtube, incluye el link en el documento final. Importante: comparte el vídeo como oculto, no privado.
+Incluye un apartado en tu informe que contenga:
+La realización de la actividad, diagramas, etc,...
+Listado de partes a las que habéis dedicado más tiempo o que consideráis que tienen mayor dificultad
+Listado de puntos del enunciado que no habéis conseguido hacer
+Listado de cosas que se podrían mejorar en vuestro resultado final
+AUTOEVALUACIÓN: Revisa la rúbrica incluida al final de esta actividad y autoevalúate indicando qué puntuación te asignarías en cada punto de la rúbrica. Además, en esta actividad, incluye también una nota numérica entre 0 y 100 de cómo valorarías tu trabajo. 
+Se requiere Event personal
+Los requisitos indispensables para realizar la actividad son:
+
+Consultar las fuentes de información disponibles en el aula virtual.
+Investigar otras fuentes de información.
+Recursos Básicos Book
+Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de información disponibles a continuación:
+
+Material de estudio Oracle Academy (PDF aula)
+Oracle Academy (web)
+Manual de uso de Oracle Academy. Manual del EstudianteDescargar Manual de uso de Oracle Academy. Manual del Estudiante. UOC-JE (pdf)
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 20.
+La puntuación mínima para superarlo es de 10 sobre 20.
+
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual (2 ficheros a entregar), si falta alguno de los elementos será "No entregado":
+Por un lado incluir el documento PDF con la resolución de los ejercicios (todo, diagramas, etc,...) y el enlace al vídeo. Extensión: 3-5 páginas.
+Por otro lado, entregar (formato: zip o rar) el proyecto completo con todos los ficheros del programa.
+Nombre de los archivos: AA5(FP446)_Apellido1Apellido2_Nombre

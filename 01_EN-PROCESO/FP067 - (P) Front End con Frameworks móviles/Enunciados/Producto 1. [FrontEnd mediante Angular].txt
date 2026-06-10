@@ -1,0 +1,69 @@
+Descripción Star
+En este primer producto crearemos un PROYECTO PROPIO y en EQUIPO desarrollado con  el frontend usando uno de los frameworks más usados y conocidos como es Angular. Para ello tendremos como modelo las referencias, mockups, diagramas y estructuras basadas en un proyecto que gestionará un equipo de baloncesto.
+
+Con Angular presentaremos esa página única con todos los elementos necesarios para tener varios componentes que se comuniquen entre sí y tenga una presentación atractiva al incorporar bootstrap como el framework  más usado para el diseño de frontal.
+
+Objetivos Event personal
+Conocer e implementar las características de Angular para desarrollar una página de una única página.
+Conocer e implementar bootstrap para el diseño del frontal.
+Pasos a seguir  Pencil
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Preparar el entorno de trabajo:
+Elegir e instalar la herramienta de desarrollo adecuada para las tecnologías a usar: HTML, CSS, JS y Angular.
+Instalar y preparar el repositorio remoto en github/bitbucket como el repositorio local. Compartir el repositorio con el resto de componentes del equipo y el consultor. Para cada producto se tendrá que crear un github independiente, nunca se trabajará en el mismo para que de tiempo al consultor de corregir el trabajo sin que ya se vaya adelantando código del siguiente producto. Además, en el gitignore se tiene que indicar que la carpeta node_modules no estará incluida.
+Crear y compartir el espacio de planificación con Trello.
+Diseñar la interfaz. El proyecto se llamará EQUIPO BASKET y tiene que tener los siguientes apartados que se tienen que representar en el mockup.
+Header donde se ve el nombre del equipo
+Listado de todos los jugadores del equipo (mínimo 5)
+Detalle de cada jugador cuando se clique en el jugador seleccionado. Para el detalle tiene que aparecer toda su información (nombre, apellidos, posición, edad, altura, video resumen/presentación/jugadas del jugador, etc)
+Buscador o filtro para filtrar la lista de jugadores (por posición, edad o nombre).
+Generar una ficha de uno/s arquetipos de usuario/s
+Usando el framework angular desarrollaremos el mockup presentado para ello:
+Instalaremos angular siguiendo los pasos del fabricante
+Crearemos tantos componentes como hayamos planificado en nuestro mockup. Al menos serán 3 componentes: PlayersComponent, DetailComponent, MediaComponent
+Crearemos también una carpeta con una estructura de datos de ejemplo en local para poder comenzar a realizar pruebas. Al menos habrá un listado con un array de datos y los detalles de cada ítem.
+Crearemos una carpeta de assets donde se almacenará todos los ficheros multimedia a mostrar en el componente de reproducción.
+Desarrollar el componente PlayersComponent.
+Incorporar los datos creados al componente
+Usando directivas ngFor y ngIf realizar el listado
+Incorporar el HTML+CSS para diseñar el listado
+Incorporar el listado a la aplicación
+Desarrollar el componente DetailComponent:
+Incorporar los datos creados al componente
+Usando los eventos de comunicación de Angular, comunicar el item seleccionado en el listado al detalle para previsualizar los datos de ese detalle.
+Incorporar el HTML+CSS para diseñar el listado
+Incorporar el listado a la aplicación
+Desarrollar el componente MediaComponent:
+Incorporar los datos creados al componente
+Usando los eventos de comunicación de Angular, comunicar el item seleccionado en el listado al detalle para previsualizar los datos de ese detalle.
+Incorporar el HTML+CSS para diseñar el listado
+Incorporar los eventos dentro del componente para poder realizar el control de la multimedia
+Incorporar el listado a la aplicación
+Desarrollar los pipes necesarios para incorporar los filtrados a nuestra aplicación. Al menos se realizará la búsqueda por 2 parámetros para filtrar entre los jugadores
+Copiar el enlace de Github en un documento de texto para su entrega.
+Subir todo el proyecto a CodeSandbox y que compile ahí para así evitar problemas de compilación en el ordenador del consultor. Poner el enlace al documento de entrega. Si el proyecto no está funcionando y correctamente compilado en CodeSandbox, se bajarán 2 puntos de la nota final.
+Se requiereEvent personal
+
+Los requisitos indispensables para realizar el producto son: 
+
+Tener instalado un IDE de desarrollo como Atom, Sublime, Visual Code u otros.
+Tener instalado Node.
+Tener instalado Git.
+Tener instalado Angular CLI.
+Recursos Básicos   Book
+Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de información disponibles el documento "Recursos de aprendizaje vinculados a los productos".
+
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 25   
+La puntuación mínima para superarlo es de 7,5 sobre 25. 
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual.
+Formato: DOC o PDF con la documentación del proyecto junto con los enlaces GIT y CodeSandbox. Archivo comprimido de todo el proyecto sin la carpeta node_modules.
+Nombre del archivo: producto1(FP067)_Apellido1Apellido2_Nombre

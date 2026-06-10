@@ -1,0 +1,268 @@
+Descripción Star
+En una Base de Datos relacional es importante establecer mecanismos de control para resolver problemas de concurrencia de usuarios y garantizar la seguridad de los datos. 
+
+Para resolver el problema de la seguridad, trabajaremos con sentencias DCL para crear usuarios y asignarles privilegios y para gestionar la concurrencia aprenderemos a usar transacciones, las cuales profundizaremos en el Proyecto de Base de Datos.
+
+Objetivos Event personal
+Aprender las sentencias que permitan crear usuarios y asignarles privilegios.
+Conocer el funcionamiento de las transacciones y poder anular parcial o totalmente los cambios producidos por una transacción.
+Pasos a seguir Pencil
+
+1. Leer y comprender los recursos
+2. Leer atentamente la rúbrica de evaluación
+3. Realizar un documento .PDF que incluya los apartados de la sección A (Parte teórica).
+
+SECCIÓN A. PARTE TEÓRICA
+USUARIOS Y PERMISOS A USUARIOS
+
+1. Al  instalar un servidor MySQL, se crea un usuario denominado root@localhost. ¿A qué se refiere este usuario?
+
+2. Rellena la siguiente tabla explicando lo que significa cada sección de una instrucción MySQL para crear un nuevo usuario. Explica las partes que conforman un usuario.
+
+CREATE USER
+
+1
+
+‘administrador’
+
+2
+
+@’10.0.2.%’
+
+3
+
+IDENTIFIED BY ‘adm123’;
+
+4
+
+
+¿Cuál instrucción MySQL es la utilizada para eliminar un usuario?
+3. ¿Qué instrucciones se utilizan para otorgar y eliminar privilegios a un usuario de la Base de Datos?
+
+4. Al otorgar privilegios a un usuario podemos incluir al final de la sentencia, la cláusula WITH GRANT OPTION. ¿Para qué se utiliza esta cláusula?
+
+5. Existen cuatro niveles de privilegios en MySQL. Explica a qué se refieren y rellena la siguiente tabla indicando a qué se refieren siguiendo el ejemplo de las dos primeras líneas:
+
+PRIVILEGIOS
+
+Descripción
+
+NIVEL 1
+GLOBAL
+
+NIVEL 2
+BBDD
+
+NIVEL 3
+TABLAS
+
+NIVEL 4
+STORED
+ROUTINE
+
+ALL [PRIVILEGES]
+
+Otorga todos los privilegios en el nivel específico excepto GRANT OPTION
+
+X
+
+X
+
+X
+
+X
+
+ALTER
+
+Permite cambiar la estructura de las tablas. Dependiendo del nivel donde se presente puede requerir además los privilegios
+
+CREATE, INSERT,  ALTER o DROP
+
+X
+
+X
+
+X
+
+ALTER ROUTINE
+
+CREATE
+
+CREATE ROUTINE
+
+CREATE TABLESPACE
+
+CREATE TEMPORARY TABLES
+
+CREATE USER
+
+CREATE VIEW
+
+DELETE
+
+DROP
+
+EVENT
+
+EXECUTE
+
+FILE
+
+GRANT OPTION
+
+INDEX
+
+INSERT
+
+LOCK TABLES
+
+PROCESS
+
+PROXY
+
+REFERENCES
+
+RELOAD
+
+REPLICATION CLIENT
+
+REPLICATION SLAVE
+
+SELECT
+
+SHOW DATABASES
+
+SHOW VIEW
+
+SHUTDOWN
+
+SUPER
+
+TRIGGER
+
+UPDATE
+
+USAGE
+
+ 6. ¿Qué instrucción se utiliza para mostrar los privilegios de un usuario?
+
+TRANSACCIONES
+
+7. ¿Qué es una transacción? ¿Cuál es el objetivo de la misma?
+
+8. En 1970, Jim Gray definió las propiedades que necesitaba tener una transacción confiable.  Más tarde, en 1983, Andreas Reuter y Theo Härder crearon el término "ACID" para describir estas 4 propiedades. Rellena la siguiente tabla con la definición de cada propiedad.
+
+PROPIEDAD
+
+DEFINICIÓN
+
+Atomicidad
+
+Consistencia
+
+Aislamiento
+
+Durabilidad
+
+9. Los pasos siguientes son los pasos que se utilizan para crear una transacción y siempre son los mismos en cualquier DBMS. Rellena la siguiente tabla indicando las sentencias a utilizar para poder llevarlos a cabo
+
+PASO
+
+SENTENCIA(S) SQL (en MySQL)
+
+1. Iniciar la transacción
+
+2. Confirmar la transacción (si todo está correcto)
+
+3. Deshacer la transacción y dejar la base de datos como estaba antes de iniciarla (en caso de error)
+
+10. ¿Para qué se utiliza la sentencia AUTOCOMMIT?
+
+11. ¿Qué es un SAVEPOINT y cuándo se utiliza esta sentencia?
+
+12. ¿Qué instrucción se utiliza para regresar a un SAVEPOINT sin necesidad de eliminar toda la transacción?
+
+LEY DE POLÍTICA DE PROTECCIÓN DE DATOS (LOPD)
+
+13. A partir de la normativa legal sobre Protección de Datos de Carácter Personal, indicar hasta qué punto se ve afectado el Centro de Alto Rendimiento (CAR) de nuestro caso práctico y qué medidas debe tomar.
+
+SECCIÓN B. PARTE PRÁCTICA
+
+La parte práctica se entregará en un archivo SQL Para ello, pegamos las sentencias utilizadas en la sección práctica en un documento que podrás editar con cualquier editor de código y que llamarás 
+
+AA5(FP.055)_Apellido1Apellido2_Nombre_Instrucciones.sql
+
+USUARIOS Y PRIVILEGIOS.
+
+Todo el proceso de creación de usuarios así como la asignación de permisos deberán realizarse con sentencias las cuales deberán incluirse en el archivo SQL. Lee atentamente los 5 puntos antes de comenzar.
+
+1. Crea un usuario llamado acCarAdmin, el cual podrá acceder a la Base de Datos desde cualquier servidor y que a su vez, podrá crear otros usuarios y otorgarles privilegios.
+
+2. Utiliza la sentencia SQL pertinente para mostrar los privilegios del usuario administrador.
+
+3. Accede a la Base de Datos con el usuario acCarAdmin.
+
+4. Crea un usuario denominado Supervisor. Su trabajo será gestionar todo lo referente a las actividades y horarios del CAR. Crea los permisos pertinentes para el mismo en la Base de Datos y justifícalos.
+
+5. Crea otro usuario denominado Contable. El contable gestionará lo referente a becas y coutas  y podrá hacerlo tanto desde las oficinas del CAR como desde trabajo remoto. Crea los permisos pertinentes para el Contable en la Base de Datos y justifícalos.
+
+TRANSACCIONES
+
+Genera las instrucciones SQL pertinentes que permita crear nuevos socios.
+Indica como fecha_alta de los socios la fecha de fin de tu convocatoria.
+
+6. Crea una transacción que permita:
+
+Ingresar un nuevo socio
+Insertar el mismo socio que ha  participado en una competición 
+7. Crea una segunda transacción que permita:
+
+Ingresar un socio nuevo a la tabla socio. Deberás asignar al nuevo socio uno de las tres primeras becas.
+
+Ingresar sus datos participando en una competición 
+Realizar un SAVEPOINT
+Insertar un seguimiento (usa la semana siguiente a la fecha de realización la fecha de inicio de tu convocatoria para crearlo)
+
+Crear un ROLLBACK TO SAVEPOINT
+
+ 
+
+4. Crear un documento SQL con base a la plantilla del Aula Virtual con la resolución de las sentencias de la sección B tomando como base la plantilla del Aula Virtual:
+AAn(FP.055)_Apellido1Apellido2_Nombre_Instrucciones[Plantilla].sqlDescargar AAn(FP.055)_Apellido1Apellido2_Nombre_Instrucciones[Plantilla].sql.
+
+5. Exportar la Base de Datos a un archivo .SQL.
+
+Se requiere Event personal
+Deberás tener instalado el motor de Base de Datos MySQL 8 en tu ordenador (servidor local) y así como la herramienta MySQL Workbench utilizados en la AA3.
+Adicionalmente, deberás hacer uso de un editor de código ligero que usarás para editar la plantilla donde se incluirán las actividades de la parte práctica.
+Recursos Básicos Book
+Editores de código:
+Notepad ++
+Visual Studio Code
+Bluefish
+Atom
+Emacs
+USUARIOS
+Bases de DatosDescargar Bases de Datos. FUOC.  Pág. 156
+O’Really. MySQL 8 for Administrators (se entra con el correo de la UOC)
+TRANSACCIONES
+Material de estudio de Oracle Academy (PDF aula)
+* DP Database Programming with SQL Alumno - Español
+  DP 18-1 Transacciones de Base de Datos
+MySQL 8.0 Reference Manual. Transactional and Locking Statements
+
+LEY DE POLÍTICA DE PROTECCIÓN DE DATOS
+(Protección de datos de Carácter Personal)
+Criterios de evaluación  Checkmark
+La puntuación máxima de la actividad es un 10. 
+La puntuación mínima para superarla es de 5 sobre 10.
+
+Indicaciones para la entrega de la actividad Checkmark
+Hacerlo por el canal indicado en el aula virtual.
+Formato: PDF
+Nombre del archivo:
+Se entrega un archivo PDF con la resolución de la teoría y dos archivos .SQL. Uno con las instrucciones solicitadas en la parte práctica. En el otro, deberás adjuntar la exportación de la Base de Datos realizada en la AA4, para probar las instrucciones..
+    AA5(FP.055)_Apellido1Apellido2_Nombre.pdf.
+    AA4(FP.055)_Apellido1Apellido2_Nombre_BBDD.sql
+    AA5(FP.055)_Apellido1Apellido2_Nombre_Instrucciones.sql
+Extensión recomendada: PDF de 5-7 páginas

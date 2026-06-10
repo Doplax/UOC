@@ -1,0 +1,39 @@
+Descripción 
+Como bien sabes en los siguientes productos se espera que seas capaz de editar una aplicación de consola en Python usando como entorno de desarrollo Visual Studio o VSCode. Pues bien, en este producto se trata de dejarlo todo preparado para que puedas trabajar con garantías de éxito en los productos siguientes.
+
+Deberás realizar un video en formato MP4 de una duración máxima de 10 minutos en el que se muestre cómo crear un proyecto con Visual Studio Code para crear aplicaciones en modo consola escritas en lenguaje Python, se muestre también cómo depurarlas y ejecutarlas.
+
+Objetivos 
+Instalar un entorno de desarrollo y adquirir un dominio mínimo de las herramientas que éste nos ofrece..
+Pasos a seguir  
+Los pasos a seguir para llevar a cabo el producto son:
+
+Leer detenidamente estas instrucciones e identificar los requerimientos de la actividad.
+Revisar detenidamente la rúbrica de evaluación.
+Consultar los recursos necesarios facilitados en el aula.
+Crear un proyecto de Python nuevo para la creación de una aplicación de consola win32 y mostrar todas las configuraciones necesarias para la creación de este.
+Añadir al proyecto un archivo para la edición del código fuente.
+Escribir código de un programa ideado por ti y mostrar cómo compilar y crear ejecutables.
+Mostrar cómo se procede a ejecutarlo.
+Inducir en el código diferentes errores con la finalidad que anuncien las diferentes herramientas para la depuración de errores de ejecución.
+Realizar un video en formato MP4 de una duración máxima de 10 minutos en el que se muestre cómo crear un proyecto con Visual Studio Code para crear aplicaciones en modo consola escritas en lenguaje Python, donde se muestre los pasos anteriormente descritos.
+Se requiere Event personal
+Los requisitos indispensables para realizar el producto son: 
+
+Descargar e instalar Visual Studio Code en la máquina host.
+Recursos Básicos   Book
+Para llevar a cabo el producto puedes apoyarte en los materiales y fuentes de información indicados a continuación así como los disponibles en el espacio “Recursos de Aprendizaje” del aula.
+
+Curso Web
+
+Criterios de evaluación  Checkmark
+La puntuación máxima del producto es un 10.  
+La puntuación mínima para superarlo es de 5 sobre 10. 
+
+Indicaciones para la entrega de la actividad Checkmark
+Para la entrega de la actividad deberás:
+
+Hacerlo por el canal indicado en el aula virtual.
+Formato: publicado en youtube con las restricciones de privacidad que permitan su evaluación al consultor (enlace oculto, de acceso únicamente a las personas que dispongan de él). Dicho enlace debe copiarse en un documento de texto y entregarse en el canal indicado en el aula virtual.
+Nombre del archivo: producto1(FP440)_Apellido1Apellido2_Nombre
+Extensión recomendada: video de 10 minutos de duración.
