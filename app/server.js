@@ -145,6 +145,7 @@ function listAttempts(examId) {
           attemptId: a.attemptId,
           examId: a.examId,
           mode: a.mode || 'completo',
+          scope: a.scope || 'todas',
           title: a.title || '',
           createdAt: a.createdAt,
           submittedAt: a.submittedAt || null,
@@ -173,8 +174,16 @@ function createAttempt(examId, opts) {
   const exam = getExam(examId);
   if (!exam) return null;
   const all = flatQuestions(exam);
-  let ids = all.map(q => q.id);
   const mode = (opts && opts.mode) === 'simulacro' ? 'simulacro' : 'completo';
+  const scope = (opts && (opts.scope === 'anterior' || opts.scope === 'nueva')) ? opts.scope : 'todas';
+
+  // Filtra por origen: 'anterior' (de exámenes pasados), 'nueva' o 'todas'.
+  let pool = all;
+  if (scope !== 'todas') {
+    const f = all.filter(q => (q.origin || 'anterior') === scope);
+    if (f.length) pool = f; // si el examen no tuviera de ese tipo, no lo dejamos vacío
+  }
+  let ids = pool.map(q => q.id);
 
   if (mode === 'simulacro') {
     // Selecciona 4 preguntas al azar (como el examen real).
@@ -196,12 +205,15 @@ function createAttempt(examId, opts) {
   // calcula como totalScore / maxScore * 10.
   const maxScore = ids.reduce((a, id) => a + (pointMap.get(id) || 0), 0);
 
+  const scopeLabel = scope === 'anterior' ? 'exámenes anteriores' : scope === 'nueva' ? 'nuevas' : 'todas';
+
   const attempt = {
     attemptId: nowStamp(),
     examId: examId,
     examSubject: exam.subject,
-    title: mode === 'simulacro' ? 'Simulacro (4 preguntas)' : 'Examen completo',
+    title: (mode === 'simulacro' ? 'Simulacro (4 preguntas)' : 'Examen completo') + ' · ' + scopeLabel,
     mode: mode,
+    scope: scope,
     durationMin: mode === 'simulacro' ? (exam.examFormat && exam.examFormat.minutes || 30) : null,
     createdAt: new Date().toISOString(),
     submittedAt: null,

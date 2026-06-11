@@ -4,64 +4,235 @@
   "title": "Examen completo de práctica",
   "intro": "Examen real: 4 preguntas × 2,5 p, 30 minutos, mínimo 5/10, sin material. Cubre Angular (componentes, directivas *ngFor/*ngIf, estructura de ficheros, pipes), Firebase/Firestore (environment.ts, @angular/fire), React Native (FlatList, navegación) y notificaciones push (Cloud Messaging, Cloud Functions, onWrite/onUpdate).",
   "maxScore": 10,
-  "examFormat": { "questions": 4, "minutes": 30, "pointsPerQuestion": 2.5, "passScore": 5 },
+  "examFormat": {
+    "questions": 4,
+    "minutes": 30,
+    "pointsPerQuestion": 2.5,
+    "passScore": 5
+  },
   "sections": [
     {
       "title": "Parte 1 — Angular (Producto 1)",
       "questions": [
-        { "id": "q1", "n": "1", "prompt": "¿Para qué sirven los ficheros main.ts, app.routing.module.ts y detailItem.component.html?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q2", "n": "2", "prompt": "¿Qué es un componente en Angular y de qué tres ficheros principales se compone? ¿Para qué sirve el decorador @Component?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q3", "n": "3", "prompt": "Explica la diferencia entre las directivas *ngFor y *ngIf. Escribe un ejemplo correcto de cada una.", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q4", "n": "4", "prompt": "¿Qué es un pipe en Angular? Escribe cómo usarías un pipe para filtrar una lista de jugadores por nombre.", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q5", "n": "5", "prompt": "¿Cómo se comunican dos componentes en Angular (padre→hijo e hijo→padre)? Explica @Input() y @Output().", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q6", "n": "6", "prompt": "Diferencia entre interpolación {{ }}, property binding [ ] y event binding ( ). Un ejemplo de cada uno.", "points": 2.5, "type": "text", "hint": "" }
+        {
+          "id": "q1",
+          "n": "1",
+          "prompt": "¿Para qué sirven los ficheros main.ts, app.routing.module.ts y detailItem.component.html?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "anterior"
+        },
+        {
+          "id": "q2",
+          "n": "2",
+          "prompt": "¿Qué es un componente en Angular y de qué tres ficheros principales se compone? ¿Para qué sirve el decorador @Component?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q3",
+          "n": "3",
+          "prompt": "Explica la diferencia entre las directivas *ngFor y *ngIf. Escribe un ejemplo correcto de cada una.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q4",
+          "n": "4",
+          "prompt": "¿Qué es un pipe en Angular? Escribe cómo usarías un pipe para filtrar una lista de jugadores por nombre.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q5",
+          "n": "5",
+          "prompt": "¿Cómo se comunican dos componentes en Angular (padre→hijo e hijo→padre)? Explica @Input() y @Output().",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q6",
+          "n": "6",
+          "prompt": "Diferencia entre interpolación {{ }}, property binding [ ] y event binding ( ). Un ejemplo de cada uno.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
       ]
     },
     {
       "title": "Parte 2 — Firebase / Firestore (Producto 2)",
       "questions": [
-        { "id": "q7", "n": "7", "prompt": "¿Para qué se utiliza el fichero environment.ts y su relación con la conexión con Firebase/Firestore?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q8", "n": "8", "prompt": "¿Qué es Firebase y por qué se usa para \"hacer persistente\" la información? ¿Qué es una colección en Firestore?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q9", "n": "9", "prompt": "¿Qué pasos hay que seguir para conectar una app Angular a Firebase (paquetes, configuración, módulo)?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q10", "n": "10", "prompt": "Explica qué es una suscripción (subscribe) a un Observable al leer datos de Firestore y por qué se usa en lugar de cargar un array local.", "points": 2.5, "type": "text", "hint": "" }
+        {
+          "id": "q7",
+          "n": "7",
+          "prompt": "¿Para qué se utiliza el fichero environment.ts y su relación con la conexión con Firebase/Firestore?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "anterior"
+        },
+        {
+          "id": "q8",
+          "n": "8",
+          "prompt": "¿Qué es Firebase y por qué se usa para \"hacer persistente\" la información? ¿Qué es una colección en Firestore?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q9",
+          "n": "9",
+          "prompt": "¿Qué pasos hay que seguir para conectar una app Angular a Firebase (paquetes, configuración, módulo)?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q10",
+          "n": "10",
+          "prompt": "Explica qué es una suscripción (subscribe) a un Observable al leer datos de Firestore y por qué se usa en lugar de cargar un array local.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
       ]
     },
     {
       "title": "Parte 3 — React Native (Producto 3)",
       "questions": [
-        { "id": "q11", "n": "11", "prompt": "¿Qué es React Native y en qué se diferencia de Angular? ¿Qué es un FlatList y para qué se usa?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q12", "n": "12", "prompt": "¿Para qué sirve el Stack de navegación y cómo se configuran varias pantallas en App.js?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q13", "n": "13", "prompt": "¿Qué hace el método componentDidMount y por qué se usa para la llamada inicial a la base de datos?", "points": 2.0, "type": "text", "hint": "" }
+        {
+          "id": "q11",
+          "n": "11",
+          "prompt": "¿Qué es React Native y en qué se diferencia de Angular? ¿Qué es un FlatList y para qué se usa?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q12",
+          "n": "12",
+          "prompt": "¿Para qué sirve el Stack de navegación y cómo se configuran varias pantallas en App.js?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q13",
+          "n": "13",
+          "prompt": "¿Qué hace el método componentDidMount y por qué se usa para la llamada inicial a la base de datos?",
+          "points": 2,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
       ]
     },
     {
       "title": "Parte 4 — Notificaciones push / Cloud Functions (Producto 4)",
       "questions": [
-        { "id": "q14", "n": "14", "prompt": "Explica para qué sirven los eventos onWrite() y onUpdate() de Cloud Messaging / Cloud Functions.", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q15", "n": "15", "prompt": "¿Qué es Firebase Cloud Messaging (FCM) y qué es una Cloud Function? ¿Cómo se relacionan para enviar una notificación push?", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q16", "n": "16", "prompt": "Diferencia entre los triggers onWrite(), onUpdate(), onCreate() y onDelete() de Cloud Functions.", "points": 2.5, "type": "text", "hint": "" },
-        { "id": "q17", "n": "17", "prompt": "Describe el flujo completo: un usuario edita un jugador en la app → ¿qué ocurre hasta que llega la notificación push al dispositivo?", "points": 2.5, "type": "text", "hint": "" }
+        {
+          "id": "q14",
+          "n": "14",
+          "prompt": "Explica para qué sirven los eventos onWrite() y onUpdate() de Cloud Messaging / Cloud Functions.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "anterior"
+        },
+        {
+          "id": "q15",
+          "n": "15",
+          "prompt": "¿Qué es Firebase Cloud Messaging (FCM) y qué es una Cloud Function? ¿Cómo se relacionan para enviar una notificación push?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q16",
+          "n": "16",
+          "prompt": "Diferencia entre los triggers onWrite(), onUpdate(), onCreate() y onDelete() de Cloud Functions.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q17",
+          "n": "17",
+          "prompt": "Describe el flujo completo: un usuario edita un jugador en la app → ¿qué ocurre hasta que llega la notificación push al dispositivo?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
       ]
     },
     {
       "title": "Parte 5 — Detectar errores en código",
       "questions": [
-        { "id": "q18", "n": "18", "prompt": "¿Qué error existe para que no funcione correctamente y cómo se corrige?", "points": 2.5, "type": "code", "codeLang": "html", "codeLines": [
-          "<ul>",
-          "  <li *ngFor=\"let items from item\">",
-          "    <span class=\"badge\">{{item.id}}</span>{{item.name}}",
-          "  </li>",
-          "</ul>"
-        ], "hint": "" },
-        { "id": "q19", "n": "19", "prompt": "¿Qué error hay en este código?", "points": 2.5, "type": "code", "codeLang": "html", "codeLines": [
-          "<div *ngIf=\"players.length > 0\">",
-          "  <p *ngFor=\"player of players\">{{ player.name }}</p>",
-          "</div>"
-        ], "hint": "Revisa la sintaxis de la microsintaxis de *ngFor." },
-        { "id": "q20", "n": "20", "prompt": "¿Qué falla en estos bindings y cómo se arregla?", "points": 2.5, "type": "code", "codeLang": "html", "codeLines": [
-          "<img src=\"{{ player.photo }}\" (click)=\"seleccionar(player)\">",
-          "<button [click]=\"borrar(player)\">Borrar</button>"
-        ], "hint": "" }
+        {
+          "id": "q18",
+          "n": "18",
+          "prompt": "¿Qué error existe para que no funcione correctamente y cómo se corrige?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "html",
+          "codeLines": [
+            "<ul>",
+            "  <li *ngFor=\"let items from item\">",
+            "    <span class=\"badge\">{{item.id}}</span>{{item.name}}",
+            "  </li>",
+            "</ul>"
+          ],
+          "hint": "",
+          "origin": "anterior"
+        },
+        {
+          "id": "q19",
+          "n": "19",
+          "prompt": "¿Qué error hay en este código?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "html",
+          "codeLines": [
+            "<div *ngIf=\"players.length > 0\">",
+            "  <p *ngFor=\"player of players\">{{ player.name }}</p>",
+            "</div>"
+          ],
+          "hint": "Revisa la sintaxis de la microsintaxis de *ngFor.",
+          "origin": "nueva"
+        },
+        {
+          "id": "q20",
+          "n": "20",
+          "prompt": "¿Qué falla en estos bindings y cómo se arregla?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "html",
+          "codeLines": [
+            "<img src=\"{{ player.photo }}\" (click)=\"seleccionar(player)\">",
+            "<button [click]=\"borrar(player)\">Borrar</button>"
+          ],
+          "hint": "",
+          "origin": "nueva"
+        }
       ]
     }
   ]

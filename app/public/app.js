@@ -232,6 +232,9 @@ async function viewExam(examId) {
   const [exam, attempts] = await Promise.all([api('/exams/' + examId), api('/attempts/' + examId)]);
   crumb([{ label: exam.id, href: '#/exam/' + exam.id }]);
   const fmt = exam.examFormat || {};
+  let cAnt = 0, cNue = 0;
+  exam.sections.forEach(s => s.questions.forEach(q => (q.origin === 'nueva' ? cNue++ : cAnt++)));
+  const cTot = cAnt + cNue;
 
   appEl.innerHTML = `
     <a class="back" href="#/">← Inicio</a>
@@ -249,6 +252,12 @@ async function viewExam(examId) {
         ${fmt.questions ? `<span class="chip">Examen real: ${fmt.questions} preguntas / ${fmt.minutes} min</span>` : ''}
         ${fmt.passScore ? `<span class="chip">Aprobado ≥ ${fmt.passScore}/10</span>` : ''}
       </div>
+      <div class="scope-pick" id="scopePick">
+        <span class="scope-lbl">Preguntas:</span>
+        <button class="scope-opt active" data-scope="todas">Todas <b>${cTot}</b></button>
+        <button class="scope-opt" data-scope="anterior">De exámenes anteriores <b>${cAnt}</b></button>
+        <button class="scope-opt" data-scope="nueva">Nuevas <b>${cNue}</b></button>
+      </div>
       <div class="btn-row">
         <button class="btn btn-primary" id="newComplete">▶ Nuevo intento (completo)</button>
         <button class="btn" id="newSim">🎲 Simulacro (4 preguntas · ${fmt.minutes || 30} min)</button>
@@ -264,8 +273,14 @@ async function viewExam(examId) {
     </div>
     <div id="historyList"></div>`;
 
-  document.getElementById('newComplete').onclick = () => startAttempt(examId, 'completo');
-  document.getElementById('newSim').onclick = () => startAttempt(examId, 'simulacro');
+  let scope = 'todas';
+  const pick = document.getElementById('scopePick');
+  pick.querySelectorAll('.scope-opt').forEach(b => b.onclick = () => {
+    scope = b.dataset.scope;
+    pick.querySelectorAll('.scope-opt').forEach(x => x.classList.toggle('active', x === b));
+  });
+  document.getElementById('newComplete').onclick = () => startAttempt(examId, 'completo', scope);
+  document.getElementById('newSim').onclick = () => startAttempt(examId, 'simulacro', scope);
 
   const delAll = document.getElementById('deleteAllBtn');
   if (delAll) delAll.onclick = async () => {
@@ -290,12 +305,13 @@ function renderHistory(examId, attempts) {
   list.className = 'attempt-list';
   list.innerHTML = attempts.map(a => {
     const g = grade10(a.totalScore, a.maxScore);
+    const scopeShort = a.scope === 'anterior' ? 'anteriores' : a.scope === 'nueva' ? 'nuevas' : 'todas';
     return `
       <div class="attempt-row">
         <input type="checkbox" class="cb" data-id="${esc(a.attemptId)}" title="Seleccionar para comparar">
         <a class="grow" href="#/attempt/${esc(examId)}/${esc(a.attemptId)}" style="text-decoration:none;color:inherit">
           <div class="when">${fmtDate(a.createdAt)}</div>
-          <div class="sub">${a.mode === 'simulacro' ? '🎲 Simulacro' : '📋 Completo'} · ${a.answeredCount}/${a.questionCount} respondidas</div>
+          <div class="sub">${a.mode === 'simulacro' ? '🎲 Simulacro' : '📋 Completo'} · ${scopeShort} · ${a.answeredCount}/${a.questionCount} respondidas</div>
         </a>
         ${statusChip(a.status)}
         <span class="score-pill ${scoreClass(a.totalScore, a.maxScore)}">${g != null ? fmtScore(g) + '/10' : '–'}</span>
@@ -326,9 +342,9 @@ function renderHistory(examId, attempts) {
   });
 }
 
-async function startAttempt(examId, mode) {
+async function startAttempt(examId, mode, scope) {
   try {
-    const attempt = await api('/attempts/' + examId, { method: 'POST', body: JSON.stringify({ mode }) });
+    const attempt = await api('/attempts/' + examId, { method: 'POST', body: JSON.stringify({ mode, scope: scope || 'todas' }) });
     location.hash = `#/attempt/${examId}/${attempt.attemptId}`;
   } catch (e) {
     toast('No se pudo crear el intento: ' + e.message);
@@ -545,6 +561,7 @@ function renderQuestion(q, attempt, isCorrected, readOnly) {
     <div class="q ${borderCls}" data-qcard="${esc(q.id)}">
       <div class="q-head">
         <span class="q-num">${esc(q.n || '?')}</span>
+        ${q.origin ? `<span class="q-origin q-${esc(q.origin)}">${q.origin === 'nueva' ? 'nueva' : 'examen anterior'}</span>` : ''}
         <span class="q-points">${fmtScore(q.points)} p</span>
       </div>
       <div class="q-prompt">${esc(q.prompt)}</div>

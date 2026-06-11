@@ -276,6 +276,24 @@ table.compare .cell-score { font-weight: 700; margin-top: 6px; font-size: 12.5px
 .h-interp { color: var(--tok-typ); font-weight: 600; }
 .h-punct { color: var(--tok-punct); }
 
+/* ---- selector de conjunto de preguntas ---- */
+.scope-pick { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 4px 0 16px; }
+.scope-lbl { font-size: 13px; color: var(--muted); font-weight: 600; margin-right: 2px; }
+.scope-opt {
+  border: 1px solid var(--border); background: var(--card); color: var(--text);
+  padding: 7px 13px; border-radius: 999px; cursor: pointer; font-size: 13.5px; font-weight: 600;
+  font-family: inherit; transition: .15s; display: inline-flex; align-items: center; gap: 6px;
+}
+.scope-opt:hover { background: var(--card-2); }
+.scope-opt b { font-size: 12px; background: var(--bg-soft); color: var(--muted); padding: 1px 7px; border-radius: 999px; }
+.scope-opt.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.scope-opt.active b { background: rgba(255,255,255,.25); color: #fff; }
+
+/* ---- badge de origen en cada pregunta ---- */
+.q-origin { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 2px 7px; border-radius: 6px; }
+.q-anterior { background: var(--bg-soft); color: var(--muted); }
+.q-nueva { background: var(--accent-soft); color: var(--accent-text); }
+
 /* ---- formularios / ajustes ---- */
 .lbl2 { display: block; font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .04em; }
 .input {
