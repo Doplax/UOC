@@ -337,6 +337,83 @@
           "origin": "nueva"
         }
       ]
+    },
+    {
+      "title": "Parte 10 — Nuevas: Ficheros del proyecto móvil (React Native, Producto 3)",
+      "questions": [
+        {
+          "id": "q30",
+          "n": "30",
+          "prompt": "Indica para qué sirve cada uno de estos ficheros de un proyecto React Native: App.js (o App.tsx), index.js, package.json y app.json. (2 líneas por cada uno).",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q31",
+          "n": "31",
+          "prompt": "¿Qué hace el fichero index.js en React Native y con qué función se registra el componente raíz de la app para que se muestre al arrancar?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "Pista: AppRegistry.registerComponent / registerRootComponent.",
+          "origin": "nueva"
+        },
+        {
+          "id": "q32",
+          "n": "32",
+          "prompt": "¿Para qué sirven las carpetas android/ e ios/ de un proyecto React Native? ¿Y la carpeta node_modules? ¿Por qué node_modules se incluye en el .gitignore y no se sube al repositorio?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q33",
+          "n": "33",
+          "prompt": "¿Qué son los ficheros metro.config.js y babel.config.js en un proyecto React Native? ¿Qué papel juega cada uno al ejecutar la app?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "Pista: Metro es el empaquetador (bundler); Babel transpila el código.",
+          "origin": "nueva"
+        },
+        {
+          "id": "q34",
+          "n": "34",
+          "prompt": "Para conectar la app React Native con Firebase, ¿qué ficheros de configuración hacen falta en Android y en iOS, y de dónde se obtienen?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "Pista: google-services.json (Android) y GoogleService-Info.plist (iOS), desde la consola de Firebase.",
+          "origin": "nueva"
+        },
+        {
+          "id": "q35",
+          "n": "35",
+          "prompt": "¿Para qué sirve la carpeta assets/ en el proyecto y cómo referenciarías una imagen local dentro de un componente (por ejemplo en <Image source={...} />)?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q36",
+          "n": "36",
+          "prompt": "¿Qué información contiene package.json (dependencies y scripts) y qué comandos usarías para instalar las dependencias y arrancar la app en el emulador?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "Pista: npm install, npx react-native run-android / run-ios (o npm start).",
+          "origin": "nueva"
+        },
+        {
+          "id": "q37",
+          "n": "37",
+          "prompt": "¿Qué es el fichero App.tsx y qué diferencia hay entre usar la extensión .js y .tsx en un proyecto React Native?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
     }
   ]
 }
