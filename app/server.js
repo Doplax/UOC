@@ -552,6 +552,18 @@ const server = http.createServer(async (req, res) => {
 ensureDir(EXAMS_DIR);
 ensureDir(ATTEMPTS_DIR);
 
+// Abre el navegador en la URL del servidor (Windows / macOS / Linux).
+// Se puede desactivar con  NO_OPEN=1 npm start
+function openBrowser(targetUrl) {
+  if (process.env.NO_OPEN === '1' || process.env.OPEN === '0') return;
+  const { exec } = require('child_process');
+  let cmd;
+  if (process.platform === 'win32') cmd = 'start "" "' + targetUrl + '"';
+  else if (process.platform === 'darwin') cmd = 'open "' + targetUrl + '"';
+  else cmd = 'xdg-open "' + targetUrl + '"';
+  exec(cmd, () => {}); // si falla, no pasa nada: la URL se imprime igualmente
+}
+
 server.on('error', (e) => {
   if (e.code === 'EADDRINUSE') {
     console.error('\n  ⚠️  El puerto ' + PORT + ' ya está en uso.');
@@ -563,9 +575,12 @@ server.on('error', (e) => {
 });
 
 server.listen(PORT, () => {
+  const localUrl = 'http://localhost:' + PORT;
   console.log('\n  Examenes UOC — servidor en marcha');
-  console.log('  ▶  http://localhost:' + PORT + '\n');
+  console.log('  ▶  ' + localUrl + '\n');
   console.log('  Exámenes cargados:');
   listExams().forEach(e => console.log('   · ' + e.id + '  ' + e.subject + '  (' + e.questionCount + ' preguntas)'));
-  console.log('\n  Ctrl+C para parar.\n');
+  console.log('\n  Abriendo el navegador… (desactívalo con NO_OPEN=1)');
+  console.log('  Ctrl+C para parar.\n');
+  openBrowser(localUrl);
 });

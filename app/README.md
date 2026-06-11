@@ -7,12 +7,13 @@ Sin dependencias externas (solo Node nativo) → se commitea limpio al repositor
 
 ```bash
 cd app
-node server.js
+npm start          # o: node server.js
 ```
 
-Luego abre **http://localhost:3939** en el navegador.
+Se **abre el navegador automáticamente** en **http://localhost:3939**.
 
-> Cambiar el puerto: `PORT=4000 node server.js` (en PowerShell: `$env:PORT=4000; node server.js`).
+> - No abrir el navegador: `NO_OPEN=1 npm start` (PowerShell: `$env:NO_OPEN=1; npm start`).
+> - Cambiar el puerto: `PORT=4000 npm start` (PowerShell: `$env:PORT=4000; npm start`).
 
 ## Cómo se usa (flujo completo)
 
