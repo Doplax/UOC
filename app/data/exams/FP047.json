@@ -316,7 +316,7 @@
       ]
     },
     {
-      "title": "Parte 4 — Ampliación (Python y temas actuales)",
+      "title": "Parte 4 — Nuevas: conceptos clave",
       "questions": [
         {
           "id": "q27",
@@ -349,6 +349,289 @@
           "id": "q30",
           "n": "30",
           "prompt": "¿Qué es XSLT y en qué se diferencia de CSS al presentar un XML?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 5 — Nuevas: Producto 1 (entorno y depuración)",
+      "questions": [
+        {
+          "id": "q31",
+          "n": "31",
+          "prompt": "Describe el proceso completo para crear, compilar/ejecutar y depurar una aplicación de consola en Visual Studio Code. ¿Qué pasos seguirías para inducir y luego localizar un error de ejecución?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q32",
+          "n": "32",
+          "prompt": "Diferencia entre un punto de interrupción normal y uno condicional. Pon un ejemplo de cuándo usarías cada uno.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 6 — Nuevas: Producto 2 (ping, MAC y ficheros)",
+      "questions": [
+        {
+          "id": "q33",
+          "n": "33",
+          "prompt": "Escribe una función en C que lea un archivo de texto con una dirección IP por línea, muestre cada IP por pantalla y lance un ping a cada una, informando cuáles responden afirmativamente.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q34",
+          "n": "34",
+          "prompt": "¿Qué comando del sistema usarías para obtener la dirección MAC de los adaptadores de red instalados y cómo redirigirías esa información al archivo informacionlocal.txt? Muestra la llamada desde C (system()).",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "hint": "Pista: getmac / ipconfig /all",
+          "origin": "nueva"
+        },
+        {
+          "id": "q35",
+          "n": "35",
+          "prompt": "Explica cómo, a partir de la salida de ipconfig redirigida a un fichero, extraerías únicamente la IP, máscara y puerta de enlace de un adaptador concreto. ¿Qué funciones de cadena usarías (strstr, strtok…)?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 7 — Nuevas: Producto 3 (DNS y saltos)",
+      "questions": [
+        {
+          "id": "q36",
+          "n": "36",
+          "prompt": "¿Qué utilidad/comando usarías para medir el número de saltos (hops) hasta un servidor y por qué sirve como criterio de desempate entre dos DNS con la misma velocidad?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q37",
+          "n": "37",
+          "prompt": "Escribe la línea que reconfiguraría el servidor DNS del adaptador de red llamado \"Ethernet\" para que use 8.8.8.8 (función de C + comando lanzado).",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "hint": "Pista: netsh interface ip set dns",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 8 — Nuevas: Producto 4 (XML bien formado)",
+      "questions": [
+        {
+          "id": "q38",
+          "n": "38",
+          "prompt": "Escribe el fragmento de código que generaría un archivo XML con la etiqueta raíz <adaptador> que contenga IP, máscara y puerta de enlace de un adaptador de red.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "xml",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 9 — Nuevas: Producto 5 (HTML/CSS/JS/XSLT)",
+      "questions": [
+        {
+          "id": "q39",
+          "n": "39",
+          "prompt": "Describe cómo, mediante JavaScript, cargarías un archivo XML al pulsar un botón en una página web y lo mostrarías formateado con la hoja de estilo (XSLT/CSS).",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 10 — Nuevas: C (trazas y completar)",
+      "questions": [
+        {
+          "id": "q40",
+          "n": "40",
+          "prompt": "¿Qué imprime el siguiente código y por qué?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "int main() {",
+            "    char ruta[40] = \"C:/datos/red\";",
+            "    int n = strlen(ruta);",
+            "    strcat(ruta, \"/info.txt\");",
+            "    printf(\"%s tiene %d caracteres\\n\", ruta, n);",
+            "    return 0;",
+            "}"
+          ],
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q41",
+          "n": "41",
+          "prompt": "Completa los huecos para que el programa pida una IP al usuario, le haga ping y guarde el resultado en resultado.txt.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "#include <string.h>",
+            "int main() {",
+            "    char ip[20];",
+            "    char comando[100] = ______________;",
+            "    printf(\"Introduce la IP: \");",
+            "    scanf(\"%s\", ip);",
+            "    ______________________________      // construir \"ping <ip>\"",
+            "    strcat(comando, \" > resultado.txt\");",
+            "    ______________________________      // lanzar el comando",
+            "    return 0;",
+            "}"
+          ],
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 11 — Nuevas: Python (los productos actuales)",
+      "questions": [
+        {
+          "id": "q42",
+          "n": "42",
+          "prompt": "¿Cómo se lanza un comando del sistema operativo desde Python y cómo capturas su salida? Explica la diferencia entre os.system() y subprocess.run(...).",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q43",
+          "n": "43",
+          "prompt": "Escribe en Python el código que abre un archivo 'ips.txt' (una IP por línea), lo recorre y muestra cada IP por pantalla. Usa with.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "python",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q44",
+          "n": "44",
+          "prompt": "Escribe en Python una función ping(ip) que lance un ping a esa IP y devuelva True si responde y False si no.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "python",
+          "hint": "Pista: subprocess.run y su returncode.",
+          "origin": "nueva"
+        },
+        {
+          "id": "q45",
+          "n": "45",
+          "prompt": "¿Qué función de Python convierte una cadena de dígitos a entero? ¿Y la inversa (entero a cadena)? Pon un ejemplo de cada una.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q46",
+          "n": "46",
+          "prompt": "En Python, ¿cómo compruebas si una subcadena está dentro de otra y cómo divides una cadena por un separador? (los equivalentes de strstr y strtok de C).",
+          "points": 2.5,
+          "type": "text",
+          "hint": "Pista: operador in / .find() y .split().",
+          "origin": "nueva"
+        },
+        {
+          "id": "q47",
+          "n": "47",
+          "prompt": "¿Cómo se crea un módulo propio (librería de funciones) en Python y cómo se importa desde otro archivo? Pon un ejemplo con import.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q48",
+          "n": "48",
+          "prompt": "Escribe en Python el código que ejecuta 'ipconfig /all', guarda la salida en 'configred.txt' y luego abre ese fichero para mostrar su contenido.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "python",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q49",
+          "n": "49",
+          "prompt": "¿Cómo generarías en Python un archivo XML con los datos de un adaptador (IP, máscara, puerta de enlace)? Cita el módulo y escribe un ejemplo breve.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "python",
+          "hint": "Pista: módulo xml.etree.ElementTree.",
+          "origin": "nueva"
+        },
+        {
+          "id": "q50",
+          "n": "50",
+          "prompt": "¿Qué imprime el siguiente código Python y por qué?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "python",
+          "codeLines": [
+            "ruta = \"C:/datos/red\"",
+            "n = len(ruta)",
+            "ruta += \"/info.txt\"",
+            "print(f\"{ruta} tiene {n} caracteres\")"
+          ],
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q51",
+          "n": "51",
+          "prompt": "Completa los huecos para que el programa Python pida una IP, le haga ping y diga si hay conectividad.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "python",
+          "codeLines": [
+            "import subprocess",
+            "ip = input(\"Introduce la IP: \")",
+            "res = subprocess.run(______________________, capture_output=True, text=True)   # (1) comando ping",
+            "if ______________:                                                              # (2) ¿respondió?",
+            "    print(\"hay conectividad\")",
+            "else:",
+            "    print(\"no hay conectividad\")"
+          ],
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q52",
+          "n": "52",
+          "prompt": "¿Cómo se depura un script de Python en Visual Studio Code (puntos de interrupción, F5, inspección de variables)? ¿Y desde la terminal con el módulo pdb?",
           "points": 2.5,
           "type": "text",
           "hint": "",

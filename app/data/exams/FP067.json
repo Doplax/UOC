@@ -234,6 +234,109 @@
           "origin": "nueva"
         }
       ]
+    },
+    {
+      "title": "Parte 6 — Nuevas: Angular avanzado (Producto 1)",
+      "questions": [
+        {
+          "id": "q21",
+          "n": "21",
+          "prompt": "¿Qué es un servicio en Angular y para qué sirve la inyección de dependencias? Pon un ejemplo de un servicio que provee la lista de jugadores.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q22",
+          "n": "22",
+          "prompt": "¿Qué son los lifecycle hooks ngOnInit y ngOnDestroy? ¿Cuándo se ejecuta cada uno y para qué se usan?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q23",
+          "n": "23",
+          "prompt": "¿Cómo se configura el enrutado (routing) en Angular para navegar del listado al detalle de un jugador? Cita RouterModule y routerLink.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q24",
+          "n": "24",
+          "prompt": "¿Qué es el two-way binding [(ngModel)] y para qué se usa en un formulario de edición de jugador?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 7 — Nuevas: Firebase / Firestore (Producto 2)",
+      "questions": [
+        {
+          "id": "q25",
+          "n": "25",
+          "prompt": "Explica (con pseudocódigo o TypeScript) cómo añadir, leer y borrar un documento de una colección de Firestore desde Angular.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "typescript",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q26",
+          "n": "26",
+          "prompt": "¿Qué son las reglas de seguridad (security rules) de Firestore y por qué es peligroso dejar la base de datos abierta a lectura/escritura pública?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 8 — Nuevas: React Native (Producto 3)",
+      "questions": [
+        {
+          "id": "q27",
+          "n": "27",
+          "prompt": "Diferencia entre props y state en React Native. ¿Cuál puede cambiar y provoca un re-render?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q28",
+          "n": "28",
+          "prompt": "¿Cómo se renderiza una lista de elementos con FlatList en React Native? Escribe un ejemplo con la prop renderItem.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "javascript",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 9 — Nuevas: Cloud Functions / despliegue (Producto 4)",
+      "questions": [
+        {
+          "id": "q29",
+          "n": "29",
+          "prompt": "¿Qué pasos hay que seguir para programar y desplegar una Cloud Function que envíe una notificación push al modificarse la base de datos? Cita firebase init y firebase deploy.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
     }
   ]
 }

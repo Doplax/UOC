@@ -82,17 +82,20 @@ function statusChip(status) {
 const KEYWORDS = {
   c: new Set(['int','char','float','double','void','return','if','else','for','while','do','switch','case','break','continue','struct','sizeof','const','unsigned','signed','long','short','static','include','define','typedef','enum','goto','default','extern','volatile']),
   java: new Set(['public','private','protected','class','interface','extends','implements','abstract','void','int','double','float','boolean','char','long','short','byte','new','return','if','else','for','while','do','switch','case','break','continue','this','super','static','final','import','package','try','catch','finally','throw','throws','instanceof','enum','default','null','true','false']),
-  sql: new Set(['select','from','where','inner','left','right','outer','join','on','group','by','order','having','count','sum','avg','min','max','as','and','or','not','insert','into','values','update','set','delete','create','table','primary','key','foreign','references','grant','revoke','to','drop','alter','add','column','distinct','union','like','in','between','is','null','default','constraint','format','asc','desc','truncate','commit','rollback','savepoint'])
+  sql: new Set(['select','from','where','inner','left','right','outer','join','on','group','by','order','having','count','sum','avg','min','max','as','and','or','not','insert','into','values','update','set','delete','create','table','primary','key','foreign','references','grant','revoke','to','drop','alter','add','column','distinct','union','like','in','between','is','null','default','constraint','format','asc','desc','truncate','commit','rollback','savepoint','view']),
+  python: new Set(['def','return','if','elif','else','for','while','in','not','and','or','import','from','as','with','try','except','finally','class','lambda','is','pass','break','continue','global','True','False','None','print','input','open','range','len','int','str','list','dict']),
+  js: new Set(['function','return','if','else','for','while','const','let','var','new','class','extends','implements','import','from','export','default','async','await','try','catch','finally','this','typeof','instanceof','of','in','switch','case','break','continue','interface','type','public','private','null','undefined','true','false','void'])
 };
 const TYPES = {
   c: new Set(['FILE','size_t','NULL','bool']),
-  java: new Set(['String','System','ArrayList','List','Integer','Double','Boolean','Object','Math'])
+  java: new Set(['String','System','ArrayList','List','Integer','Double','Boolean','Object','Math']),
+  js: new Set(['console','document','window','Math','JSON','Array','Object','Promise','String','Number'])
 };
 function highlightClike(code, lang) {
   const kw = KEYWORDS[lang] || KEYWORDS.c;
   const ty = TYPES[lang] || new Set();
   const sql = lang === 'sql';
-  const lineC = sql ? '--[^\\n]*' : '\\/\\/[^\\n]*';
+  const lineC = sql ? '--[^\\n]*' : lang === 'python' ? '#[^\\n]*' : '\\/\\/[^\\n]*';
   const re = new RegExp(
     '(' + lineC + '|\\/\\*[\\s\\S]*?\\*\\/)' +
     '|("(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\')' +
@@ -135,7 +138,8 @@ function highlightHtml(code) {
 function highlight(codeLines, lang) {
   const code = codeLines.join('\n');
   if (lang === 'html' || lang === 'xml') return highlightHtml(code);
-  if (lang === 'sql' || lang === 'java' || lang === 'c' || lang === 'cpp') return highlightClike(code, lang);
+  if (lang === 'sql' || lang === 'java' || lang === 'c' || lang === 'cpp' || lang === 'python') return highlightClike(code, lang);
+  if (lang === 'javascript' || lang === 'typescript' || lang === 'js' || lang === 'ts') return highlightClike(code, 'js');
   return esc(code);
 }
 function codeBlock(q) {

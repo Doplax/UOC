@@ -273,6 +273,159 @@
           "origin": "anterior"
         }
       ]
+    },
+    {
+      "title": "Parte 6 — Nuevas: Clases y herencia en Java (AA1)",
+      "questions": [
+        {
+          "id": "q25",
+          "n": "25",
+          "prompt": "Escribe una clase Persona con atributos privados (nombre, edad), constructor, getters y setters, y un método toString().",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "java",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q26",
+          "n": "26",
+          "prompt": "¿Qué es la encapsulación y por qué los atributos se declaran private? ¿Para qué sirven los getters y setters?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q27",
+          "n": "27",
+          "prompt": "Diferencia entre heredar de una clase (extends) e implementar una interfaz (implements). Pon un ejemplo de cada uno.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 7 — Nuevas: Agregación y composición (AA2)",
+      "questions": [
+        {
+          "id": "q28",
+          "n": "28",
+          "prompt": "Escribe el código Java de una AGREGACIÓN: una clase Equipo que recibe en su constructor una lista de Jugadores ya creados fuera (que viven sin el Equipo).",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "java",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q29",
+          "n": "29",
+          "prompt": "¿Por qué en la COMPOSICIÓN el objeto contenido no puede existir sin el contenedor? Pon un ejemplo en Java (p. ej. Casa y Habitación).",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 8 — Nuevas: Diseño de diagramas (AA3–AA4)",
+      "questions": [
+        {
+          "id": "q30",
+          "n": "30",
+          "prompt": "¿Cómo se representa en UML la multiplicidad/cardinalidad (1, 0..1, *, 1..*)? Pon un ejemplo de cada una en una relación entre clases.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q31",
+          "n": "31",
+          "prompt": "Traduce a Java este diagrama: clase abstracta Figura con método abstracto area(), y subclases Circulo y Rectangulo que lo implementan.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "java",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q32",
+          "n": "32",
+          "prompt": "¿Qué es el polimorfismo? Explícalo con una lista List<Figura> que contiene un Circulo y un Rectangulo y recorre llamando a area().",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q33",
+          "n": "33",
+          "prompt": "¿Qué es una interfaz en Java y en qué se diferencia de una clase abstracta? ¿Cuándo usarías cada una?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 9 — Nuevas: Casos de uso (AA5)",
+      "questions": [
+        {
+          "id": "q34",
+          "n": "34",
+          "prompt": "Dibuja (en texto) un diagrama de casos de uso para un sistema de reservas de cine: identifica actores, casos de uso y al menos una relación include y una extend.",
+          "points": 3,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q35",
+          "n": "35",
+          "prompt": "Si \"Pagar con tarjeta\" es un paso OPCIONAL dentro de \"Comprar entrada\", ¿usarías include o extend? Justifícalo.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 10 — Nuevas: Java (leer / conceptos)",
+      "questions": [
+        {
+          "id": "q36",
+          "n": "36",
+          "prompt": "¿Qué imprime este código y por qué?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "java",
+          "codeLines": [
+            "class Animal { String sonido() { return \"...\"; } }",
+            "class Perro extends Animal { String sonido() { return \"Guau\"; } }",
+            "class Gato extends Animal { String sonido() { return \"Miau\"; } }",
+            "Animal[] a = { new Perro(), new Gato(), new Animal() };",
+            "for (Animal x : a) System.out.println(x.sonido());"
+          ],
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q37",
+          "n": "37",
+          "prompt": "¿Qué es el método equals() y para qué se sobrescribe? ¿Qué relación tiene con hashCode()?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
     }
   ]
 }

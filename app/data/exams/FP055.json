@@ -322,6 +322,144 @@
           "origin": "nueva"
         }
       ]
+    },
+    {
+      "title": "Parte 6 — Nuevas: DDL y modelo relacional (AA2–AA3)",
+      "questions": [
+        {
+          "id": "q29",
+          "n": "29",
+          "prompt": "Escribe la sentencia CREATE TABLE de CLIENTE (NIF como PK) y de COMPRA, con clave foránea hacia CLIENTE y hacia PRODUCTO. Define tipos y restricciones NOT NULL.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q30",
+          "n": "30",
+          "prompt": "¿Qué es una clave foránea y cómo se declara con FOREIGN KEY ... REFERENCES? ¿Qué efecto tiene ON DELETE CASCADE?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q31",
+          "n": "31",
+          "prompt": "Pasa a tablas una relación N:M entre ALUMNO y ASIGNATURA con un atributo 'nota' en la relación. ¿Cuántas tablas salen y cuáles son las PK y FK?",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 7 — Nuevas: Consultas DQL y DML (AA4)",
+      "questions": [
+        {
+          "id": "q32",
+          "n": "32",
+          "prompt": "Escribe una consulta con LEFT JOIN que muestre TODOS los clientes y su número de pedidos, incluidos los que no han comprado nada.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q33",
+          "n": "33",
+          "prompt": "Diferencia entre WHERE y HAVING. Escribe una consulta que use GROUP BY + HAVING (por ejemplo, clientes con más de 3 pedidos).",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q34",
+          "n": "34",
+          "prompt": "¿Qué es una subconsulta? Escribe una que devuelva los productos cuyo precio es mayor que el precio medio de todos los productos.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q35",
+          "n": "35",
+          "prompt": "Escribe tres sentencias DML: un INSERT de un producto, un UPDATE que suba un 10% el precio de los de tipo 'bebida', y un DELETE de los productos sin stock.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q36",
+          "n": "36",
+          "prompt": "¿Qué devuelve esta consulta?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT c.nombre, COUNT(p.id) AS pedidos, SUM(p.total) AS gastado",
+            "FROM cliente c",
+            "LEFT JOIN pedido p ON c.id = p.cliente_id",
+            "GROUP BY c.nombre",
+            "HAVING SUM(p.total) > 500;"
+          ],
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
+    },
+    {
+      "title": "Parte 8 — Nuevas: DCL, TCL y conceptos (AA1, AA5)",
+      "questions": [
+        {
+          "id": "q37",
+          "n": "37",
+          "prompt": "Crea un usuario, concédele SELECT e INSERT sobre la base 'Tienda' y luego retírale solo el INSERT. Escribe las tres sentencias.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q38",
+          "n": "38",
+          "prompt": "¿Qué es una transacción? Explica START TRANSACTION, COMMIT y ROLLBACK con el ejemplo de una transferencia bancaria entre dos cuentas.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q39",
+          "n": "39",
+          "prompt": "Tipos de datos en SQL: cita y explica para qué sirven VARCHAR, INT, DECIMAL, DATE y BOOLEAN.",
+          "points": 2.5,
+          "type": "text",
+          "hint": "",
+          "origin": "nueva"
+        },
+        {
+          "id": "q40",
+          "n": "40",
+          "prompt": "¿Qué es una vista (VIEW) y para qué se usa? Escribe un CREATE VIEW que muestre el nombre del cliente y su total gastado.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "hint": "",
+          "origin": "nueva"
+        }
+      ]
     }
   ]
 }
