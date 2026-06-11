@@ -1,0 +1,9 @@
+{
+  "name": "examenes-uoc-trainer",
+  "version": "1.0.0",
+  "description": "Entrenador de exámenes UOC: contesta, corrige y compara intentos. Sin dependencias.",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}

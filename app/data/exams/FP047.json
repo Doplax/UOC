@@ -1,0 +1,97 @@
+{
+  "id": "FP047",
+  "subject": "FP.047 — Programa de comandos personalizados para el SO",
+  "title": "Examen completo de práctica",
+  "intro": "Examen real: 4 preguntas × 2,5 p, 30 minutos, mínimo 5/10, sin material. Los exámenes históricos usan lenguaje C (system(), string.h, FILE*); los enunciados actuales están migrados a Python. Prepárate sobre todo en C.",
+  "maxScore": 10,
+  "examFormat": { "questions": 4, "minutes": 30, "pointsPerQuestion": 2.5, "passScore": 5 },
+  "sections": [
+    {
+      "title": "Parte 1 — Teoría rápida (depuración, ficheros, librerías)",
+      "questions": [
+        { "id": "q1", "n": "1", "prompt": "¿Con qué herramientas de depuración cuenta Visual Studio y para qué sirve cada una?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q2", "n": "2", "prompt": "¿Para qué se usan los puntos de interrupción? Pon un ejemplo.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q3", "n": "3", "prompt": "¿Qué es un punto de interrupción condicional y cuándo lo usarías? (ej.: variable n que va de 1 a 300, solo cuando n>250).", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q4", "n": "4", "prompt": "¿Pueden las herramientas de depuración detectar un error de sintaxis (ej.: falta un ;)? Justifícalo.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q5", "n": "5", "prompt": "¿Qué tipos de errores se pueden solventar con las herramientas de depuración?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q6", "n": "6", "prompt": "¿Qué modos de apertura de ficheros existen y dónde se sitúa el cursor en cada uno?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q7", "n": "7", "prompt": "Cita al menos dos \"marcas\" importantes al trabajar con ficheros de texto (ej.: EOF, salto de línea).", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q8", "n": "8", "prompt": "¿Cómo se crea una librería de funciones en C, cómo se enlaza al proyecto y para qué sirve?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q9", "n": "9", "prompt": "Dado #include \"Proyecto.h\" y #include \"Ping.h\": ¿qué representan estos includes y qué debe contener un fichero .h?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q10", "n": "10", "prompt": "¿Qué funciones de string.h conoces y para qué sirve cada una (strlen, strcat, strcpy, strstr, strtok)?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q11", "n": "11", "prompt": "¿Qué función convierte una cadena de dígitos a entero? ¿Cuándo la usarías?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q12", "n": "12", "prompt": "¿En qué consiste la redirección de la salida estándar (>) y para qué la has usado en el proyecto?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q13", "n": "13", "prompt": "¿Qué comando se usó en el producto 3 para desempatar dos DNS con la misma velocidad y en qué se basaba?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q14", "n": "14", "prompt": "Reglas para que un XML esté bien formado (producto 4).", "points": 2.5, "type": "text", "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 2 — Trazas de código (¿qué imprime y por qué?)",
+      "questions": [
+        { "id": "q15", "n": "15", "prompt": "¿Qué imprime este código y por qué?", "points": 2.5, "type": "code", "codeLang": "c", "codeLines": [
+          "char cadena[50] = \"La cadena es mia\\n\";",
+          "cadena[strlen(\"La cadena\")] = '\\0';",
+          "printf(\"CADENA: %s \\n\", cadena);"
+        ], "hint": "" },
+        { "id": "q16", "n": "16", "prompt": "¿Qué imprime este código y por qué?", "points": 2.5, "type": "code", "codeLang": "c", "codeLines": [
+          "char cadena[50] = \"La cadena es mia\\n\";",
+          "cadena[strlen(\"es mia\")] = 'E';",
+          "printf(\"CADENA: %s \\n\", cadena);"
+        ], "hint": "" },
+        { "id": "q17", "n": "17", "prompt": "¿Qué imprime este código y por qué?", "points": 2.5, "type": "code", "codeLang": "c", "codeLines": [
+          "char cadena[50] = \"La\\ncadena\\nes\\nmia\\n\";",
+          "printf(\"CADENA: %s \\n\", cadena);",
+          "for (int i = 0; i < strlen(cadena); i++)",
+          "    if (cadena[i] == '\\n') cadena[i] = ' ';",
+          "printf(\"CADENA: %s \\n\", cadena);"
+        ], "hint": "" },
+        { "id": "q18", "n": "18", "prompt": "¿Qué hace este fragmento?", "points": 2.5, "type": "code", "codeLang": "c", "codeLines": [
+          "int longi = strlen(cad);",
+          "cad[longi-2] = '\\0';"
+        ], "hint": "" },
+        { "id": "q19", "n": "19", "prompt": "¿Qué cuenta la variable i?", "points": 2.5, "type": "code", "codeLang": "c", "codeLines": [
+          "FILE* fp = fopen(\"c:/a/ips.txt\", \"r\");",
+          "int i = 0; char c;",
+          "if (fp != NULL)",
+          "    while (!feof(fp)) {",
+          "        c = fgetc(fp);",
+          "        if (c == '\\n') i++;",
+          "    }"
+        ], "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 3 — Escribir / completar código",
+      "questions": [
+        { "id": "q20", "n": "20", "prompt": "Escribe la línea que lista d:/archivos y escribe el resultado en c:/listado.txt (función C + comando).", "points": 2.5, "type": "code", "codeLang": "c", "hint": "" },
+        { "id": "q21", "n": "21", "prompt": "Escribe la línea que lanza un ping y redirige la salida a D:/redirección/comandoredirección.txt.", "points": 2.5, "type": "code", "codeLang": "c", "hint": "" },
+        { "id": "q22", "n": "22", "prompt": "Escribe la línea que guarda en c:/adaptadores.txt la lista de nombres de adaptadores de red.", "points": 2.5, "type": "code", "codeLang": "c", "hint": "" },
+        { "id": "q23", "n": "23", "prompt": "Escribe la línea que reconfigura un adaptador de red (función C + comando).", "points": 2.5, "type": "code", "codeLang": "c", "hint": "" },
+        { "id": "q24", "n": "24", "prompt": "Escribe el código (≤5 líneas) que abre D:/redirección/comandoredirección.txt y analiza si el ping fue exitoso.", "points": 2.5, "type": "code", "codeLang": "c", "hint": "" },
+        { "id": "q25", "n": "25", "prompt": "Escribe el código (~8 líneas) que pide una IP, le hace ping y muestra \"hay conectividad\" / \"no hay conectividad\".", "points": 2.5, "type": "code", "codeLang": "c", "hint": "" },
+        { "id": "q26", "n": "26", "prompt": "Completa los huecos (1), (2) y (3) para que liste por pantalla el directorio introducido por el usuario.", "points": 2.5, "type": "code", "codeLang": "c", "codeLines": [
+          "#include <stdio.h>",
+          "int main() {",
+          "    char directorio[20];",
+          "    char comando[30] = ______________;     // (1)",
+          "    printf(\"Introduce el directorio a listar.\\n\");",
+          "    scanf(\"%s\", directorio);",
+          "    ______________________________         // (2) construir comando",
+          "    printf(\"%s\", comando);",
+          "    ______________________________         // (3) lanzar comando",
+          "    return 0;",
+          "}"
+        ], "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 4 — Ampliación (Python y temas actuales)",
+      "questions": [
+        { "id": "q27", "n": "27", "prompt": "Diferencia entre error de sintaxis, de ejecución (runtime) y de lógica. ¿Cuáles detecta el depurador?", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q28", "n": "28", "prompt": "Algoritmo del producto 3: cómo eliges el DNS más rápido de una lista y qué haces si el actual no lo es.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q29", "n": "29", "prompt": "Reglas de un XML bien formado + un ejemplo mal formado corregido.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q30", "n": "30", "prompt": "¿Qué es XSLT y en qué se diferencia de CSS al presentar un XML?", "points": 2.5, "type": "text", "hint": "" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exámenes UOC · Entrenador</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <span class="brand-mark">📝</span>
+      <span class="brand-text">Exámenes <strong>UOC</strong></span>
+    </a>
+    <nav class="topnav" id="breadcrumb"></nav>
+    <a href="#/settings" class="icon-btn" title="Ajustes" aria-label="Ajustes">⚙️</a>
+    <button id="themeToggle" class="icon-btn" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+  </header>
+
+  <main id="app" class="app">
+    <div class="loading">Cargando…</div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="overlay" class="overlay" aria-live="polite">
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <div class="overlay-msg">Corrigiendo…</div>
+      <div class="overlay-sub">Claude está evaluando tus respuestas. Esto puede tardar unos segundos.</div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

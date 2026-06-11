@@ -1,0 +1,83 @@
+{
+  "id": "FP055",
+  "subject": "FP.055 — Introducción a las bases de datos",
+  "title": "Examen completo de práctica",
+  "intro": "Examen real: 4 preguntas, 30 minutos, mínimo 5/10, sin material. Patrón típico: P1 diseño E-R/tablas (3 p) · P2 escribir SQL (2,5 p) · P3 interpretar SQL (2 p) · P4 privilegios GRANT/REVOKE (2,5 p). También caen normalización, herencia entre entidades y atributos de relación.",
+  "maxScore": 10,
+  "examFormat": { "questions": 4, "minutes": 30, "pointsPerQuestion": 2.5, "passScore": 5 },
+  "sections": [
+    {
+      "title": "Parte 1 — Teoría rápida",
+      "questions": [
+        { "id": "q1", "n": "1", "prompt": "¿Qué es un SGBD? Dos ejemplos y dos ventajas frente a ficheros sueltos.", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q2", "n": "2", "prompt": "Define clave primaria, foránea y candidata. ¿Puede la PK ser compuesta? Pon un ejemplo.", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q3", "n": "3", "prompt": "Diferencia entre DDL, DML, DQL, DCL y TCL con un comando de ejemplo de cada uno.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q4", "n": "4", "prompt": "¿Qué es la herencia entre entidades? Pon un ejemplo.", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q5", "n": "5", "prompt": "¿Qué es un atributo de relación? Ejemplo y por qué pertenece a la relación.", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q6", "n": "6", "prompt": "Define 1FN, 2FN y 3FN con tus palabras.", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q7", "n": "7", "prompt": "Diferencia entre INNER JOIN, LEFT JOIN y RIGHT JOIN.", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q8", "n": "8", "prompt": "Diferencia entre DROP, DELETE y TRUNCATE.", "points": 2.0, "type": "text", "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 2 — Diseño E-R y paso a tablas (3 p cada uno)",
+      "questions": [
+        { "id": "q9", "n": "9", "prompt": "Empresa de productos químicos: CLIENTES(NIF, nombre, apellidos, teléfonos), PRODUCTO(Código, nomProd); registrar fecha_compra y cantidad. Diseña las tablas indicando PK y FK.", "points": 3.0, "type": "text", "hint": "" },
+        { "id": "q10", "n": "10", "prompt": "Universidad: PROFESORES(NIF, nombre, apellidos, teléfono), DEPARTAMENTO(Código, nomDep, Num_despacho); un profesor puede pertenecer a varios departamentos; registrar fecha_ingreso. Tablas + PK/FK.", "points": 3.0, "type": "text", "hint": "" },
+        { "id": "q11", "n": "11", "prompt": "Agencia de rodajes: CLIENTE(NIF, nombre, apellidos, teléfonos), ESPACIO(Codigo, nombre, ciudad, dirección, descripción, precio_dia); registrar fecha_alquiler y numero_dias. Tablas + PK/FK.", "points": 3.0, "type": "text", "hint": "" },
+        { "id": "q12", "n": "12", "prompt": "Puerto deportivo (E-R completo): SOCIOS y EMBARCACIONES (1:N), AMARRE con lecturas de luz/agua. Diagrama + tablas.", "points": 3.0, "type": "text", "hint": "" },
+        { "id": "q13", "n": "13", "prompt": "Clínica veterinaria: DUEÑO, MASCOTA (1:N) y VISITA. Diagrama + tablas + PK/FK.", "points": 3.0, "type": "text", "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 3 — Escribir consultas SQL (2,5 p cada una)",
+      "questions": [
+        { "id": "q14", "n": "14", "prompt": "Clientes que han comprado más de 300 unidades de nitrato potásico.", "points": 2.5, "type": "code", "codeLang": "sql", "hint": "" },
+        { "id": "q15", "n": "15", "prompt": "Profesores que pertenecen al departamento de Matemáticas y de Física.", "points": 2.5, "type": "code", "codeLang": "sql", "hint": "" },
+        { "id": "q16", "n": "16", "prompt": "(Facturas/Productos/DetallesFactura) Compras con precio×cantidad > 3000€; pedir ProductoID y FacturaID.", "points": 2.5, "type": "code", "codeLang": "sql", "hint": "" },
+        { "id": "q17", "n": "17", "prompt": "Productos vendidos más de 150 veces en los detalles de factura; pedir nombre e ID.", "points": 2.5, "type": "code", "codeLang": "sql", "hint": "" },
+        { "id": "q18", "n": "18", "prompt": "Nombre y total gastado por cada cliente que haya gastado más de 1000€, de mayor a menor.", "points": 2.5, "type": "code", "codeLang": "sql", "hint": "" },
+        { "id": "q19", "n": "19", "prompt": "DML: (a) insertar un cliente, (b) subir 10% el precio de productos tipo 'bebida', (c) borrar pedidos anteriores a 2020.", "points": 2.5, "type": "code", "codeLang": "sql", "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 4 — Interpretar consultas SQL: ¿qué devuelve? (2 p cada una)",
+      "questions": [
+        { "id": "q20", "n": "20", "prompt": "¿Qué devuelve esta consulta? ¿Es correcto el GROUP BY m?", "points": 2.0, "type": "code", "codeLang": "sql", "codeLines": [
+          "SELECT p.nomProd AS producto, COUNT(m.codMarca) AS num_marcas",
+          "FROM producto p INNER JOIN Marca m ON p.codProducto = m.codProducto",
+          "GROUP BY m ORDER BY p.nomProd;"
+        ], "hint": "Fíjate en agrupar por una tabla en vez de por una columna." },
+        { "id": "q21", "n": "21", "prompt": "¿Qué devuelve esta consulta?", "points": 2.0, "type": "code", "codeLang": "sql", "codeLines": [
+          "SELECT e.first_name, e.last_name, SUM(e.salary) AS sueldo",
+          "FROM employees e INNER JOIN salaries s ON e.emp_no = s.emp_no",
+          "GROUP BY s ORDER BY e.last_name;"
+        ], "hint": "" },
+        { "id": "q22", "n": "22", "prompt": "¿Qué devuelve esta consulta?", "points": 2.0, "type": "code", "codeLang": "sql", "codeLines": [
+          "SELECT c.NIF, c.nombre, c.apellidos",
+          "FROM CLIENTE c",
+          "INNER JOIN ALQUILER a ON c.NIF = a.NIF_cliente",
+          "INNER JOIN ESPACIO e ON a.Codigo_espacio = e.Codigo",
+          "WHERE e.ciudad = 'Madrid' AND a.numero_dias > 3 AND (a.numero_dias * e.precio_dia) > 500;"
+        ], "hint": "" },
+        { "id": "q23", "n": "23", "prompt": "¿Qué devuelve esta consulta?", "points": 2.0, "type": "code", "codeLang": "sql", "codeLines": [
+          "SELECT PLAN, COUNT(SOCIO.ID_PLAN) AS 'NUMERO DE SOCIOS',",
+          "       FORMAT(CUOTA_MENSUAL,2) AS 'CUOTA MENSUAL',",
+          "       FORMAT(COUNT(SOCIO.ID_PLAN)*CUOTA_MENSUAL,2) AS 'TOTAL'",
+          "FROM (plan INNER JOIN SOCIO ON plan.ID_PLAN = SOCIO.ID_PLAN)",
+          "GROUP BY PLAN.PLAN HAVING COUNT(SOCIO.ID_PLAN) > 1;"
+        ], "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 5 — Privilegios, transacciones y normalización",
+      "questions": [
+        { "id": "q24", "n": "24", "prompt": "¿Qué significa y qué otros privilegios existen? GRANT SELECT, DELETE ON BdQuimica.clientes TO 'auditoria'@'localhost';", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q25", "n": "25", "prompt": "¿Qué significa? REVOKE DELETE ON BdGym.abonados TO 'owner'@'localhost';", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q26", "n": "26", "prompt": "Crea usuario lectura@localhost, dale solo SELECT sobre la base Tienda y luego retíraselo (3 sentencias).", "points": 2.5, "type": "code", "codeLang": "sql", "hint": "" },
+        { "id": "q27", "n": "27", "prompt": "¿Para qué sirven COMMIT, ROLLBACK y SAVEPOINT? Pon un ejemplo con ROLLBACK.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q28", "n": "28", "prompt": "Normaliza hasta 3FN: PEDIDO(id, cliente, telefono_cliente, producto1, producto2, producto3).", "points": 2.5, "type": "text", "hint": "" }
+      ]
+    }
+  ]
+}

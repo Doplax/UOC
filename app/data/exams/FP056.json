@@ -1,0 +1,70 @@
+{
+  "id": "FP056",
+  "subject": "FP.056 — Programación orientada a objetos",
+  "title": "Examen completo de práctica",
+  "intro": "Examen real: 4 preguntas, 30 minutos, mínimo 5/10, sin material. Mezcla diagramas de clases (asociación, agregación, composición, herencia, cardinalidad, clase abstracta/asociativa), diagramas de casos de uso (actor, herencia de actor, extend/include) y código Java.",
+  "maxScore": 10,
+  "examFormat": { "questions": 4, "minutes": 30, "pointsPerQuestion": 2.5, "passScore": 5 },
+  "sections": [
+    {
+      "title": "Parte 1 — Teoría: diagramas de clases",
+      "questions": [
+        { "id": "q1", "n": "1", "prompt": "Explica los cuatro pilares de la POO (abstracción, encapsulación, herencia, polimorfismo) con un ejemplo de cada uno.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q2", "n": "2", "prompt": "¿Cómo aplicarías una relación de asociación de un diagrama de clases en Java?", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q3", "n": "3", "prompt": "Explica qué es la composición de clases y en qué se diferencia de la agregación (con ejemplos).", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q4", "n": "4", "prompt": "¿En qué casos se implementa una relación de herencia? Relación con el polimorfismo.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q5", "n": "5", "prompt": "¿Qué es la cardinalidad en un diagrama de clases? Pon ejemplos de los distintos tipos.", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q6", "n": "6", "prompt": "¿Qué es una clase asociativa?", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q7", "n": "7", "prompt": "¿Cuándo declararías una clase como abstracta? ¿Qué consecuencias tiene?", "points": 2.0, "type": "text", "hint": "" },
+        { "id": "q8", "n": "8", "prompt": "Diferencia entre sobrecarga (overloading) y sobrescritura (overriding) de métodos. Pon un ejemplo en Java.", "points": 2.0, "type": "text", "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 2 — Teoría: casos de uso",
+      "questions": [
+        { "id": "q9", "n": "9", "prompt": "¿Qué funcionalidad tiene un diagrama de casos de uso? Pon un ejemplo.", "points": 4.0, "type": "text", "hint": "" },
+        { "id": "q10", "n": "10", "prompt": "¿Qué es un Actor en un diagrama de casos de uso? Pon un ejemplo.", "points": 2.5, "type": "text", "hint": "" },
+        { "id": "q11", "n": "11", "prompt": "Describe en qué casos se aplica una relación de \"Extend\" y cuándo una de \"Include\".", "points": 3.0, "type": "text", "hint": "" },
+        { "id": "q12", "n": "12", "prompt": "Relacionado con los diagramas de casos de uso, ¿qué es la herencia de un actor? Pon un ejemplo.", "points": 3.0, "type": "text", "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 3 — Código Java (escribir)",
+      "questions": [
+        { "id": "q13", "n": "13", "prompt": "Pon un ejemplo y escribe el código en Java de una clase con sus atributos que hereda de otra clase.", "points": 2.5, "type": "code", "codeLang": "java", "hint": "" },
+        { "id": "q14", "n": "14", "prompt": "Pon un ejemplo y escribe el código en Java de la implementación de una relación de agregación.", "points": 2.0, "type": "code", "codeLang": "java", "hint": "" },
+        { "id": "q15", "n": "15", "prompt": "Implementa en Java una relación de composición: una clase Coche que crea sus propios objetos Motor y Rueda[] en su constructor.", "points": 2.5, "type": "code", "codeLang": "java", "hint": "" },
+        { "id": "q16", "n": "16", "prompt": "¿Cómo se añade un objeto a un ArrayList en Java? Escribe una clase Equipo con métodos para añadir, eliminar y recorrer Jugadores.", "points": 2.5, "type": "code", "codeLang": "java", "hint": "" },
+        { "id": "q17", "n": "17", "prompt": "¿Qué es el constructor de una clase y cómo se codifica en Java? Pon un ejemplo.", "points": 2.5, "type": "code", "codeLang": "java", "hint": "" },
+        { "id": "q18", "n": "18", "prompt": "Escribe en Java una clase abstracta Animal con un método abstracto hacerSonido() y dos subclases Perro y Gato que lo implementen (polimorfismo).", "points": 2.5, "type": "code", "codeLang": "java", "hint": "" },
+        { "id": "q19", "n": "19", "prompt": "Escribe en Java una interfaz Pagable con el método calcularPago() e impleméntala en una clase Empleado. ¿En qué se diferencia una interfaz de una clase abstracta?", "points": 2.5, "type": "code", "codeLang": "java", "hint": "" }
+      ]
+    },
+    {
+      "title": "Parte 4 — Código Java (leer / corregir)",
+      "questions": [
+        { "id": "q20", "n": "20", "prompt": "¿Qué imprime y por qué?", "points": 2.5, "type": "code", "codeLang": "java", "codeLines": [
+          "class A { void saludar() { System.out.println(\"Soy A\"); } }",
+          "class B extends A { void saludar() { System.out.println(\"Soy B\"); } }",
+          "A obj = new B();",
+          "obj.saludar();"
+        ], "hint": "" },
+        { "id": "q21", "n": "21", "prompt": "¿Qué problema tiene este código y cómo se corrige?", "points": 2.0, "type": "code", "codeLang": "java", "codeLines": [
+          "public class Cuenta {",
+          "    private double saldo;",
+          "    public Cuenta(double saldo) { saldo = saldo; }",
+          "    public double getSaldo() { return saldo; }",
+          "}"
+        ], "hint": "Fíjate en el sombreado de variables (shadowing) en el constructor." }
+      ]
+    },
+    {
+      "title": "Parte 5 — Diseño",
+      "questions": [
+        { "id": "q22", "n": "22", "prompt": "Diseña el diagrama de clases de una biblioteca (Libro, Socio, Prestamo) con atributos, relaciones y cardinalidades.", "points": 3.0, "type": "text", "hint": "" },
+        { "id": "q23", "n": "23", "prompt": "Diagrama de casos de uso de un cajero automático: actores, casos de uso y al menos una relación include y una extend.", "points": 3.0, "type": "text", "hint": "" },
+        { "id": "q24", "n": "24", "prompt": "Te dan un diagrama de clases para implementar un proyecto en Java. Describe paso a paso cómo lo harías, incluyendo qué componentes aparecen en un diagrama de clases.", "points": 3.0, "type": "text", "hint": "" }
+      ]
+    }
+  ]
+}

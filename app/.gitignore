@@ -1,0 +1,5 @@
+# API key de Claude (NO subir nunca al repositorio)
+data/config.json
+
+# logs sueltos
+*.log
