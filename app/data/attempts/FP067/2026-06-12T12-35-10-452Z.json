@@ -1,0 +1,24 @@
+{
+  "attemptId": "2026-06-12T12-35-10-452Z",
+  "examId": "FP067",
+  "examSubject": "FP067 — Front End con Frameworks móviles",
+  "title": "Examen completo · exámenes anteriores",
+  "mode": "completo",
+  "scope": "anterior",
+  "durationMin": null,
+  "createdAt": "2026-06-12T12:35:10.452Z",
+  "submittedAt": null,
+  "correctedAt": null,
+  "status": "draft",
+  "questionIds": [
+    "q1",
+    "q7",
+    "q14",
+    "q18"
+  ],
+  "answers": {},
+  "corrections": {},
+  "totalScore": null,
+  "maxScore": 10,
+  "globalFeedback": ""
+}

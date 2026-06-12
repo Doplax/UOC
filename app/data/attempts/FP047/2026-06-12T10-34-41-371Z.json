@@ -1,0 +1,154 @@
+{
+  "attemptId": "2026-06-12T10-34-41-371Z",
+  "examId": "FP047",
+  "examSubject": "FP.047 — Programa de comandos personalizados para el SO",
+  "title": "Examen completo · exámenes anteriores",
+  "mode": "completo",
+  "scope": "anterior",
+  "durationMin": null,
+  "createdAt": "2026-06-12T10:34:41.371Z",
+  "submittedAt": "2026-06-12T10:34:51.850Z",
+  "correctedAt": "2026-06-12T11:10:00.000Z",
+  "status": "corrected",
+  "questionIds": [
+    "q1","q2","q3","q4","q5","q6","q7","q8","q9","q10",
+    "q11","q12","q13","q14","q15","q16","q17","q18","q19",
+    "q20","q21","q22","q23","q24","q25","q26"
+  ],
+  "answers": {},
+  "corrections": {
+    "q1": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Visual Studio Code proporciona las siguientes herramientas de depuración:\n\n• Panel RUN AND DEBUG (Ctrl+Shift+D): panel lateral que controla la sesión de depuración — arrancar (F5), pausar, detener.\n• Puntos de interrupción (breakpoints, F9): marcan líneas donde el programa se detiene automáticamente.\n• Controles de ejecución:\n    F5       → Continuar (hasta el siguiente breakpoint)\n    F10      → Paso a paso por encima (no entra en funciones)\n    F11      → Paso a paso dentro (entra en la función llamada)\n    Shift+F11 → Salir de la función actual\n• Panel VARIABLES: muestra el valor de todas las variables locales en el momento de la pausa.\n• Panel WATCH (Inspección): permite añadir expresiones concretas para monitorizar su valor en tiempo real.\n• Panel CALL STACK (Pila de llamadas): muestra qué funciones se han llamado hasta llegar al punto actual.\n• DEBUG CONSOLE: permite ejecutar expresiones Python interactivamente mientras el programa está pausado.\n• Hover sobre variables: al pasar el ratón por encima de una variable en el editor se muestra su valor actual."
+    },
+    "q2": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Un punto de interrupción (breakpoint) pausa la ejecución del programa exactamente en la línea donde está colocado, permitiendo inspeccionar el estado del programa en ese momento preciso: valores de variables, pila de llamadas, etc.\n\nCómo se usa: clic en el margen izquierdo del editor junto al número de línea (o F9). Aparece un círculo rojo.\n\nEjemplo:\n  Tienes un fichero 'ips.txt' con 100 IPs y estás procesando cada una con un bucle. Si hay un fallo al procesar la IP número 47, pones un breakpoint dentro del bucle:\n\n  with open('ips.txt') as f:\n      for ip in f:\n          ip = ip.strip()\n          resultado = ping(ip)   # ← breakpoint aquí\n          guardar(resultado)\n\n  El programa corre normalmente hasta esa línea, se pausa, y puedes ver en el panel VARIABLES qué valor tiene 'ip' y 'resultado' en cada iteración."
+    },
+    "q3": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Un punto de interrupción CONDICIONAL es un breakpoint que solo detiene el programa cuando una expresión que tú defines es verdadera. El programa corre a velocidad normal ignorando ese breakpoint hasta que la condición se cumple.\n\nCómo se crea: click derecho sobre el breakpoint (círculo rojo) → 'Edit Breakpoint' → escribe la condición.\n\nEjemplo del enunciado: tienes un bucle for n in range(1, 301) y quieres parar solo cuando n > 250.\n  • Pones un breakpoint en la línea dentro del bucle\n  • Click derecho → Edit Breakpoint → Condition: n > 250\n  • El programa correrá sin parar las iteraciones 1-250 y se detendrá en la 251\n\nCuándo usarlo: cuando el error solo ocurre en ciertas condiciones (un valor concreto de una variable, un índice alto, una cadena específica...) y revisar todas las iteraciones sería demasiado lento."
+    },
+    "q4": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Los errores de SINTAXIS los detecta el INTÉRPRETE DE PYTHON, no el depurador.\n\nPor qué: Python compila el código a bytecode ANTES de ejecutarlo. Si hay un error de sintaxis (falta un ':', un paréntesis sin cerrar, sangría incorrecta...) Python lanza un SyntaxError durante esa fase de compilación, antes de que el depurador tenga oportunidad de arrancar.\n\nEjemplo:\n  if x > 5      # falta el ':'\n      print(x)  # Python detecta esto y muestra SyntaxError antes de ejecutar nada\n\nEl depurador de VSCode (y de cualquier IDE) solo funciona con el programa en ejecución. Los errores de sintaxis impiden que el programa arranque, por lo que el depurador nunca puede interceptarlos.\n\nEn cambio, el depurador SÍ puede localizar:\n  • Errores de ejecución (runtime): ocurren durante la ejecución (ZeroDivisionError, IndexError, FileNotFoundError...)\n  • Errores de lógica: el programa corre pero da resultados incorrectos"
+    },
+    "q5": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Las herramientas de depuración permiten localizar:\n\n1. ERRORES DE EJECUCIÓN (runtime errors): excepciones que ocurren mientras el programa se está ejecutando:\n   • ZeroDivisionError: división entre cero\n   • IndexError / KeyError: acceso a índice/clave inexistente\n   • FileNotFoundError: fichero no encontrado\n   • TypeError: operación con tipo incorrecto\n   • AttributeError: atributo o método inexistente\n\n2. ERRORES DE LÓGICA: el código corre sin errores pero el resultado es incorrecto. Ej: una variable acumula mal los valores porque hay un = en lugar de +=.\n\n3. ERRORES DE ESTADO: variables con valores inesperados en un momento del flujo. El depurador permite ver los valores exactos en cada paso.\n\nNO detecta (los detecta el intérprete, no el depurador):\n   • Errores de SINTAXIS (SyntaxError): el programa ni siquiera arranca"
+    },
+    "q6": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Modos de apertura con open() en Python:\n\n  'r'   → Solo lectura. Cursor al INICIO. Error (FileNotFoundError) si el fichero no existe.\n          f = open('datos.txt', 'r')\n\n  'w'   → Escritura. BORRA todo el contenido existente. Cursor al inicio.\n          Crea el fichero si no existe.\n          f = open('datos.txt', 'w')\n\n  'a'   → Append (añadir). Escritura al FINAL, sin borrar lo existente. Cursor al final.\n          Crea el fichero si no existe.\n          f = open('datos.txt', 'a')\n\n  'r+'  → Lectura Y escritura. Cursor al INICIO. El fichero debe existir.\n          f = open('datos.txt', 'r+')\n\n  'x'   → Creación exclusiva. Crea un fichero nuevo. Si ya existe: FileExistsError.\n          f = open('datos.txt', 'x')\n\nSe puede añadir 'b' para modo binario: 'rb', 'wb', etc.\nSiempre mejor usar el gestor de contexto: with open('f.txt', 'r') as f:"
+    },
+    "q7": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Marcas importantes al trabajar con ficheros de texto:\n\n1. \\n (salto de línea / newline): marca el final de cada línea de texto. Al leer líneas con readline() o el bucle for, cada línea incluye el \\n al final — hay que hacer .strip() para quitarlo. En Windows el fichero puede tener \\r\\n; Python en modo texto lo normaliza a \\n automáticamente.\n\n2. EOF (End of File / fin de fichero): no es un carácter que leas, sino la señal de que no hay más datos. En Python: cuando read() devuelve '' (cadena vacía), readline() devuelve '', o el bucle for termina.\n\n3. \\t (tabulación): carácter de tabulación horizontal, frecuente en ficheros CSV o de datos delimitados.\n\n4. \\r (retorno de carro): en Windows aparece antes del \\n (\\r\\n). Puede causar problemas al procesar líneas si no se hace strip().\n\n5. Codificación (encoding): si el fichero contiene tildes, eñes o caracteres especiales, hay que especificar: open('f.txt', 'r', encoding='utf-8') para evitar errores de decodificación."
+    },
+    "q8": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Un módulo en Python es simplemente un fichero .py que contiene funciones (y/o variables/clases). Para crear uno propio:\n\n1. Creas un fichero, por ejemplo 'mi_modulo.py':\n\n   # mi_modulo.py\n   def saludar(nombre):\n       print(f\"Hola, {nombre}\")\n\n   def suma(a, b):\n       return a + b\n\n2. En otro fichero del MISMO directorio lo importas:\n\n   # main.py\n   import mi_modulo\n   mi_modulo.saludar(\"Ana\")   # Hola, Ana\n   resultado = mi_modulo.suma(3, 4)  # 7\n\n   # O importando funciones concretas:\n   from mi_modulo import suma\n   print(suma(3, 4))  # 7 — sin prefijo\n\nPara qué sirve:\n• Organizar el código en ficheros separados según su función\n• Reutilizar funciones en varios scripts sin copiar y pegar\n• Facilitar el mantenimiento (cambias el módulo y afecta a todos los que lo usan)\n• En el proyecto: tener un módulo con las funciones de ping, otro con las de red, otro con el XML, etc."
+    },
+    "q9": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "En Python NO existe el #include de C. En su lugar se usa import.\n\nForma 1 — importar el módulo entero:\n  import subprocess\n  subprocess.run([\"ping\", \"8.8.8.8\"])   # se accede con el prefijo del módulo\n\nForma 2 — importar funciones/clases concretas:\n  from subprocess import run\n  run([\"ping\", \"8.8.8.8\"])              # sin prefijo, se usa directamente\n\nForma 3 — importar varias cosas a la vez:\n  from os import path, getcwd\n  from subprocess import run, PIPE\n\nForma 4 — importar con alias:\n  import subprocess as sp\n  sp.run([\"ping\", \"8.8.8.8\"])\n\nEjemplo del proyecto:\n  import subprocess          # para lanzar comandos del SO\n  import os                  # para rutas y directorios\n  import xml.etree.ElementTree as ET  # para generar/leer XML\n\nDiferencia clave con C:\n  En C: #include <stdio.h> incluye FÍSICAMENTE el fichero de cabecera\n  En Python: import carga el módulo en memoria una sola vez y crea una referencia"
+    },
+    "q10": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Equivalencias entre funciones de C y métodos de Python para cadenas:\n\nC: strlen(s)     →  Python: len(s)\n   Mide la longitud (número de caracteres)\n   len(\"hola\")  →  4\n   len(\"\")      →  0\n\nC: strcat(s1,s2) →  Python: s1 + s2   o   s1 += s2\n   Concatena dos cadenas\n   \"hola\" + \" mundo\"  →  \"hola mundo\"\n   s = \"IP: \";  s += \"192.168.1.1\"   →  \"IP: 192.168.1.1\"\n\nC: strstr(s,sub) →  Python: sub in s   (True/False)\n                            s.find(sub)  (posición o -1)\n   Comprueba/busca subcadena\n   \"TTL\" in salida_ping       →  True si hay conectividad\n   \"192.168\".find(\"168\")      →  4\n\nC: strtok(s,sep) →  Python: s.split(sep)\n   Divide por separador; devuelve LISTA\n   \"a,b,c\".split(\",\")         →  [\"a\",\"b\",\"c\"]\n   \"ip mascara gw\".split()    →  [\"ip\",\"mascara\",\"gw\"]\n   \"ip:192.168.1.1\".split(\":\") →  [\"ip\",\"192.168.1.1\"]"
+    },
+    "q11": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Conversión cadena → entero:  int(cadena)\nConversión entero → cadena:  str(entero)\n\nEjemplos:\n  n = int(\"42\")          # n es el entero 42\n  n = int(\"150\")         # n es el entero 150\n  n = int(input(\"Edad: \")) # convierte lo que escribe el usuario a entero\n\n  s = str(255)           # s es la cadena \"255\"\n  s = str(192) + \".\" + str(168) + \".\" + str(1) + \".\" + str(1)  # \"192.168.1.1\"\n\nUso típico en el proyecto:\n  # Los puertos, tiempos y contadores llegan como cadena cuando se leen de un fichero\n  tiempo_ms = int(linea.split(\"=\")[1].strip().replace(\"ms\",\"\"))  # \"42ms\" → 42\n\nOJO — errores comunes:\n  int(\"42ms\")    → ValueError (tiene letras, no funciona directamente)\n  int(\"3.14\")    → ValueError (tiene punto decimal — usar float() en su lugar)\n  int(\" 42 \")    → 42 (los espacios al principio/final se ignoran automáticamente)"
+    },
+    "q12": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "La redirección > captura la SALIDA ESTÁNDAR de un comando y la escribe en un fichero (sobrescribiendo si ya existe). >> añade al final sin borrar.\n\nDesde la terminal (CMD):\n  ping 8.8.8.8 > c:/resultado.txt          # salida al fichero\n  ipconfig /all > c:/configred.txt\n\nDesde Python — MÉTODO 1 (shell=True, más sencillo):\n  import subprocess\n  subprocess.run(\"ping 8.8.8.8 > c:/resultado.txt\", shell=True)\n  subprocess.run(\"ipconfig /all > c:/configred.txt\", shell=True)\n\nDesde Python — MÉTODO 2 (stdout al fichero, más robusto):\n  import subprocess\n  with open(\"c:/resultado.txt\", \"w\") as f:\n      subprocess.run([\"ping\", \"8.8.8.8\"], stdout=f, text=True)\n\nUso en el proyecto:\n  • Guardar salida de 'ping <ip>' para analizar si hay conectividad (buscar 'TTL')\n  • Guardar salida de 'ipconfig /all' para extraer IP, máscara y puerta de enlace\n  • Guardar salida de 'getmac' para obtener direcciones MAC\n  • Guardar salida de 'tracert <dns>' para contar saltos y desempatar DNS"
+    },
+    "q13": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Comando usado para desempatar: TRACERT\n\nCuándo se usa: cuando dos DNS tienen el mismo tiempo de respuesta (misma velocidad en milisegundos).\n\nCómo funciona el desempate:\n  1. Se lanza tracert <IP_del_DNS> para cada DNS empatado\n  2. Se guarda la salida en un fichero y se lee desde Python\n  3. Se cuenta el número de SALTOS (hops = líneas numeradas) hasta llegar al DNS\n  4. Gana el DNS con MENOS saltos — menos saltos = camino más corto en la red = más eficiente\n\nEjemplo de salida de tracert:\n   1   <1 ms   <1 ms   <1 ms  192.168.1.1     ← router local\n   2    5 ms    4 ms    5 ms  10.0.0.1\n   3    8 ms    8 ms    9 ms  8.8.8.8         ← DNS destino (3 saltos)\n\nDesde Python:\n  subprocess.run(\"tracert 8.8.8.8 > c:/tracert.txt\", shell=True)\n  # luego se lee el fichero y se cuentan las líneas que empiezan por número"
+    },
+    "q14": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Reglas para que un documento XML esté BIEN FORMADO:\n\n1. UN ÚNICO ELEMENTO RAÍZ que envuelva a todos los demás.\n   ✓ <red> <adaptador/> </red>\n   ✗ <ip/> <mascara/>   ← dos elementos raíz, incorrecto\n\n2. TODA etiqueta de apertura tiene su cierre: <tag>...</tag> o forma vacía <tag/>\n   ✓ <ip>192.168.1.1</ip>\n   ✗ <ip>192.168.1.1    ← sin cerrar\n\n3. Anidamiento CORRECTO (sin cruzar etiquetas):\n   ✓ <a><b></b></a>\n   ✗ <a><b></a></b>     ← cruzadas, incorrecto\n\n4. Nombres de etiquetas son SENSIBLES A MAYÚSCULAS:\n   <IP> y <ip> y <Ip> son tres etiquetas distintas\n\n5. Valores de atributos entre COMILLAS:\n   ✓ <adaptador nombre=\"Ethernet\">\n   ✗ <adaptador nombre=Ethernet>\n\n6. Caracteres especiales como ENTIDADES XML:\n   <  →  &lt;      >  →  &gt;\n   &  →  &amp;     \"  →  &quot;\n\nNota: la indentación y los saltos de línea NO son requisito de 'bien formado' — son solo para legibilidad."
+    },
+    "q15": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Imprime: La cadena\n\nPor qué:\n  s = \"La cadena es mia\"\n  len(\"La cadena\") → 9   (cuenta los caracteres: L,a,' ',c,a,d,e,n,a)\n  s[:9] → toma los primeros 9 caracteres de s\n\n  \"La cadena es mia\"\n   0123456789...\n  s[:9] = \"La cadena\"\n\n  print(s) imprime: La cadena\n\nClave: el slice s[:n] devuelve desde el inicio hasta la posición n (sin incluirla)."
+    },
+    "q16": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Imprime: LA cAdena es mia\n\nPor qué:\n  cadena = \"La cadena es mia\"\n  cadena.replace(\"a\", \"A\", 2) reemplaza solo las PRIMERAS 2 apariciones de 'a' por 'A'.\n\n  Posición 1: 'a' en \"La\" → \"LA cadena es mia\"\n  Posición 4: 'a' en \"cAdena\" (la primera 'a' de 'cadena') → \"LA cAdena es mia\"\n  La tercera 'a' (en \"cadena\"), la 'a' de \"es\" (no hay) y la 'a' de \"mia\" NO se tocan.\n\n  Resultado: \"LA cAdena es mia\"\n\nClave: el tercer argumento de str.replace(old, new, count) limita el número máximo de sustituciones."
+    },
+    "q17": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Primer print (con \\n interpretados como saltos de línea):\n  La\n  cadena\n  es\n  mia\n\nSegundo print (después de replace(\"\\n\", \" \")):\n  La cadena es mia\n\nPor qué:\n  La cadena original contiene \\n literales que Python interpreta como saltos de línea al hacer print.\n  Después de replace(\"\\n\", \" \") todos los saltos se sustituyen por espacios, quedando todo en una línea."
+    },
+    "q18": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Imprime: comando.t\n\nPor qué:\n  cad = \"comando.txt\"   → 11 caracteres: c,o,m,a,n,d,o,.,t,x,t\n  cad[:-2]              → slice que quita los últimos 2 caracteres ('x' y 't')\n  Resultado: \"comando.t\"\n\nUso típico en el proyecto: eliminar los últimos caracteres o la extensión de un nombre de fichero para procesarlo.\nEjemplo: con \"datos.txt\", quitar solo los 2 últimos caracteres con [:-2] da \"datos.txt\"[:-2] → \"datos.t\" (igual que el ejercicio: \"comando.txt\"[:-2] → \"comando.t\"). Si en cambio quisieras quitar la extensión completa \".txt\" (4 caracteres) usarías [:-4]: \"datos.txt\"[:-4] → \"datos\"."
+    },
+    "q19": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "La variable i cuenta el número de SALTOS DE LÍNEA (\\n) en el fichero, lo que equivale al número de LÍNEAS del fichero (asumiendo que cada línea termina en \\n, incluida posiblemente la última).\n\nPor qué:\n  fp.read() lee TODO el contenido del fichero como una sola cadena.\n  El bucle for c in fp.read() itera CARÁCTER A CARÁCTER.\n  Cada vez que el carácter es \\n (fin de línea), incrementa i.\n  Al final, i = número de saltos de línea = número de líneas.\n\nSi el fichero c:/a/ips.txt tiene:\n  192.168.1.1\\n\n  8.8.8.8\\n\n  1.1.1.1\\n\n→ hay 3 saltos de línea → i = 3 → imprime 3\n\nEn el proyecto esto se usaría para saber cuántas IPs hay en el fichero."
+    },
+    "q20": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "import subprocess\nsubprocess.run(\"dir d:/archivos > c:/listado.txt\", shell=True)\n\nExplicación:\n  • shell=True permite usar la redirección > (es sintaxis del shell CMD, no de subprocess directamente)\n  • 'dir d:/archivos' lista el contenido de la carpeta d:/archivos\n  • '> c:/listado.txt' redirige la salida al fichero c:/listado.txt (lo crea si no existe, lo sobreescribe si ya existe)\n\nAlternativa con stdout:\n  import subprocess\n  with open(\"c:/listado.txt\", \"w\") as f:\n      subprocess.run([\"dir\", \"d:/archivos\"], stdout=f, shell=True, text=True)"
+    },
+    "q21": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "import subprocess\nsubprocess.run(\"ping 192.168.1.1 > D:/redireccion/comandoredireccion.txt\", shell=True)\n\nExplicación:\n  • Se sustituye 192.168.1.1 por la IP que se quiera hacer ping\n  • shell=True es necesario para usar la redirección >\n  • El fichero de destino es D:/redireccion/comandoredireccion.txt (la carpeta debe existir)\n\nSi la IP viene de una variable:\n  ip = \"8.8.8.8\"\n  subprocess.run(f\"ping {ip} > D:/redireccion/comandoredireccion.txt\", shell=True)"
+    },
+    "q22": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "import subprocess\nsubprocess.run(\"getmac /v > c:/adaptadores.txt\", shell=True)\n\nO con ipconfig /all (que también muestra los nombres de los adaptadores y más información):\n  subprocess.run(\"ipconfig /all > c:/adaptadores.txt\", shell=True)\n\nExplicación:\n  • La pregunta pide los NOMBRES de los adaptadores. 'getmac /v' añade la columna \"Nombre de la conexión\" (Ethernet, Wi-Fi...) y \"Adaptador de red\" (Intel(R) Ethernet...), que son precisamente esos nombres.\n  • OJO: 'getmac' SIN /v solo muestra la dirección física (MAC) y el \"Nombre de transporte\" (\\Device\\Tcpip_{GUID}), NO el nombre amigable del adaptador — por eso no sirve aquí.\n  • La salida se redirige a c:/adaptadores.txt para luego leerla y procesarla desde Python."
+    },
+    "q23": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Reconfigurar el DNS de un adaptador con netsh:\n  import subprocess\n  subprocess.run('netsh interface ip set dns name=\"Ethernet\" static 8.8.8.8', shell=True)\n\nDesglose del comando:\n  netsh                    → herramienta de configuración de red de Windows\n  interface ip set dns     → establece el servidor DNS de un adaptador\n  name=\"Ethernet\"          → nombre del adaptador (puede ser \"Wi-Fi\", \"Ethernet\", etc.)\n  static 8.8.8.8           → establece el DNS de forma estática (no automática por DHCP)\n\nPara DNS secundario:\n  subprocess.run('netsh interface ip add dns name=\"Ethernet\" 8.8.4.4 index=2', shell=True)\n\nPara volver a DNS automático (por DHCP):\n  subprocess.run('netsh interface ip set dns name=\"Ethernet\" dhcp', shell=True)\n\nNota: estos comandos requieren ejecutar la consola como ADMINISTRADOR."
+    },
+    "q24": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "with open(\"D:/redireccion/comandoredireccion.txt\", \"r\", encoding=\"latin-1\") as f:\n    contenido = f.read()\n\nif \"TTL\" in contenido or \"bytes=\" in contenido:\n    print(\"hay conectividad\")\nelse:\n    print(\"no hay conectividad\")\n\nExplicación:\n  • Se abre el fichero donde se guardó la salida del ping\n  • encoding='latin-1' (o 'cp1252') porque la salida de CMD en Windows puede tener caracteres especiales\n  • Si la respuesta contiene 'TTL' → el host respondió → hay conectividad\n  • Si contiene 'bytes=' → también indica respuesta exitosa\n  • Si la IP no responde, la salida tendrá 'tiempo de espera agotado' o 'Request timed out' → no hay conectividad\n\nAlternativa más directa (sin fichero intermedio):\n  resultado = subprocess.run(f\"ping {ip}\", shell=True, capture_output=True, text=True)\n  if \"TTL\" in resultado.stdout:\n      print(\"hay conectividad\")"
+    },
+    "q25": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "import subprocess\n\nip = input(\"Introduce una IP: \")\n\nresultado = subprocess.run(\n    f\"ping {ip}\",\n    shell=True,\n    capture_output=True,\n    text=True\n)\n\nif \"TTL\" in resultado.stdout or \"bytes=\" in resultado.stdout:\n    print(\"hay conectividad\")\nelse:\n    print(\"no hay conectividad\")\n\nExplicación:\n  • input() pide la IP al usuario (devuelve cadena)\n  • subprocess.run con capture_output=True captura la salida en resultado.stdout\n  • text=True hace que stdout sea una cadena (no bytes)\n  • Se busca 'TTL' en la respuesta (aparece si el host responde)\n  • La cadena con f\"ping {ip}\" inserta la IP en el comando\n\nVersión alternativa usando el código de retorno:\n  res = subprocess.run(f\"ping -n 1 {ip}\", shell=True, capture_output=True)\n  if res.returncode == 0:\n      print(\"hay conectividad\")\n  else:\n      print(\"no hay conectividad\")"
+    },
+    "q26": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "import subprocess\ndirectorio = input(\"Introduce el directorio a listar: \")\ncomando = \"dir \" + directorio           # (1) construye la cadena \"dir <directorio>\"\nsubprocess.run(comando, shell=True)     # (2) lanza el comando con subprocess\n\nExplicación de los huecos:\n  (1) comando = \"dir \" + directorio\n      Concatena la cadena 'dir ' con el directorio introducido por el usuario.\n      Si el usuario escribe 'c:/windows', comando queda: 'dir c:/windows'\n\n  (2) subprocess.run(comando, shell=True)\n      Lanza el comando en la shell de Windows (shell=True es necesario para 'dir',\n      que es un comando interno del CMD, no un ejecutable .exe)\n\nAlternativa con f-string:\n  comando = f\"dir {directorio}\"\n  subprocess.run(comando, shell=True)"
+    }
+  },
+  "totalScore": 0,
+  "maxScore": 65,
+  "globalFeedback": "Nota: 0/65 → 0/10. No se respondió ninguna pregunta — el examen se envió sin respuestas. Abre la sección 'Respuestas correctas' más abajo para estudiar las respuestas de las 26 preguntas. Las más importantes para el examen real son: breakpoints (q1-q3), modos de open() (q6), import/módulos (q8-q9), métodos de cadena (q10), subprocess+redirección (q12, q20-q21) y análisis del ping (q24-q25)."
+}

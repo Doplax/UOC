@@ -181,6 +181,7 @@ async function route() {
   try {
     if (parts.length === 0) { crumb([]); return viewDashboard(); }
     if (parts[0] === 'exam' && parts[1]) return viewExam(parts[1]);
+    if (parts[0] === 'study' && parts[1]) return viewStudy(parts[1]);
     if (parts[0] === 'attempt' && parts[1] && parts[2]) return viewAttempt(parts[1], parts[2]);
     if (parts[0] === 'compare' && parts[1]) return viewCompare(parts[1], (query.ids || '').split(',').filter(Boolean));
     if (parts[0] === 'settings') return viewSettings();
@@ -265,6 +266,7 @@ async function viewExam(examId) {
       <div class="btn-row">
         <button class="btn btn-primary" id="newComplete">▶ Nuevo intento (completo)</button>
         <button class="btn" id="newSim">🎲 Simulacro (4 preguntas · ${fmt.minutes || 30} min)</button>
+        <a class="btn btn-study" href="#/study/${esc(exam.id)}">📚 Solucionario (estudiar)</a>
       </div>
     </div>
 
@@ -355,6 +357,80 @@ async function startAttempt(examId, mode, scope) {
   }
 }
 
+// ---------- vista: solucionario (estudiar) ----------
+async function viewStudy(examId) {
+  const exam = await api('/exams/' + examId);
+  crumb([{ label: exam.id, href: '#/exam/' + exam.id }, { label: 'Solucionario', href: '#' }]);
+
+  let scope = 'todas';
+
+  function render() {
+    const sections = exam.sections.map(sec => {
+      const qs = sec.questions.filter(q => scope === 'todas' || (q.origin || 'anterior') === scope);
+      if (!qs.length) return '';
+      return `
+        <div class="study-section">
+          <div class="section-title">${esc(sec.title)}</div>
+          ${qs.map(renderStudyCard).join('')}
+        </div>`;
+    }).join('');
+
+    let cAnt = 0, cNue = 0, cAns = 0, cTot = 0;
+    exam.sections.forEach(s => s.questions.forEach(q => {
+      cTot++; (q.origin === 'nueva' ? cNue++ : cAnt++); if (q.answer) cAns++;
+    }));
+
+    appEl.innerHTML = `
+      <a class="back" href="#/exam/${esc(examId)}">← ${esc(exam.id)}</a>
+      <div class="panel">
+        <span class="card-code">${esc(exam.id)}</span>
+        <h1 style="margin-top:8px">📚 Solucionario · ${esc(exam.subject)}</h1>
+        <p class="panel-intro">Todas las preguntas con su respuesta correcta y detallada para estudiar. Léelas y repásalas; cuando estés listo, haz un intento y luego pídeme que lo corrija.</p>
+        <div class="chips">
+          <span class="chip">${cTot} preguntas</span>
+          <span class="chip">${cAns} con solución</span>
+        </div>
+        <div class="scope-pick" id="studyScope">
+          <span class="scope-lbl">Ver:</span>
+          <button class="scope-opt ${scope === 'todas' ? 'active' : ''}" data-scope="todas">Todas <b>${cTot}</b></button>
+          <button class="scope-opt ${scope === 'anterior' ? 'active' : ''}" data-scope="anterior">Anteriores <b>${cAnt}</b></button>
+          <button class="scope-opt ${scope === 'nueva' ? 'active' : ''}" data-scope="nueva">Nuevas <b>${cNue}</b></button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sm" id="expandAll">Desplegar todo</button>
+          <button class="btn btn-sm" id="collapseAll">Plegar todo</button>
+        </div>
+      </div>
+      ${sections}`;
+
+    const pick = document.getElementById('studyScope');
+    pick.querySelectorAll('.scope-opt').forEach(b => b.onclick = () => { scope = b.dataset.scope; render(); });
+    document.getElementById('expandAll').onclick = () => appEl.querySelectorAll('details.study-card').forEach(d => d.open = true);
+    document.getElementById('collapseAll').onclick = () => appEl.querySelectorAll('details.study-card').forEach(d => d.open = false);
+  }
+
+  render();
+}
+
+function renderStudyCard(q) {
+  const hasAns = q.answer && String(q.answer).trim();
+  return `
+    <details class="study-card q">
+      <summary class="study-summary">
+        <span class="q-num">${esc(q.n || '?')}</span>
+        ${q.origin ? `<span class="q-origin q-${esc(q.origin)}">${q.origin === 'nueva' ? 'nueva' : 'examen anterior'}</span>` : ''}
+        <span class="q-points">${fmtScore(q.points)} p</span>
+        <span class="study-prompt">${esc(q.prompt)}</span>
+      </summary>
+      <div class="study-body">
+        ${codeBlock(q)}
+        ${hasAns
+          ? `<pre class="model-body">${esc(q.answer)}</pre>`
+          : `<div class="answer-readonly empty">⏳ Solución en preparación. Vuelve a cargar en unos minutos.</div>`}
+      </div>
+    </details>`;
+}
+
 // ---------- vista: intento (runner / corregido) ----------
 async function viewAttempt(examId, attemptId) {
   const [exam, attempt] = await Promise.all([api('/exams/' + examId), api('/attempts/' + examId + '/' + attemptId)]);
@@ -419,6 +495,43 @@ async function viewAttempt(examId, attemptId) {
       ${orphanIds.map(id => renderOrphan(id, attempt, isCorrected)).join('')}`;
   }
 
+  // sección de respuestas correctas (solo en intento corregido)
+  let answersSection = '';
+  if (isCorrected) {
+    const answerCards = sectionsView.flatMap(sec =>
+      sec.questions.map(q => {
+        const corr = attempt.corrections && attempt.corrections[q.id];
+        // Prioriza la solución canónica de estudio; si no, la respuesta modelo de la IA.
+        const ma = (q.answer && String(q.answer).trim()) || (corr && corr.modelAnswer);
+        if (!ma) return '';
+        return `
+          <div class="model-answer-card">
+            <div class="q-head" style="flex-wrap:wrap;gap:6px">
+              <span class="q-num">${esc(q.n || '?')}</span>
+              ${q.origin ? `<span class="q-origin q-${esc(q.origin)}">${q.origin === 'nueva' ? 'nueva' : 'examen anterior'}</span>` : ''}
+              <span class="q-points">${fmtScore(q.points)} p</span>
+              <div class="model-q-prompt" style="flex:1 1 100%;font-weight:600;margin-top:4px">${esc(q.prompt)}</div>
+            </div>
+            ${codeBlock(q)}
+            <pre class="model-body" style="white-space:pre-wrap;word-break:break-word">${esc(ma)}</pre>
+          </div>`;
+      })
+    ).filter(Boolean);
+
+    if (answerCards.length) {
+      answersSection = `
+        <details class="answers-section" style="margin-top:32px">
+          <summary style="cursor:pointer;list-style:none;outline:none">
+            <div class="section-title" style="margin:0;display:flex;align-items:center;gap:10px">
+              📚 Respuestas correctas
+              <span style="font-size:0.8rem;font-weight:400;color:var(--muted)">(${answerCards.length} preguntas — pulsa para expandir)</span>
+            </div>
+          </summary>
+          <div style="padding-top:8px">${answerCards.join('')}</div>
+        </details>`;
+    }
+  }
+
   // pie
   const deleteBtnHtml = `<button class="btn btn-danger" id="deleteBtn">🗑 Eliminar intento</button>`;
   let foot = '';
@@ -438,7 +551,7 @@ async function viewAttempt(examId, attemptId) {
     </div>`;
   }
 
-  appEl.innerHTML = `<a class="back" href="#/exam/${esc(examId)}">← ${esc(exam.id)}</a>${head}${body}${foot}`;
+  appEl.innerHTML = `<a class="back" href="#/exam/${esc(examId)}">← ${esc(exam.id)}</a>${head}${body}${answersSection}${foot}`;
 
   if (attempt.status === 'draft') {
     setupRunner(examId, attemptId, attempt);
@@ -548,6 +661,17 @@ function renderQuestion(q, attempt, isCorrected, readOnly) {
     answerArea = `<textarea class="answer ${isCode ? 'code' : ''}" data-qid="${esc(q.id)}" placeholder="${isCode ? 'Escribe tu código aquí…' : 'Escribe tu respuesta aquí…'}">${esc(ans)}</textarea>`;
   }
 
+  // Solución canónica (estudio): disponible siempre que la pregunta la tenga.
+  // Oculta tras un desplegable para poder contrastar "al momento" sin chivarse.
+  let solutionBlock = '';
+  if (q.answer && String(q.answer).trim()) {
+    solutionBlock = `
+      <details class="solution">
+        <summary>🔍 Ver solución correcta</summary>
+        <pre class="model-body">${esc(q.answer)}</pre>
+      </details>`;
+  }
+
   let correctionBlock = '';
   if (corr) {
     correctionBlock = `
@@ -572,6 +696,7 @@ function renderQuestion(q, attempt, isCorrected, readOnly) {
       ${q.hint ? `<div class="q-hint">${esc(q.hint)}</div>` : ''}
       ${codeBlock(q)}
       ${answerArea}
+      ${solutionBlock}
       ${correctionBlock}
     </div>`;
 }

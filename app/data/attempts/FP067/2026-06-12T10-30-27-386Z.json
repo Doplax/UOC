@@ -1,0 +1,45 @@
+{
+  "attemptId": "2026-06-12T10-30-27-386Z",
+  "examId": "FP067",
+  "examSubject": "FP067 — Front End con Frameworks móviles",
+  "title": "Examen completo · exámenes anteriores",
+  "mode": "completo",
+  "scope": "anterior",
+  "durationMin": null,
+  "createdAt": "2026-06-12T10:30:27.386Z",
+  "submittedAt": "2026-06-12T10:34:31.587Z",
+  "correctedAt": "2026-06-12T11:10:00.000Z",
+  "status": "corrected",
+  "questionIds": ["q1", "q7", "q14", "q18"],
+  "answers": {
+    "q1": "maint.ts es el que arranca la lógica.\napp.routing es el que contiene las rutas de la aplicación.\n detailItem.component.html es la plantilla html del componente retailitem",
+    "q7": "es donde se guardan las variables de entorno en angular, para poder arrancar con diferentes entornos.",
+    "q14": "onWrite para escrribir un valor en firebase\nonUpdate para actualizarlo",
+    "q18": "en todo caso seria item from items"
+  },
+  "corrections": {
+    "q1": {
+      "score": 1.5,
+      "feedback": "Parcialmente correcto. 'maint.ts' tiene un typo (es main.ts). El nombre del componente es DetailItem, no 'retailitem'. Falta mencionar que app.routing.module.ts también carga los componentes para cada ruta.",
+      "modelAnswer": "• main.ts: punto de entrada de la aplicación Angular. Llama a platformBrowserDynamic().bootstrapModule(AppModule) para arrancar Angular en el navegador.\n\n• app.routing.module.ts: define las rutas de la app — qué URL corresponde a qué componente. Contiene el array de Routes y se importa en AppModule con RouterModule.forRoot(routes).\n  Ejemplo:\n    { path: 'detail/:id', component: DetailItemComponent }\n\n• detailItem.component.html: plantilla HTML del componente DetailItemComponent. Define la estructura visual (HTML + directivas Angular) que se renderiza cuando el usuario navega a esa ruta."
+    },
+    "q7": {
+      "score": 1.0,
+      "feedback": "Parcialmente correcto. Sí guarda variables de entorno, pero en el contexto de Firebase específicamente almacena las credenciales de conexión — no solo 'el entorno'.",
+      "modelAnswer": "environment.ts almacena variables de configuración por entorno (development/production). En el contexto de Firebase contiene las credenciales de conexión que se obtienen de la consola de Firebase:\n\nexport const environment = {\n  production: false,\n  firebase: {\n    apiKey: \"AIza...\",\n    authDomain: \"miproyecto.firebaseapp.com\",\n    projectId: \"miproyecto\",\n    storageBucket: \"miproyecto.appspot.com\",\n    messagingSenderId: \"123456\",\n    appId: \"1:123456:web:abc\"\n  }\n};\n\nEstas credenciales se usan en app.module.ts:\n  AngularFireModule.initializeApp(environment.firebase)\n\nAl compilar para producción, Angular sustituye automáticamente environment.ts por environment.prod.ts."
+    },
+    "q14": {
+      "score": 1.0,
+      "feedback": "Error conceptual: onWrite y onUpdate no son para 'escribir' y 'actualizar' directamente. Son TRIGGERS (disparadores) que escuchan cambios en Firestore — son eventos del servidor, no llamadas del cliente.",
+      "modelAnswer": "onWrite() y onUpdate() son triggers de Cloud Functions que se ejecutan automáticamente en el servidor cuando ocurre algo en Firestore.\n\nonWrite(): se dispara ante CUALQUIER escritura en un documento:\n  • Cuando se CREA un documento\n  • Cuando se ACTUALIZA un documento\n  • Cuando se BORRA un documento\n  Recibe: change.before (estado anterior) y change.after (estado nuevo)\n\nonUpdate(): se dispara SOLO cuando se actualiza un documento existente.\n  NO se activa en creaciones ni en borrados.\n  Recibe: change.before y change.after (ambos con datos)\n\nEjemplo de uso:\n  exports.notificar = functions.firestore\n    .document('jugadores/{id}')\n    .onUpdate((change, context) => {\n      // enviar notificación push via FCM\n    });\n\nOtros triggers relacionados:\n  onCreate() → solo en creaciones\n  onDelete() → solo en borrados"
+    },
+    "q18": {
+      "score": 1.5,
+      "feedback": "Identificaste el error principal (from → of) pero la corrección está incompleta: falta 'let' antes de la variable de bucle, y la variable se llama 'items' pero en el cuerpo se usa 'item'.",
+      "modelAnswer": "Hay DOS errores en el código original:\n\nCódigo con errores:\n  <li *ngFor=\"let items from item\">\n    <span>{{item.id}}</span>{{item.name}}\n\nError 1: 'from' debe ser 'of' (sintaxis de *ngFor)\nError 2: la variable de bucle es 'items' pero en el cuerpo se usa 'item' — deben coincidir\n\nCódigo corregido:\n  <ul>\n    <li *ngFor=\"let item of items\">\n      <span class=\"badge\">{{item.id}}</span>{{item.name}}\n    </li>\n  </ul>\n\nRegla: *ngFor=\"let <variable_singular> of <array_plural>\"\n  → let item of items\n  → let jugador of jugadores\n  → let producto of productos"
+    }
+  },
+  "totalScore": 5,
+  "maxScore": 10,
+  "globalFeedback": "Nota: 5/10 → APROBADO JUSTO. Tienes nociones básicas de los ficheros Angular y de la sintaxis de templates, pero los conceptos de Cloud Functions (triggers vs llamadas directas) y los detalles de Firebase (credenciales en environment.ts) necesitan más repaso. Para el examen real, practica escribir *ngFor y *ngIf de memoria sin errores de sintaxis, y aprende los 4 triggers de Cloud Functions (onCreate, onUpdate, onDelete, onWrite) con sus diferencias."
+}

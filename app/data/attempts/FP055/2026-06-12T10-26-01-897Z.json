@@ -1,0 +1,121 @@
+{
+  "attemptId": "2026-06-12T10-26-01-897Z",
+  "examId": "FP055",
+  "examSubject": "FP.055 — Introducción a las bases de datos",
+  "title": "Examen completo · exámenes anteriores",
+  "mode": "completo",
+  "scope": "anterior",
+  "durationMin": null,
+  "createdAt": "2026-06-12T10:26:01.897Z",
+  "submittedAt": "2026-06-12T10:30:14.135Z",
+  "correctedAt": "2026-06-12T11:10:00.000Z",
+  "status": "corrected",
+  "questionIds": [
+    "q4", "q5", "q6", "q9", "q10", "q11", "q12",
+    "q14", "q15", "q16", "q17", "q20", "q21", "q22", "q23", "q24", "q25"
+  ],
+  "answers": {
+    "q4": "cuando de una entidad creas una nueva usando la vieja como molde para extenderla",
+    "q5": "es una propiedad que esta relacionada con otra entidad, como por ejemplo un coche que tiene la relación con un seguro",
+    "q6": "-",
+    "q9": "-",
+    "q10": "-",
+    "q11": "-",
+    "q12": "-",
+    "q14": "Use Clientes where Unidades > 300 and nitratopotasico ",
+    "q15": "esta pregnta no la entiendo",
+    "q16": "-",
+    "q17": "-",
+    "q20": "no la entiendo, explicamela"
+  },
+  "corrections": {
+    "q4": {
+      "score": 1.5,
+      "feedback": "Buena idea general. Falta mencionar los tipos de herencia (total/parcial, exclusiva/solapada).",
+      "modelAnswer": "La herencia entre entidades (generalización/especialización) permite que una entidad hija herede los atributos de la entidad padre y añada los suyos propios.\n\nEjemplo:\n  PERSONA(NIF, nombre, apellidos)\n    ├── EMPLEADO(salario, fecha_alta)    ← hereda NIF, nombre, apellidos\n    └── CLIENTE(descuento, email)        ← hereda NIF, nombre, apellidos\n\nTipos de herencia:\n• Total: todos los registros del padre tienen subtipo (toda Persona es Empleado o Cliente)\n• Parcial: puede haber registros del padre sin subtipo\n• Exclusiva: una instancia solo puede ser de UN subtipo (o Empleado o Cliente, no ambos)\n• Solapada: una instancia puede pertenecer a varios subtipos a la vez"
+    },
+    "q5": {
+      "score": 0.5,
+      "feedback": "Confusión: un atributo de relación pertenece a la RELACIÓN (el vínculo entre entidades), no a ninguna de las entidades en sí.",
+      "modelAnswer": "Un atributo de relación es un atributo que pertenece a la RELACIÓN entre dos entidades — no tiene sentido en ninguna entidad por separado, solo en el contexto de esa relación.\n\nEjemplo:\n  CLIENTE ──COMPRA── PRODUCTO\n\nLa relación COMPRA tiene los atributos:\n  • fecha_compra\n  • cantidad\n\nEstos atributos no son ni del CLIENTE ni del PRODUCTO. Pertenecen al acto concreto de comprar.\n\nEn el modelo relacional se convierten en columnas de la tabla intermedia:\n  COMPRA(NIF_cliente FK, Codigo_producto FK, fecha_compra, cantidad)"
+    },
+    "q6": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "1FN (Primera Forma Normal): todos los atributos contienen valores atómicos (un solo valor por celda). No hay grupos repetitivos ni atributos multivaluados.\n  Violación: telefono1, telefono2, telefono3 en la misma fila.\n  Solución: tabla separada TELEFONOS(NIF FK, telefono).\n\n2FN (Segunda Forma Normal): cumple 1FN y todos los atributos no clave dependen de TODA la clave primaria (no de una parte de ella). Solo aplica cuando la PK es compuesta.\n  Violación: COMPRA(NIF_cliente, Cod_prod, nombre_cliente, cantidad) — nombre_cliente solo depende de NIF_cliente, no de la PK completa.\n  Solución: separar CLIENTE(NIF, nombre) y COMPRA(NIF_cliente FK, Cod_prod FK, cantidad).\n\n3FN (Tercera Forma Normal): cumple 2FN y ningún atributo no clave depende de otro atributo no clave (sin dependencias transitivas).\n  Violación: EMPLEADO(id, cod_depto, nombre_depto) — nombre_depto depende de cod_depto, no del id.\n  Solución: separar DEPARTAMENTO(cod_depto PK, nombre_depto) y EMPLEADO con cod_depto FK."
+    },
+    "q9": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Tablas resultantes:\n\nCLIENTES(NIF PK, nombre, apellidos)\n\nTELEFONOS_CLIENTES(NIF_cliente FK→CLIENTES, telefono;\n                    PK compuesta: NIF_cliente + telefono)\n→ Los teléfonos van en tabla aparte porque son multivaluados\n\nPRODUCTO(Codigo PK, nomProd)\n\nCOMPRA(NIF_cliente FK→CLIENTES, Codigo_producto FK→PRODUCTO,\n        fecha_compra, cantidad;\n        PK compuesta: NIF_cliente + Codigo_producto)\n→ Nace de la relación N:M entre CLIENTES y PRODUCTO\n→ fecha_compra y cantidad son atributos de relación"
+    },
+    "q10": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Tablas resultantes:\n\nPROFESORES(NIF PK, nombre, apellidos, telefono)\n\nDEPARTAMENTO(Codigo PK, nomDep, Num_despacho)\n\nPERTENECE(NIF_profesor FK→PROFESORES, Cod_departamento FK→DEPARTAMENTO,\n           fecha_ingreso;\n           PK compuesta: NIF_profesor + Cod_departamento)\n→ Nace de la relación N:M entre PROFESORES y DEPARTAMENTO\n→ fecha_ingreso es el atributo de relación\n→ Un profesor puede pertenecer a varios departamentos (N:M)"
+    },
+    "q11": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Tablas resultantes:\n\nCLIENTE(NIF PK, nombre, apellidos)\n\nTELEFONOS_CLIENTE(NIF FK→CLIENTE, telefono;\n                   PK compuesta: NIF + telefono)\n\nESPACIO(Codigo PK, nombre, ciudad, dirección, descripción, precio_dia)\n\nALQUILER(NIF_cliente FK→CLIENTE, Codigo_espacio FK→ESPACIO,\n          fecha_alquiler, numero_dias;\n          PK compuesta: NIF_cliente + Codigo_espacio + fecha_alquiler)\n→ fecha_alquiler y numero_dias son atributos de la relación"
+    },
+    "q12": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Tablas resultantes:\n\nSOCIO(ID_socio PK, nombre, apellidos, telefono, ...)\n\nEMBARCACION(ID_embarcacion PK, matricula, tipo, ...,\n             ID_socio FK→SOCIO)\n→ Relación 1:N: un SOCIO tiene N embarcaciones\n→ La FK va en la tabla del lado 'muchos' (EMBARCACION)\n\nAMARRE(ID_amarre PK, numero_amarre, ...,\n        ID_embarcacion FK→EMBARCACION,\n        lectura_luz, lectura_agua)\n→ Las lecturas pertenecen al amarre asignado a la embarcación"
+    },
+    "q14": {
+      "score": 0,
+      "feedback": "SQL incorrecto — la sintaxis no es válida. Necesita SELECT, FROM, JOIN y WHERE correctos.",
+      "modelAnswer": "SELECT c.NIF, c.nombre, c.apellidos\nFROM CLIENTES c\nINNER JOIN COMPRA co ON c.NIF = co.NIF_cliente\nINNER JOIN PRODUCTO p ON co.Codigo_producto = p.Codigo\nWHERE p.nomProd = 'nitrato potásico'\n  AND co.cantidad > 300;\n\nNota: hay que unir 3 tablas porque la información de quién compra qué está repartida entre CLIENTES, COMPRA y PRODUCTO."
+    },
+    "q15": {
+      "score": 0,
+      "feedback": "La pregunta pide profesores que pertenezcan a AMBOS departamentos a la vez. Se resuelve con dos JOINs a la misma tabla de relación.",
+      "modelAnswer": "SELECT p.NIF, p.nombre, p.apellidos\nFROM PROFESORES p\nINNER JOIN PERTENECE pe1 ON p.NIF = pe1.NIF_profesor\nINNER JOIN DEPARTAMENTO d1 ON pe1.Cod_departamento = d1.Codigo\nINNER JOIN PERTENECE pe2 ON p.NIF = pe2.NIF_profesor\nINNER JOIN DEPARTAMENTO d2 ON pe2.Cod_departamento = d2.Codigo\nWHERE d1.nomDep = 'Matemáticas'\n  AND d2.nomDep = 'Física';\n\nClave: se hace JOIN dos veces con PERTENECE y DEPARTAMENTO — una vez para Matemáticas y otra para Física. Solo devuelve profesores que aparezcan en AMBOS departamentos."
+    },
+    "q16": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "SELECT df.ProductoID, df.FacturaID\nFROM DetallesFactura df\nINNER JOIN Productos p ON df.ProductoID = p.ProductoID\nWHERE (df.cantidad * p.precio) > 3000;\n\nNota: el cálculo precio×cantidad se hace en el WHERE directamente con los campos de cada tabla."
+    },
+    "q17": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "SELECT p.ProductoID, p.nombre, SUM(df.cantidad) AS total_vendido\nFROM Productos p\nINNER JOIN DetallesFactura df ON p.ProductoID = df.ProductoID\nGROUP BY p.ProductoID, p.nombre\nHAVING SUM(df.cantidad) > 150;\n\nClave: GROUP BY agrupa por producto, SUM suma todas sus ventas, HAVING filtra los que superen 150."
+    },
+    "q20": {
+      "score": 0,
+      "feedback": "La consulta tiene un error que debes identificar: GROUP BY m agrupa por la TABLA entera, no por una columna.",
+      "modelAnswer": "Error: GROUP BY m intenta agrupar por toda la tabla Marca en lugar de por una columna concreta. En MySQL modo estricto y en PostgreSQL esto lanza ERROR.\n\nLo correcto sería GROUP BY p.nomProd (o p.codProducto).\n\nVersión corregida:\n  SELECT p.nomProd AS producto, COUNT(m.codMarca) AS num_marcas\n  FROM producto p\n  INNER JOIN Marca m ON p.codProducto = m.codProducto\n  GROUP BY p.nomProd\n  ORDER BY p.nomProd;\n\nQué devolvería: una fila por producto con su nombre y el número de marcas asociadas (filas de Marca con codMarca no nulo unidas a ese producto), ordenadas alfabéticamente.\n\nMatiz importante de BD: COUNT(m.codMarca) cuenta filas no nulas E INCLUYE repeticiones; NO cuenta valores distintos. Para contar marcas DISTINTAS habría que usar COUNT(DISTINCT m.codMarca)."
+    },
+    "q21": {
+      "score": 0,
+      "feedback": "No respondida. Atención: esta consulta tiene DOS errores, no uno (GROUP BY s y SUM(e.salary)).",
+      "modelAnswer": "Error: la consulta del enunciado tiene DOS errores.\n\n1) GROUP BY s no es válido: 's' es el alias de la tabla salaries (no es una columna). Hay que agrupar por una columna, no por una tabla/alias. En MySQL produce «Unknown column 's' in group statement». (Mismo tipo de fallo que GROUP BY m de la pregunta anterior, pero OJO: aquí s = salaries, NO employees; el alias de employees es e.)\n\n2) SUM(e.salary): la columna salary pertenece a la tabla salaries (alias s), no a employees (alias e). En el esquema clásico de la BD employees, la tabla employees no tiene columna salary, así que e.salary daría «Unknown column 'e.salary'». Debe ser SUM(s.salary).\n\nLo correcto sería:\n\n  SELECT e.first_name, e.last_name, SUM(s.salary) AS sueldo\n  FROM employees e\n  INNER JOIN salaries s ON e.emp_no = s.emp_no\n  GROUP BY e.emp_no, e.first_name, e.last_name\n  ORDER BY e.last_name;\n\nQué devolvería: nombre, apellido y suma total del salario histórico por empleado, ordenados por apellido."
+    },
+    "q22": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Devuelve el NIF, nombre y apellidos de los clientes que, además de haber realizado al menos un alquiler (consecuencia de los INNER JOIN con ALQUILER y ESPACIO), cumplen las TRES condiciones del WHERE a la vez:\n  1. El espacio alquilado está en Madrid (e.ciudad = 'Madrid')\n  2. Ese alquiler duró más de 3 días (a.numero_dias > 3)\n  3. El coste total (numero_dias × precio_dia) supera 500€\n\nEn resumen: clientes que han alquilado espacios en Madrid en estancias largas y caras."
+    },
+    "q23": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Devuelve, para cada plan de socio que tenga MÁS de 1 socio:\n  • PLAN: nombre del plan\n  • NUMERO DE SOCIOS: cuántos socios tienen ese plan\n  • CUOTA MENSUAL: la cuota formateada con 2 decimales\n  • TOTAL: ingresos totales de ese plan (num_socios × cuota), con 2 decimales\n\nEl HAVING COUNT(SOCIO.ID_PLAN) > 1 excluye los planes con 0 o 1 socio.\n\nEjemplo de fila resultado:\n  Plan Básico | 5 socios | 29,99 | 149,95"
+    },
+    "q24": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "GRANT SELECT, DELETE ON BdQuimica.clientes TO 'auditoria'@'localhost';\n\nSignificado: concede al usuario 'auditoria' (conectándose desde localhost) los permisos de:\n  • SELECT → puede consultar/leer filas de la tabla clientes\n  • DELETE → puede borrar filas de la tabla clientes\n\nOtros privilegios existentes:\n  INSERT, UPDATE, CREATE, DROP, ALTER, INDEX, REFERENCES,\n  ALL PRIVILEGES (todos), GRANT OPTION (puede conceder sus permisos a otros)"
+    },
+    "q25": {
+      "score": 0,
+      "feedback": "No respondida. Atención: la sentencia del enunciado usa TO pero la sintaxis correcta de REVOKE es FROM.",
+      "modelAnswer": "REVOKE DELETE ON BdGym.abonados FROM 'owner'@'localhost';\n(Nota: la sintaxis correcta es FROM, no TO)\n\nSignificado: retira al usuario 'owner' el permiso de DELETE sobre la tabla abonados de la base de datos BdGym. El usuario ya no podrá borrar filas de esa tabla, pero conserva los demás permisos que tuviera (SELECT, INSERT, etc.).\n\nPara retirar TODOS los permisos de una tabla:\n  REVOKE ALL PRIVILEGES ON BdGym.abonados FROM 'owner'@'localhost';"
+    }
+  },
+  "totalScore": 2,
+  "maxScore": 41,
+  "globalFeedback": "Nota: 2/41 → 0.5/10. Solo respondiste parcialmente herencia entre entidades y atributo de relación. Dejas en blanco todo el diseño E-R (tablas, PK, FK), el SQL y los privilegios. Para el examen real (4 preguntas en 30 min) necesitas dominar: 1) pasar relaciones N:M a tablas con PK compuesta y FK, 2) SELECT con JOIN + GROUP BY + HAVING, 3) GRANT/REVOKE. Lee las respuestas correctas de q9, q14 y q15 — son los tipos de preguntas que más caen en examen."
+}

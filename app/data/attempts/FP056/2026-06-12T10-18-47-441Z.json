@@ -1,0 +1,114 @@
+{
+  "attemptId": "2026-06-12T10-18-47-441Z",
+  "examId": "FP056",
+  "examSubject": "FP.056 — Programación orientada a objetos",
+  "title": "Examen completo · exámenes anteriores",
+  "mode": "completo",
+  "scope": "anterior",
+  "durationMin": null,
+  "createdAt": "2026-06-12T10:18:47.441Z",
+  "submittedAt": "2026-06-12T10:25:43.044Z",
+  "correctedAt": "2026-06-12T11:10:00.000Z",
+  "status": "corrected",
+  "questionIds": [
+    "q2", "q3", "q4", "q5", "q6", "q7", "q9",
+    "q10", "q11", "q12", "q13", "q14", "q16", "q17", "q24"
+  ],
+  "answers": {
+    "q2": "pondria una flecha desde una entidad a otra",
+    "q3": "la composicion es la forma en la qeu estructuras los objetos y los interconectas entre ellos\n\npor ejemplo un alumno puede estar vinculado a un aula para indicar que pertenece a este aula.",
+    "q4": "cuando una clase se extiende de otra. compartiendo las propiedades del padre y extendiendo esta con nuevas propiedades o funcionalidades",
+    "q5": "no lo se",
+    "q6": "no lo se ",
+    "q7": "cuando no se va a instanciar, simplemente se usa como modelo para extenderla y usar clases enrriquecidas con mas propiedades y estas si poder instanciarlas",
+    "q9": "saber cuales son las posibilidades que van a estar disponibles, y poder ver el circuito logico para llegar a ellas",
+    "q10": "-",
+    "q11": "-",
+    "q12": "-",
+    "q13": "-",
+    "q14": "-",
+    "q16": "-",
+    "q17": "-",
+    "q24": "-"
+  },
+  "corrections": {
+    "q2": {
+      "score": 0.5,
+      "feedback": "Describes la notación del diagrama (la flecha), pero la pregunta pide la implementación en Java. En Java la flecha del diagrama se traduce en un atributo del tipo de la clase relacionada.",
+      "modelAnswer": "En Java, una asociación se implementa añadiendo un atributo del tipo de la clase asociada:\n\nclass Alumno {\n    private Aula aula; // asociación\n\n    public Alumno(Aula aula) {\n        this.aula = aula;\n    }\n}\n\nEl objeto Aula se crea fuera y se pasa al Alumno. Si el Alumno desaparece, el Aula sigue existiendo."
+    },
+    "q3": {
+      "score": 0.5,
+      "feedback": "Lo que describes es AGREGACIÓN, no composición. La diferencia clave está en si el objeto contenido puede existir sin el contenedor.",
+      "modelAnswer": "COMPOSICIÓN: el objeto contenido NO puede existir sin el contenedor. El contenedor lo crea y lo destruye.\n\nclass Persona {\n    private Corazon corazon;\n    public Persona() {\n        this.corazon = new Corazon(); // lo crea él mismo\n    }\n}\n// Si Persona muere, Corazon también.\n\nAGREGACIÓN: los objetos existen de forma independiente. El contenedor recibe el objeto ya creado.\n\nclass Equipo {\n    private List<Jugador> jugadores;\n    public Equipo(List<Jugador> j) {\n        this.jugadores = j; // recibe objetos externos\n    }\n}\n// Si el Equipo desaparece, los Jugadores siguen existiendo."
+    },
+    "q4": {
+      "score": 1.5,
+      "feedback": "Correcto el concepto de herencia. Falta la relación con el polimorfismo.",
+      "modelAnswer": "Se usa herencia cuando una clase 'es un tipo de' otra (relación 'es-un'). En Java con extends.\n\nRelación con polimorfismo: gracias a la herencia, un objeto de la subclase puede tratarse como objeto de la superclase, y Java ejecutará el método correcto en tiempo de ejecución (binding dinámico).\n\nclass Animal { void hacerSonido() { System.out.println(\"...\"); } }\nclass Perro extends Animal {\n    void hacerSonido() { System.out.println(\"Guau\"); }\n}\n\nAnimal a = new Perro(); // polimorfismo: variable Animal, objeto Perro\na.hacerSonido();        // imprime \"Guau\" — ejecuta el método de Perro"
+    },
+    "q5": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "La cardinalidad indica cuántas instancias de una clase pueden relacionarse con instancias de otra.\n\nTipos:\n• 1       → exactamente uno (un empleado tiene 1 NIF)\n• 0..1    → cero o uno (un empleado puede tener 0 o 1 coche de empresa)\n• *  (0..*) → cero o muchos (un profesor imparte 0 o muchas asignaturas)\n• 1..*    → uno o muchos (una asignatura tiene al menos 1 alumno)\n\nEn el diagrama se anota en los extremos de la línea de relación entre las dos clases."
+    },
+    "q6": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Una clase asociativa es una clase que representa la relación entre otras dos clases y tiene atributos propios que no pertenecen a ninguna de las dos entidades por separado.\n\nEjemplo: la relación entre Alumno y Asignatura genera la clase asociativa Matricula:\n\nAlumno ——Matricula—— Asignatura\n\nMatricula tiene:\n  - nota: Float\n  - fecha_matricula: Date\n\nEstos atributos no son ni del Alumno ni de la Asignatura — solo tienen sentido en el contexto de esa matrícula concreta."
+    },
+    "q7": {
+      "score": 1.5,
+      "feedback": "Correcto que no se instancia y sirve de plantilla. Falta mencionar los métodos abstractos.",
+      "modelAnswer": "Se declara abstracta cuando la clase sirve como plantilla pero no tiene sentido instanciarla directamente. En Java se usa abstract.\n\nCaracterísticas:\n• No se puede hacer new ClaseAbstracta()\n• Puede tener métodos abstractos (solo firma, sin cuerpo) que las subclases ESTÁN OBLIGADAS a implementar\n• También puede tener métodos normales (con cuerpo)\n\nabstract class Figura {\n    abstract double area(); // sin cuerpo\n    void mostrar() { System.out.println(\"Área: \" + area()); } // con cuerpo\n}\n\nclass Circulo extends Figura {\n    double radio;\n    double area() { return Math.PI * radio * radio; } // obligatorio implementarlo\n}"
+    },
+    "q9": {
+      "score": 1,
+      "feedback": "La idea base es correcta pero muy vaga. Falta un ejemplo concreto.",
+      "modelAnswer": "Un diagrama de casos de uso muestra:\n• Qué puede hacer el sistema (casos de uso, representados con óvalos)\n• Quién lo hace (actores, representados con muñecos de palo)\n• Cómo se relacionan (include, extend, herencia de actor)\n\nFuncionalidad: capturar requisitos funcionales del sistema desde el punto de vista del usuario, identificar quién hace qué y cómo se relacionan las funcionalidades entre sí.\n\nEjemplo — Sistema de tienda online:\n  Actor: Cliente\n  Casos de uso: Buscar producto, Añadir al carrito, Realizar pago\n  Realizar pago →include→ Validar tarjeta (siempre ocurre)\n  Realizar pago ←extend← Aplicar descuento (solo si hay cupón)"
+    },
+    "q10": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Un actor es una entidad EXTERNA al sistema que interactúa con él. Puede ser:\n• Una persona (Cliente, Administrador, Empleado)\n• Un sistema externo (Pasarela de pago, API de correo)\n• Un proceso automático o temporizador\n\nSe representa como un muñeco de palo en el diagrama. El actor NO forma parte del sistema, solo interactúa con él a través de los casos de uso.\n\nEjemplo — sistema bancario:\n  Actores: Cliente, Empleado de banca, Sistema de seguridad (externo)\n  El Cliente puede: Consultar saldo, Retirar dinero, Transferir."
+    },
+    "q11": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "INCLUDE (obligatorio): el caso de uso base SIEMPRE ejecuta el caso incluido, sin excepción. La flecha va del base al incluido.\n  Ej: «Realizar pago» →include→ «Validar tarjeta»\n  (siempre se valida la tarjeta al pagar)\n\nEXTEND (opcional/condicional): el caso extendido puede o no ocurrir, dependiendo de una condición. La flecha va del extendido al base.\n  Ej: «Aplicar descuento» →extend→ «Realizar pago»\n  (el descuento solo se aplica si el cliente tiene un cupón)\n\nRegla rápida: si SIEMPRE ocurre → include. Si puede no ocurrir → extend."
+    },
+    "q12": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "La herencia de actor indica que un actor hijo hereda TODOS los casos de uso del actor padre y además tiene los suyos propios. Se representa con una flecha de herencia (triángulo vacío) apuntando del hijo al padre.\n\nEjemplo:\n  Usuario (padre): puede «Iniciar sesión» y «Ver catálogo»\n  Administrador (hijo, hereda de Usuario): además puede «Gestionar usuarios» y «Eliminar productos»\n\n  Administrador ──▷ Usuario\n\nEl Administrador puede hacer todo lo que hace el Usuario y más."
+    },
+    "q13": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "class Persona {\n    private String nombre;\n    private int edad;\n\n    public Persona(String nombre, int edad) {\n        this.nombre = nombre;\n        this.edad = edad;\n    }\n    public String getNombre() { return nombre; }\n    public int getEdad() { return edad; }\n}\n\nclass Empleado extends Persona {\n    private String empresa;\n    private double salario;\n\n    public Empleado(String nombre, int edad, String empresa, double salario) {\n        super(nombre, edad); // llama al constructor del padre\n        this.empresa = empresa;\n        this.salario = salario;\n    }\n    public String getEmpresa() { return empresa; }\n}"
+    },
+    "q14": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Agregación: la clase contenedora RECIBE el objeto ya creado (no lo crea ella). Los objetos contenidos pueden existir sin el contenedor.\n\nclass Jugador {\n    private String nombre;\n    public Jugador(String nombre) { this.nombre = nombre; }\n    public String getNombre() { return nombre; }\n}\n\nclass Equipo {\n    private List<Jugador> jugadores;\n\n    public Equipo(List<Jugador> jugadores) {\n        this.jugadores = jugadores; // recibe objetos ya creados\n    }\n}\n\n// Uso:\nList<Jugador> lista = new ArrayList<>();\nlista.add(new Jugador(\"Ana\"));\nEquipo equipo = new Equipo(lista); // los Jugadores existen antes del Equipo"
+    },
+    "q16": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "import java.util.ArrayList;\n\nclass Jugador {\n    private String nombre;\n    public Jugador(String nombre) { this.nombre = nombre; }\n    public String getNombre() { return nombre; }\n}\n\nclass Equipo {\n    private ArrayList<Jugador> jugadores = new ArrayList<>();\n\n    public void añadir(Jugador j) {\n        jugadores.add(j);        // añadir\n    }\n    public void eliminar(Jugador j) {\n        jugadores.remove(j);     // eliminar\n    }\n    public void listar() {\n        for (Jugador j : jugadores) {  // recorrer\n            System.out.println(j.getNombre());\n        }\n    }\n}"
+    },
+    "q17": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "El constructor es un método especial que se ejecuta automáticamente al crear un objeto con new. Tiene el mismo nombre que la clase y no declara tipo de retorno.\n\nclass Persona {\n    private String nombre;\n    private int edad;\n\n    // Constructor\n    public Persona(String nombre, int edad) {\n        this.nombre = nombre; // 'this.' distingue atributo del parámetro\n        this.edad = edad;\n    }\n}\n\n// Uso:\nPersona p = new Persona(\"Carlos\", 25); // llama al constructor\n\nSi no defines constructor, Java crea uno vacío por defecto."
+    },
+    "q24": {
+      "score": 0,
+      "feedback": "No respondida.",
+      "modelAnswer": "Pasos para implementar un diagrama de clases en Java:\n\n1. Identificar las clases → cada rectángulo del diagrama = una clase Java\n2. Definir atributos → campos private con su tipo\n3. Implementar herencia → la subclase usa extends SuperClase\n4. Implementar composición → el contenedor crea el objeto en su constructor (new)\n5. Implementar agregación → el contenedor recibe el objeto por parámetro (no lo crea)\n6. Implementar asociación → añadir atributo del tipo de la clase relacionada\n7. Añadir constructores, getters y setters a cada clase\n8. Implementar los métodos de negocio\n\nComponentes de un diagrama de clases:\n• Clases (rectángulos con nombre, atributos y métodos)\n• Relaciones: herencia (flecha con triángulo), composición (rombo relleno), agregación (rombo vacío), asociación (línea simple)\n• Cardinalidades en los extremos de las relaciones (1, *, 0..1, 1..*)"
+    }
+  },
+  "totalScore": 5,
+  "maxScore": 37.5,
+  "globalFeedback": "Nota: 5/37.5 puntos → 1.3/10. Conoces los conceptos básicos de herencia y clases abstractas, pero tienes lagunas importantes: no sabes implementar en Java las relaciones del diagrama (asociación, agregación, composición), y no respondiste nada de los diagramas de casos de uso ni del código Java. Para el examen real (solo 4 preguntas en 30 min) necesitas dominar: 1) herencia con extends/super, 2) composición vs agregación en código Java, 3) ArrayList, 4) constructores. Repasa las AAs 1 y 2."
+}
