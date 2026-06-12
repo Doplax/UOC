@@ -480,8 +480,12 @@ async function viewPastExams(examId) {
   try { data = await api('/pastexams/' + examId); }
   catch (e) {
     crumb([{ label: examId, href: '#/exam/' + examId }, { label: 'Exámenes anteriores', href: '#' }]);
+    const is404 = /404/.test(String(e && e.message));
     appEl.innerHTML = `<a class="back" href="#/exam/${esc(examId)}">← ${esc(examId)}</a>
-      <div class="empty-state">⏳ Los exámenes anteriores de ${esc(examId)} todavía se están preparando. Vuelve en unos minutos y recarga (Ctrl+F5).</div>`;
+      <div class="empty-state">
+        <p>No se han podido cargar los exámenes anteriores de ${esc(examId)}.</p>
+        ${is404 ? `<p style="color:var(--muted)">Si acabas de actualizar la app, <b>reinicia el servidor</b>: en la terminal pulsa <b>Ctrl+C</b> y ejecuta <code>npm start</code> otra vez (la ruta de exámenes anteriores es nueva y el servidor en marcha aún no la conoce).</p>` : `<p style="color:var(--muted)">${esc(e && e.message || 'Error desconocido')}</p>`}
+      </div>`;
     return;
   }
   crumb([{ label: data.id, href: '#/exam/' + data.id }, { label: 'Exámenes anteriores', href: '#' }]);
@@ -510,7 +514,9 @@ async function viewPastExams(examId) {
 async function viewPastExam(examId, pexamId) {
   let data;
   try { data = await api('/pastexams/' + examId); } catch (e) {
-    appEl.innerHTML = `<div class="empty-state">⏳ Aún no disponible. Recarga en unos minutos.</div>`;
+    const is404 = /404/.test(String(e && e.message));
+    appEl.innerHTML = `<a class="back" href="#/pastexams/${esc(examId)}">← Exámenes anteriores</a>
+      <div class="empty-state">No se ha podido cargar. ${is404 ? 'Reinicia el servidor (Ctrl+C y <code>npm start</code>): la ruta es nueva.' : esc(e && e.message || '')}</div>`;
     return;
   }
   const ex = (data.exams || []).find(e => e.id === pexamId);

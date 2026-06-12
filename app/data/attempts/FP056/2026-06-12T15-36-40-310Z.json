@@ -1,0 +1,119 @@
+{
+  "attemptId": "2026-06-12T15-36-40-310Z",
+  "examId": "FP056",
+  "examSubject": "FP.056 — Programación orientada a objetos",
+  "title": "Examen completo · exámenes anteriores",
+  "mode": "completo",
+  "scope": "anterior",
+  "durationMin": null,
+  "createdAt": "2026-06-12T15:36:40.310Z",
+  "submittedAt": "2026-06-12T16:37:01.604Z",
+  "correctedAt": "2026-06-12T17:05:00.000Z",
+  "status": "corrected",
+  "questionIds": [
+    "q2", "q3", "q4", "q5", "q6", "q7", "q9", "q10",
+    "q11", "q12", "q13", "q14", "q16", "q17", "q24"
+  ],
+  "answers": {
+    "q2": "lo haría con una flecha de A -> B.\n\na nivel de codigo lo haria pasandole una propiedad externa a un objeto, en el caso de alumno, le pasaria la referencia del numero de aula por ejemplo",
+    "q3": "La composicion es cuando instancias las propiedades dentro del contenedor, y en el momento en el que borras el contenedor, tambien se borran las relaciones que contenia. \nse unsa un rombo relleno para representarlo\n\nagregacion es cuando se le pasan desde fuera, por lo tanto en el momento en el que borras el contenedor, las propiedaes al venir de fuera no desaparecen.\nSe representa con un rombo hueco.",
+    "q4": "Se implementa cuando se quiere aprochechar las propiedades del padre pero anadiendo propiedades nuevas.\nEn el caso de Formas, por ejemplo Forma es la clase abstracta de la que se extenderian Cuadrado o triangulo. Es la base que se usa para construir encima otra cosa que tiene relacion con la primera como.\nEn el caso de perro seria una clase extendida de Animal.",
+    "q5": "Son las relaciones que hay entre las propiedades.\nAlgunos ejemplos son:\n1 a 1\n1 a muchos\nmuchos a muchos\n",
+    "q6": "es cuando se crea una relacion intermedia,\n\npor ejemplo en usuario y examen, nota seria una relación intermedia",
+    "q7": "La declararia cuando considero qeu debe ser un molde del que poder crear nuevas clases que partan de la primera aprovechando propiedades y funciones de la primera.\nen el caso de animal y perro, animal es la clase abstracta, y perro herada propiedades como patas, familia (caninos, gatos...)\nsi es carnivoro o hervivoro, y luego le anadiria propiedades como trastreo o cosas asi que no le pondria a un gato.",
+    "q9": "Es el documento funcional que declara las posibilidades que va a tener un programa, por ejemplo en un cajero, el diagrama de casos de uso recogeria cosas como que se puede hacer una retirada de dinero, un ingreso, un prestamo... y bajo que condiciones debe ocurrir cada uno de los casos",
+    "q10": "es una de las partes que interviene en un proceso. en un Banco, cliente es un actor, Banquero seria otro y un sistema de seguridad seria otro pero en este caso seria un agente externo",
+    "q11": "Include es cuando esa parte del proceso es obligatoria, como cuando se hace una transferencia y se comprueban los datos para que no haya errores.\nextend es cuando es opcional, como podria ser el caso de una comision en la transaccion, va a haber transacciones con comision y otras sin.",
+    "q12": "es cuando un actor hereda propiedades de otro. en el caso de empleado, cada departamento tendra unas propiedades diferentes entre departamentos, pero tienen propiedades comunes que heredan del actor empleado.",
+    "q13": "class Persona {\n  private int edad;\n  private String Nombre;\n\n  contructor(int edad, String nombre) {\n      this.edad= edad;\n      this.nombre = nombre;\n  }\n\n  public int getEdad(){\n    return edad;\n  }\n}\n\nclass Empleado {\n  private int sueldo;\n  private String Empresa;\n\n  contructor(int sueldo, int edad, String nombre, String empresa) {\n      super(nombre,edad)\n      this.empresa= empresa;\n      this.sueldo = sueldo;\n  }\n\npublic int getSueldo(){\n  return sueldo;\n}\n",
+    "q17": "Se usa para establecer las propiedades necesarias de un objeto para poder instanciar la clase:\n  contructor(int sueldo, int edad, String nombre, String empresa) {\n      super(nombre,edad)\n      this.empresa= empresa;\n      this.sueldo = sueldo;\n  }\n",
+    "q24": "Clases\nAtributos\nHerencia\nCoposicion\nAsociacion\nInterfaces\nCardinalidades\nmetodos"
+  },
+  "doubts": {
+    "q2": "",
+    "q3": "el rombo en un diagrama en que lado va? en el que recibe las propiedades o el que las envia?"
+  },
+  "corrections": {
+    "q2": {
+      "score": 1.5,
+      "feedback": "✓ BIEN: la asociación se implementa como un atributo que referencia a la otra clase y se pasa desde fuera; la flecha A→B del diagrama es correcta. ✗ MATIZ: el atributo debe guardar una referencia al OBJETO Aula (private Aula aula), no 'el número de aula' (eso sería un simple int, no una asociación).",
+      "modelAnswer": "class Alumno { private Aula aula; public Alumno(Aula aula){ this.aula = aula; } } — el objeto Aula vive por su cuenta y se pasa por el constructor."
+    },
+    "q3": {
+      "score": 2,
+      "feedback": "✓ PERFECTA y completa: composición = se instancia dentro y muere con el contenedor (rombo relleno); agregación = se pasa desde fuera y sobrevive (rombo hueco). No falta nada.",
+      "modelAnswer": "Composición: new dentro del constructor, rombo RELLENO, la parte muere con el todo. Agregación: se recibe por parámetro, rombo HUECO, la parte sobrevive."
+    },
+    "q4": {
+      "score": 1.5,
+      "feedback": "✓ BIEN la herencia (reutilizar lo del padre y añadir lo propio, extends). ✗ FALTA lo que vale media pregunta: la RELACIÓN CON EL POLIMORFISMO. Hay que añadir: gracias a la herencia, una variable del tipo padre puede apuntar a un objeto hijo (Animal a = new Perro()) y en ejecución se ejecuta el método sobrescrito del hijo.",
+      "modelAnswer": "Herencia (extends) cuando hay relación 'es-un'. Polimorfismo: Animal a = new Perro(); a.hacerSonido() ejecuta la versión de Perro (enlace dinámico)."
+    },
+    "q5": {
+      "score": 1.5,
+      "feedback": "✓ BIEN: indica cuántas instancias se relacionan y los tipos 1:1, 1:N, N:M. ✗ MATIZ: es entre INSTANCIAS de clases, no 'entre propiedades'. Añade la notación UML real: 1, 0..1, * (cero o muchos), 1..* (uno o muchos).",
+      "modelAnswer": "Cuántas instancias de una clase se relacionan con otra. UML en los extremos: 1, 0..1, *, 1..*."
+    },
+    "q6": {
+      "score": 1.5,
+      "feedback": "✓ BIEN: nace de una relación N:M y guarda atributos propios; tu ejemplo (nota entre Usuario y Examen) es correcto. ✗ MATIZ: es una CLASE (p. ej. Matrícula), no solo 'una relación intermedia', y guarda datos que no son ni del Usuario ni del Examen (nota, fecha).",
+      "modelAnswer": "Clase que materializa una relación N:M con atributos propios. Ej: Matricula(nota, fecha) entre Alumno y Asignatura."
+    },
+    "q7": {
+      "score": 1.5,
+      "feedback": "✓ BIEN la idea de 'molde' del que heredan otras clases. ✗ FALTAN las CONSECUENCIAS, que es lo que pregunta: (1) NO se puede instanciar (new), (2) puede tener métodos abstractos que las subclases ESTÁN OBLIGADAS a implementar. El ejemplo de perro se va un poco de tema.",
+      "modelAnswer": "abstract class: no se instancia, sirve de plantilla y puede declarar métodos abstractos (sin cuerpo) que las subclases deben implementar."
+    },
+    "q9": {
+      "score": 3,
+      "feedback": "✓ BIEN: captas el propósito (documento funcional de lo que puede hacer el sistema) y el ejemplo del cajero es bueno. ✗ Para los 4 puntos faltó nombrar los ELEMENTOS del diagrama: actores (quién), casos de uso (qué, óvalos) y relaciones (include/extend).",
+      "modelAnswer": "Muestra QUÉ hace el sistema (casos de uso), QUIÉN lo usa (actores) y cómo se relacionan (include/extend). Ej cajero: Retirar, Ingresar; Retirar 'include' Validar PIN."
+    },
+    "q10": {
+      "score": 2,
+      "feedback": "✓ BIEN: actor = entidad que interviene/interactúa; muy buenos ejemplos (cliente, banquero y un sistema de seguridad externo). ✗ MATIZ: subraya que el actor es EXTERNO al sistema.",
+      "modelAnswer": "Entidad EXTERNA que interactúa con el sistema (persona o sistema externo). Ej: Cliente, Cajero, Pasarela de pago."
+    },
+    "q11": {
+      "score": 2.5,
+      "feedback": "✓ MUY BIEN: include = obligatorio (validar datos en la transferencia), extend = opcional (la comisión a veces sí, a veces no). Ejemplos correctos. ✗ Único matiz para el punto entero: la dirección de las flechas (include va del caso base al incluido; extend del opcional al base).",
+      "modelAnswer": "Include: el caso base SIEMPRE ejecuta el incluido (obligatorio). Extend: el caso opcional se añade al base bajo una condición."
+    },
+    "q12": {
+      "score": 2,
+      "feedback": "✓ BIEN la idea: un actor hereda los casos/propiedades de otro actor. ✗ El EJEMPLO queda confuso (los 'departamentos'). Mejor uno claro: Administrador hereda de Usuario → puede hacer todo lo de Usuario (login) y además gestionar usuarios.",
+      "modelAnswer": "Un actor hijo hereda los casos de uso del actor padre y añade los suyos. Ej: Administrador hereda de Usuario."
+    },
+    "q13": {
+      "score": 1,
+      "feedback": "✗ ERROR CLAVE para esta pregunta (herencia): a Empleado le falta 'extends Persona' — sin eso NO hay herencia. ✗ Los constructores se llaman IGUAL que la clase (Persona(...), Empleado(...)), no con la palabra 'contructor'. ✗ Falta la llave de cierre de Empleado, el ';' tras super() y hay typos (Nombre/nombre, Empresa/empresa). ✓ BIEN la idea de super(nombre, edad) y los atributos privados.",
+      "modelAnswer": "class Persona { private String nombre; private int edad; public Persona(String n,int e){ this.nombre=n; this.edad=e; } }\nclass Empleado extends Persona { private double sueldo; public Empleado(String n,int e,double s){ super(n,e); this.sueldo=s; } }"
+    },
+    "q14": {
+      "score": 0,
+      "feedback": "✗ SIN RESPONDER. Agregación en código: la clase contenedora RECIBE el objeto ya creado por el constructor (no lo crea con new).",
+      "modelAnswer": "class Equipo { private List<Jugador> jugadores; public Equipo(List<Jugador> jugadores){ this.jugadores = jugadores; } } — los Jugadores existen antes y fuera del Equipo."
+    },
+    "q16": {
+      "score": 0,
+      "feedback": "✗ SIN RESPONDER. ArrayList: add(obj) para añadir, remove para eliminar, y un for-each para recorrer.",
+      "modelAnswer": "class Equipo { ArrayList<Jugador> js = new ArrayList<>(); void anadir(Jugador j){ js.add(j); } void eliminar(Jugador j){ js.remove(j); } void listar(){ for(Jugador j: js) System.out.println(j.getNombre()); } }"
+    },
+    "q17": {
+      "score": 1.5,
+      "feedback": "✓ BIEN: el constructor inicializa los atributos del objeto al instanciarlo. ✗ FALTAN rasgos que pide la pregunta: se llama IGUAL que la clase, NO tiene tipo de retorno y se ejecuta con 'new'. Y ojo: 'contructor' no es palabra clave de Java, se usa el nombre de la clase.",
+      "modelAnswer": "Método con el mismo nombre que la clase, sin tipo de retorno, que inicializa el objeto al hacer new. Ej: public Persona(String n,int e){ this.nombre=n; this.edad=e; }"
+    },
+    "q24": {
+      "score": 1.5,
+      "feedback": "✓ BIEN la lista de COMPONENTES (clases, atributos, métodos, herencia, composición, asociación, cardinalidades, interfaces). ✗ FALTA la otra mitad de la pregunta: los PASOS para implementarlo en Java.",
+      "modelAnswer": "Componentes: clases, atributos, métodos, relaciones (herencia/composición/agregación/asociación) y cardinalidades. Pasos: 1 clase por rectángulo → atributos privados → extends/implements según relaciones → constructores + getters/setters → métodos de negocio."
+    }
+  },
+  "doubtResponses": {
+    "q3": "El rombo va SIEMPRE en el lado del CONTENEDOR (el 'todo', la clase que contiene a las partes), nunca en el lado de la parte. Relleno ◆ = composición (la parte muere con el todo); hueco ◇ = agregación (la parte sobrevive). Da igual si piensas en 'enviar' o 'recibir' propiedades: el rombo marca quién es el contenedor. Ej: Coche ◆— Rueda (el rombo toca a Coche)."
+  },
+  "totalScore": 23,
+  "maxScore": 37.5,
+  "globalFeedback": "Nota: 23/37,5 → 6,1/10. ¡APROBADO! Dominas bien composición vs agregación (q3 perfecta), include/extend y los actores. Para subir nota: (1) en herencia (q4) liga SIEMPRE con polimorfismo; (2) en el código Java cuida la sintaxis — los constructores se llaman como la clase (no 'contructor') y la herencia necesita 'extends Clase'; (3) responde también las de código que dejaste en blanco (q14 agregación, q16 ArrayList) — son puntos fáciles; (4) cuando la pregunta tiene dos partes (q7 consecuencias, q24 pasos), contesta las dos. Tienes el anexo 🧠 EN SIMPLE en cada solución para fijar lo esencial."
+}
