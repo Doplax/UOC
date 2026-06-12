@@ -78,6 +78,12 @@ function statusChip(status) {
   const m = map[status] || map.draft;
   return `<span class="status-chip ${m[0]}">${m[1]}</span>`;
 }
+// Badge de dificultad de una pregunta (facil/media/dificil).
+function diffBadge(q) {
+  const map = { facil: ['Fácil', 'd-facil'], media: ['Media', 'd-media'], dificil: ['Difícil', 'd-dificil'] };
+  const m = map[q && q.difficulty];
+  return m ? `<span class="q-diff ${m[1]}">${m[0]}</span>` : '';
+}
 // ---------- resaltado de sintaxis (ligero, sin dependencias) ----------
 const KEYWORDS = {
   c: new Set(['int','char','float','double','void','return','if','else','for','while','do','switch','case','break','continue','struct','sizeof','const','unsigned','signed','long','short','static','include','define','typedef','enum','goto','default','extern','volatile']),
@@ -182,6 +188,8 @@ async function route() {
     if (parts.length === 0) { crumb([]); return viewDashboard(); }
     if (parts[0] === 'exam' && parts[1]) return viewExam(parts[1]);
     if (parts[0] === 'study' && parts[1]) return viewStudy(parts[1]);
+    if (parts[0] === 'pastexams' && parts[1]) return viewPastExams(parts[1]);
+    if (parts[0] === 'pastexam' && parts[1] && parts[2]) return viewPastExam(parts[1], parts[2]);
     if (parts[0] === 'attempt' && parts[1] && parts[2]) return viewAttempt(parts[1], parts[2]);
     if (parts[0] === 'compare' && parts[1]) return viewCompare(parts[1], (query.ids || '').split(',').filter(Boolean));
     if (parts[0] === 'settings') return viewSettings();
@@ -267,6 +275,7 @@ async function viewExam(examId) {
         <button class="btn btn-primary" id="newComplete">▶ Nuevo intento (completo)</button>
         <button class="btn" id="newSim">🎲 Simulacro (4 preguntas · ${fmt.minutes || 30} min)</button>
         <a class="btn btn-study" href="#/study/${esc(exam.id)}">📚 Solucionario (estudiar)</a>
+        <a class="btn btn-past" href="#/pastexams/${esc(exam.id)}">🗓️ Exámenes anteriores</a>
       </div>
     </div>
 
@@ -363,10 +372,13 @@ async function viewStudy(examId) {
   crumb([{ label: exam.id, href: '#/exam/' + exam.id }, { label: 'Solucionario', href: '#' }]);
 
   let scope = 'todas';
+  let diff = 'todas';
 
   function render() {
+    const match = q => (scope === 'todas' || (q.origin || 'anterior') === scope)
+      && (diff === 'todas' || (q.difficulty || '') === diff);
     const sections = exam.sections.map(sec => {
-      const qs = sec.questions.filter(q => scope === 'todas' || (q.origin || 'anterior') === scope);
+      const qs = sec.questions.filter(match);
       if (!qs.length) return '';
       return `
         <div class="study-section">
@@ -375,10 +387,12 @@ async function viewStudy(examId) {
         </div>`;
     }).join('');
 
-    let cAnt = 0, cNue = 0, cAns = 0, cTot = 0;
+    let cAnt = 0, cNue = 0, cAns = 0, cTot = 0, cF = 0, cM = 0, cD = 0;
     exam.sections.forEach(s => s.questions.forEach(q => {
       cTot++; (q.origin === 'nueva' ? cNue++ : cAnt++); if (q.answer) cAns++;
+      if (q.difficulty === 'facil') cF++; else if (q.difficulty === 'media') cM++; else if (q.difficulty === 'dificil') cD++;
     }));
+    const shown = exam.sections.reduce((a, s) => a + s.questions.filter(match).length, 0);
 
     appEl.innerHTML = `
       <a class="back" href="#/exam/${esc(examId)}">← ${esc(exam.id)}</a>
@@ -389,22 +403,35 @@ async function viewStudy(examId) {
         <div class="chips">
           <span class="chip">${cTot} preguntas</span>
           <span class="chip">${cAns} con solución</span>
+          <span class="chip"><span class="dot d-facil"></span> ${cF} fáciles</span>
+          <span class="chip"><span class="dot d-media"></span> ${cM} medias</span>
+          <span class="chip"><span class="dot d-dificil"></span> ${cD} difíciles</span>
         </div>
         <div class="scope-pick" id="studyScope">
-          <span class="scope-lbl">Ver:</span>
+          <span class="scope-lbl">Origen:</span>
           <button class="scope-opt ${scope === 'todas' ? 'active' : ''}" data-scope="todas">Todas <b>${cTot}</b></button>
           <button class="scope-opt ${scope === 'anterior' ? 'active' : ''}" data-scope="anterior">Anteriores <b>${cAnt}</b></button>
           <button class="scope-opt ${scope === 'nueva' ? 'active' : ''}" data-scope="nueva">Nuevas <b>${cNue}</b></button>
         </div>
+        <div class="scope-pick" id="studyDiff">
+          <span class="scope-lbl">Dificultad:</span>
+          <button class="scope-opt ${diff === 'todas' ? 'active' : ''}" data-diff="todas">Todas</button>
+          <button class="scope-opt ${diff === 'facil' ? 'active' : ''}" data-diff="facil">Fácil <b>${cF}</b></button>
+          <button class="scope-opt ${diff === 'media' ? 'active' : ''}" data-diff="media">Media <b>${cM}</b></button>
+          <button class="scope-opt ${diff === 'dificil' ? 'active' : ''}" data-diff="dificil">Difícil <b>${cD}</b></button>
+        </div>
         <div class="btn-row">
           <button class="btn btn-sm" id="expandAll">Desplegar todo</button>
           <button class="btn btn-sm" id="collapseAll">Plegar todo</button>
+          <span class="study-count">${shown} mostradas</span>
         </div>
       </div>
-      ${sections}`;
+      ${sections || '<div class="empty-state">No hay preguntas con ese filtro.</div>'}`;
 
     const pick = document.getElementById('studyScope');
     pick.querySelectorAll('.scope-opt').forEach(b => b.onclick = () => { scope = b.dataset.scope; render(); });
+    const pickD = document.getElementById('studyDiff');
+    pickD.querySelectorAll('.scope-opt').forEach(b => b.onclick = () => { diff = b.dataset.diff; render(); });
     document.getElementById('expandAll').onclick = () => appEl.querySelectorAll('details.study-card').forEach(d => d.open = true);
     document.getElementById('collapseAll').onclick = () => appEl.querySelectorAll('details.study-card').forEach(d => d.open = false);
   }
@@ -417,10 +444,13 @@ function renderStudyCard(q) {
   return `
     <details class="study-card q">
       <summary class="study-summary">
-        <span class="q-num">${esc(q.n || '?')}</span>
-        ${q.origin ? `<span class="q-origin q-${esc(q.origin)}">${q.origin === 'nueva' ? 'nueva' : 'examen anterior'}</span>` : ''}
-        <span class="q-points">${fmtScore(q.points)} p</span>
-        <span class="study-prompt">${esc(q.prompt)}</span>
+        <div class="study-meta">
+          <span class="q-num">${esc(q.n || '?')}</span>
+          ${diffBadge(q)}
+          ${q.origin ? `<span class="q-origin q-${esc(q.origin)}">${q.origin === 'nueva' ? 'nueva' : 'examen anterior'}</span>` : ''}
+          <span class="q-points">${fmtScore(q.points)} p</span>
+        </div>
+        <div class="study-prompt">${esc(q.prompt)}</div>
       </summary>
       <div class="study-body">
         ${codeBlock(q)}
@@ -429,6 +459,84 @@ function renderStudyCard(q) {
           : `<div class="answer-readonly empty">⏳ Solución en preparación. Vuelve a cargar en unos minutos.</div>`}
       </div>
     </details>`;
+}
+
+// ---------- vista: exámenes de años anteriores ----------
+function countDiffs(qs) {
+  const c = { facil: 0, media: 0, dificil: 0 };
+  (qs || []).forEach(q => { if (c[q.difficulty] != null) c[q.difficulty]++; });
+  return c;
+}
+function diffPills(c) {
+  const out = [];
+  if (c.facil) out.push(`<span class="q-diff d-facil">${c.facil} fácil</span>`);
+  if (c.media) out.push(`<span class="q-diff d-media">${c.media} media</span>`);
+  if (c.dificil) out.push(`<span class="q-diff d-dificil">${c.dificil} difícil</span>`);
+  return out.join(' ');
+}
+
+async function viewPastExams(examId) {
+  let data;
+  try { data = await api('/pastexams/' + examId); }
+  catch (e) {
+    crumb([{ label: examId, href: '#/exam/' + examId }, { label: 'Exámenes anteriores', href: '#' }]);
+    appEl.innerHTML = `<a class="back" href="#/exam/${esc(examId)}">← ${esc(examId)}</a>
+      <div class="empty-state">⏳ Los exámenes anteriores de ${esc(examId)} todavía se están preparando. Vuelve en unos minutos y recarga (Ctrl+F5).</div>`;
+    return;
+  }
+  crumb([{ label: data.id, href: '#/exam/' + data.id }, { label: 'Exámenes anteriores', href: '#' }]);
+  const exams = data.exams || [];
+  appEl.innerHTML = `
+    <a class="back" href="#/exam/${esc(examId)}">← ${esc(data.id)}</a>
+    <div class="panel">
+      <span class="card-code">${esc(data.id)}</span>
+      <h1 style="margin-top:8px">🗓️ Exámenes de años anteriores</h1>
+      <p class="panel-intro">${esc(data.subject)} · Cada tarjeta es una prueba real de una convocatoria anterior (4 preguntas, 30 min). Entra para ver sus preguntas con la respuesta correcta y la dificultad de cada una.</p>
+      <div class="chips"><span class="chip">${exams.length} exámenes reales</span></div>
+    </div>
+    <div class="pastexam-list">
+      ${exams.map(ex => {
+        const np = (ex.questions || []).length;
+        const totalP = (ex.questions || []).reduce((a, q) => a + (q.points || 0), 0);
+        return `<a class="pastexam-card" href="#/pastexam/${esc(examId)}/${esc(ex.id)}">
+          <div class="pastexam-when">📄 ${esc(ex.title || ex.date || ex.id)}</div>
+          <div class="pastexam-sub">${ex.date ? esc(ex.date) + ' · ' : ''}${np} preguntas · ${fmtScore(totalP)} p</div>
+          <div class="pastexam-diffs">${diffPills(countDiffs(ex.questions))}</div>
+        </a>`;
+      }).join('') || '<div class="empty-state">No hay exámenes anteriores registrados.</div>'}
+    </div>`;
+}
+
+async function viewPastExam(examId, pexamId) {
+  let data;
+  try { data = await api('/pastexams/' + examId); } catch (e) {
+    appEl.innerHTML = `<div class="empty-state">⏳ Aún no disponible. Recarga en unos minutos.</div>`;
+    return;
+  }
+  const ex = (data.exams || []).find(e => e.id === pexamId);
+  if (!ex) {
+    crumb([{ label: data.id, href: '#/exam/' + data.id }, { label: 'Anteriores', href: '#/pastexams/' + examId }]);
+    appEl.innerHTML = `<a class="back" href="#/pastexams/${esc(examId)}">← Exámenes anteriores</a><div class="empty-state">Examen no encontrado.</div>`;
+    return;
+  }
+  crumb([{ label: data.id, href: '#/exam/' + data.id }, { label: 'Anteriores', href: '#/pastexams/' + examId }, { label: ex.title || ex.id, href: '#' }]);
+  const qs = ex.questions || [];
+  const totalP = qs.reduce((a, q) => a + (q.points || 0), 0);
+  appEl.innerHTML = `
+    <a class="back" href="#/pastexams/${esc(examId)}">← Exámenes anteriores</a>
+    <div class="panel">
+      <span class="card-code">${esc(data.id)}</span>
+      <h1 style="margin-top:8px">📄 ${esc(ex.title || 'Examen')}</h1>
+      <p class="panel-intro">${esc(data.subject)}${ex.date ? ' · ' + esc(ex.date) : ''} · Prueba real · ${qs.length} preguntas · ${fmtScore(totalP)} puntos · 30 min</p>
+      <div class="chips">${diffPills(countDiffs(qs))}</div>
+      <div class="btn-row">
+        <button class="btn btn-sm" id="expandAll">Desplegar todo</button>
+        <button class="btn btn-sm" id="collapseAll">Plegar todo</button>
+      </div>
+    </div>
+    ${qs.map(renderStudyCard).join('')}`;
+  document.getElementById('expandAll').onclick = () => appEl.querySelectorAll('details.study-card').forEach(d => d.open = true);
+  document.getElementById('collapseAll').onclick = () => appEl.querySelectorAll('details.study-card').forEach(d => d.open = false);
 }
 
 // ---------- vista: intento (runner / corregido) ----------
@@ -672,6 +780,28 @@ function renderQuestion(q, attempt, isCorrected, readOnly) {
       </details>`;
   }
 
+  // Duda anotada por el estudiante y, si existe, su resolución.
+  const duda = (attempt.doubts && attempt.doubts[q.id]) || '';
+  const dudaResp = (attempt.doubtResponses && attempt.doubtResponses[q.id]) || '';
+  let dudaBlock = '';
+  if (!readOnly) {
+    // Mientras se practica: campo para anotar la duda (autoguardado). Abierto si ya hay texto.
+    dudaBlock = `
+      <details class="duda" ${String(duda).trim() ? 'open' : ''}>
+        <summary>💬 Anotar una duda</summary>
+        <textarea class="duda-input" data-did="${esc(q.id)}" placeholder="¿Qué no te ha quedado claro? Apunta aquí lo que creías, lo que no entiendes… Lo verás resuelto al corregir.">${esc(duda)}</textarea>
+      </details>`;
+  } else if (String(duda).trim() || String(dudaResp).trim()) {
+    // En revisión/corrección: tu duda y la resolución.
+    dudaBlock = `
+      <div class="duda-block">
+        ${String(duda).trim() ? `<div class="duda-mine"><span class="duda-lbl">💬 Tu duda</span><div class="duda-text">${esc(duda)}</div></div>` : ''}
+        ${String(dudaResp).trim()
+          ? `<div class="duda-resp"><span class="duda-lbl">✅ Resolución</span><div class="duda-text">${esc(dudaResp)}</div></div>`
+          : (String(duda).trim() ? `<div class="duda-pending">⏳ Se resolverá al corregir el examen (con IA o cuando me lo pases).</div>` : '')}
+      </div>`;
+  }
+
   let correctionBlock = '';
   if (corr) {
     correctionBlock = `
@@ -689,6 +819,7 @@ function renderQuestion(q, attempt, isCorrected, readOnly) {
     <div class="q ${borderCls}" data-qcard="${esc(q.id)}">
       <div class="q-head">
         <span class="q-num">${esc(q.n || '?')}</span>
+        ${diffBadge(q)}
         ${q.origin ? `<span class="q-origin q-${esc(q.origin)}">${q.origin === 'nueva' ? 'nueva' : 'examen anterior'}</span>` : ''}
         <span class="q-points">${fmtScore(q.points)} p</span>
       </div>
@@ -697,7 +828,9 @@ function renderQuestion(q, attempt, isCorrected, readOnly) {
       ${codeBlock(q)}
       ${answerArea}
       ${solutionBlock}
+      ${!readOnly ? dudaBlock : ''}
       ${correctionBlock}
+      ${readOnly ? dudaBlock : ''}
     </div>`;
 }
 
@@ -726,10 +859,12 @@ function renderOrphan(id, attempt, isCorrected) {
 
 function setupRunner(examId, attemptId, attempt) {
   const textareas = Array.from(appEl.querySelectorAll('textarea.answer'));
+  const doubtAreas = Array.from(appEl.querySelectorAll('textarea.duda-input'));
   const saveState = document.getElementById('saveState');
   const progbar = document.getElementById('progbar');
   const ac = new AbortController();
   let dirty = {};
+  let dirtyDoubts = {};
   let saveTimer = null;
   let submitted = false;
 
@@ -742,20 +877,30 @@ function setupRunner(examId, attemptId, attempt) {
     });
   }
 
+  // Construye el cuerpo del PUT con lo pendiente (respuestas y/o dudas) y lo vacía.
+  function drainPayload() {
+    const answers = {}; Object.keys(dirty).forEach(qid => { answers[qid] = dirty[qid]; });
+    const doubts = {}; Object.keys(dirtyDoubts).forEach(qid => { doubts[qid] = dirtyDoubts[qid]; });
+    const body = {};
+    if (Object.keys(answers).length) body.answers = answers;
+    if (Object.keys(doubts).length) body.doubts = doubts;
+    return { body, answers, doubts, has: !!(body.answers || body.doubts) };
+  }
+
   async function flush() {
-    const payload = {};
-    Object.keys(dirty).forEach(qid => { payload[qid] = dirty[qid]; });
-    if (!Object.keys(payload).length) return;
-    dirty = {};
+    const { body, answers, doubts, has } = drainPayload();
+    if (!has) return;
+    dirty = {}; dirtyDoubts = {};
     if (saveState) saveState.textContent = 'Guardando…';
     try {
-      await api('/attempts/' + examId + '/' + attemptId, { method: 'PUT', body: JSON.stringify({ answers: payload }) });
+      await api('/attempts/' + examId + '/' + attemptId, { method: 'PUT', body: JSON.stringify(body) });
       if (saveState) saveState.textContent = 'Guardado ✓';
     } catch (e) {
       if (saveState) saveState.textContent = '⚠️ sin guardar';
-      // Reponer SOLO las preguntas que el usuario no haya vuelto a tocar
-      // (no pisar lo más reciente escrito durante el envío), y reintentar.
-      Object.keys(payload).forEach(qid => { if (!(qid in dirty)) dirty[qid] = payload[qid]; });
+      // Reponer SOLO lo que el usuario no haya vuelto a tocar (no pisar lo más
+      // reciente escrito durante el envío), y reintentar.
+      Object.keys(answers).forEach(qid => { if (!(qid in dirty)) dirty[qid] = answers[qid]; });
+      Object.keys(doubts).forEach(qid => { if (!(qid in dirtyDoubts)) dirtyDoubts[qid] = doubts[qid]; });
       clearTimeout(saveTimer);
       saveTimer = setTimeout(flush, 2500);
     }
@@ -763,13 +908,12 @@ function setupRunner(examId, attemptId, attempt) {
 
   // Guarda lo pendiente al abandonar la página (cierre/recarga/navegación externa).
   function persistNow(keepalive) {
-    const payload = {};
-    Object.keys(dirty).forEach(qid => { payload[qid] = dirty[qid]; });
-    if (!Object.keys(payload).length) return;
+    const { body, has } = drainPayload();
+    if (!has) return;
     try {
       fetch('/api/attempts/' + examId + '/' + attemptId, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers: payload }), keepalive: !!keepalive
+        body: JSON.stringify(body), keepalive: !!keepalive
       }).catch(() => {});
     } catch (e) {}
   }
@@ -779,6 +923,14 @@ function setupRunner(examId, attemptId, attempt) {
       dirty[t.dataset.qid] = t.value;
       if (saveState) saveState.textContent = 'Escribiendo…';
       updateProgress();
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(flush, 700);
+    }, { signal: ac.signal });
+  });
+  doubtAreas.forEach(t => {
+    t.addEventListener('input', () => {
+      dirtyDoubts[t.dataset.did] = t.value;
+      if (saveState) saveState.textContent = 'Escribiendo…';
       clearTimeout(saveTimer);
       saveTimer = setTimeout(flush, 700);
     }, { signal: ac.signal });

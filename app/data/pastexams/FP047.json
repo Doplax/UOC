@@ -1,0 +1,663 @@
+{
+  "id": "FP047",
+  "subject": "FP.047 — Programa de comandos personalizados para el SO",
+  "exams": [
+    {
+      "id": "fp047-2023-07",
+      "title": "Síntesis Julio 2023",
+      "date": "1 de julio de 2023",
+      "source": "TF6095398 (Prueba de síntesis 2022/23-2)",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Que mostrará el siguiente código y explica por qué. Recuerda que strlen() devuelve la longitud ocupada de una cadena. (2,5 puntos) (Resolver la pregunta aproximadamente en 1 línea)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "int main() {",
+            "       char cadena[50] = \"La cadena es mia\\n\";",
+            "       cadena[strlen(\"es mia\")] = 'E';",
+            "       printf(\"CADENA: %s \\n\", cadena);",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "Salida exacta:\nCADENA: La cadEna es mia \n\nExplicación: strlen(\"es mia\") devuelve 6 (cuenta 'e','s',' ','m','i','a'). Por tanto cadena[6] = 'E' sustituye el carácter que está en el índice 6 del array. La cadena \"La cadena es mia\\n\" tiene en el índice 6 la 'e' de \"cadena\" (índices: 0='L',1='a',2=' ',3='c',4='a',5='d',6='e',7='n',8='a'...), así que esa 'e' pasa a 'E' y queda \"La cadEna es mia\\n\". El printf añade además \" \\n\" tras la cadena.\n\nEquivalente en Python (proyecto actual): en Python las cadenas (str) son inmutables, así que no se puede asignar por índice; se reconstruye con slicing: s = 'La cadena es mia\\n'; i = len('es mia'); s = s[:i] + 'E' + s[i+1:]; print('CADENA:', s) → imprime \"CADENA: La cadEna es mia\".",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Si en un código cometemos un error como por ejemplo el escribir una instrucción sin ser finalizada con un punto y coma, ¿podremos usar las herramientas de depuración para encontrar ese error? Justifica la respuesta. (2,5 puntos) (Resolver la pregunta aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Sí, indirectamente. Un punto y coma olvidado en C es un error de SINTAXIS, y los errores de sintaxis los detecta el COMPILADOR antes de generar el ejecutable: al pulsar Compilar/Depurar (F5) en Visual Studio, la compilación falla y la ventana de Lista de errores muestra el mensaje (p. ej. \"se esperaba ';'\") señalando la línea y columna aproximadas, por lo que el programa ni siquiera llega a ejecutarse. En este sentido, el entorno de depuración te ayuda a localizarlo porque lanzar el depurador dispara primero la compilación. Lo que NO puede hacer el depurador propiamente dicho (breakpoints, ejecución paso a paso, inspección de variables) es actuar sobre un error de sintaxis, porque esas herramientas solo operan sobre un programa que YA está en ejecución, y un programa con error de sintaxis no compila ni arranca. Resumen: el error de sintaxis lo caza el compilador (a través de la Lista de errores de Visual Studio); el depurador en ejecución sirve para los errores de ejecución (runtime) y de lógica.\n\nEquivalente en Python (proyecto actual): un error equivalente (p. ej. olvidar los dos puntos ':' o cerrar un paréntesis) es un SyntaxError que detecta el propio intérprete al compilar el módulo a bytecode, ANTES de ejecutar la primera línea; el depurador de VSCode no lo intercepta porque el programa no llega a arrancar.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "Muestra un código programado en C que pida al usuario que introduzca el nombre de una carpeta, pida acto seguido la introducción de la ruta en la que se quiere que esta se cree, y una vez introducido lo anterior cree dicha carpeta en la ruta especificada. Indicaciones: mkdir es el comando que permite crear un nuevo directorio o carpeta del sistema de archivos. (2,5 puntos) (Resolver la pregunta aproximadamente en 8 líneas)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "#include <stdlib.h>",
+            "#include <string.h>",
+            "int main() {",
+            "    char nombreCarpeta[100];",
+            "    char ruta[100];",
+            "    printf(\"Ingrese el nombre de la carpeta: \");",
+            "    fgets(nombreCarpeta, sizeof(nombreCarpeta), stdin);",
+            "    printf(\"Ingrese la ruta donde desea crear la carpeta: \");",
+            "    fgets(ruta, sizeof(ruta), stdin);",
+            "    // Eliminar el salto de linea (\\n) que deja fgets",
+            "    nombreCarpeta[strcspn(nombreCarpeta, \"\\n\")] = '\\0';",
+            "    ruta[strcspn(ruta, \"\\n\")] = '\\0';",
+            "    // Construir y lanzar el comando mkdir",
+            "    char comando[200];",
+            "    snprintf(comando, sizeof(comando), \"mkdir \\\"%s/%s\\\"\", ruta, nombreCarpeta);",
+            "    system(comando);",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "El programa lee con fgets() el nombre de la carpeta y la ruta, limpia el '\\n' final que fgets() deja (con strcspn, que devuelve la posición del '\\n' y ahí colocamos '\\0'), construye con snprintf() un comando del tipo: mkdir \"ruta/nombreCarpeta\" (las comillas permiten rutas con espacios) y lo ejecuta con system(). Puedes comprobar el resultado mirando el valor de retorno de system(): 0 = creada correctamente; distinto de 0 = error (p. ej. la ruta no existe o ya existe la carpeta). Detalle: fgets es preferible a scanf(\"%s\") porque admite nombres y rutas con espacios.\n\nEquivalente en Python (proyecto actual): se hace sin lanzar ningún comando externo, con la biblioteca estándar os:\n    import os\n    nombre = input('Ingrese el nombre de la carpeta: ').strip()\n    ruta   = input('Ingrese la ruta: ').strip()\n    os.makedirs(os.path.join(ruta, nombre), exist_ok=True)\nSi se quisiera replicar el uso de mkdir vía consola: import subprocess; subprocess.run(['mkdir', os.path.join(ruta, nombre)], shell=True).",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "Aplicando lo tratado en los productos 2 y 3, muestra la línea de código que permitiría a una aplicación programada en C listar los archivos y directorios contenidos en el directorio \"d:/archivos\" y que ese listado se escribiese en el archivo c:/listado.txt. Se ha de mostrar tanto la función de C que lo lanzaría, como el comando lanzado por esta. (2,5 puntos) (Resolver la pregunta aproximadamente en 1 línea)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"dir d:\\\\archivos > c:/listado.txt\");"
+          ],
+          "answer": "system(\"dir d:\\\\archivos > c:/listado.txt\");\n\nsystem() es la función de C (de stdlib.h) que ejecuta un comando del sistema/DOS. El comando dir lista archivos y directorios, y el operador de redirección '>' envía la salida estándar de dir a un fichero (c:/listado.txt) en lugar de a la pantalla, creándolo (o sobrescribiéndolo). Nota: en una cadena de C la barra invertida se escribe doble (\\\\) porque '\\' es el carácter de escape; por eso \"d:\\\\archivos\". Con '>' se sobrescribe y con '>>' se añadiría al final.\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('dir d:\\\\archivos > c:/listado.txt', shell=True)  — o, más \"pythónico\" y sin redirección de consola: with open('c:/listado.txt','w') as f: subprocess.run(['cmd','/c','dir','d:\\\\archivos'], stdout=f).",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-2021-01-a",
+      "title": "Validación Final Enero 2021",
+      "date": "30 de enero de 2021",
+      "source": "Examen_5 / Examen_6 / Examen_7 (mismas 4 preguntas; dedup)",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Según lo documentado en el producto 1, ¿Qué herramienta de depuración de las que contamos en Visual Studio usarás si quieres inspeccionar los valores que toman las variables, solo si el valor de la variable n, que se inicializa en 1 y se incrementa en una unidad a cada vuelta de un bucle hasta que llega a 300, es mayor a 250? (2,5 puntos) Contestar la pregunta aproximadamente en 5 líneas.",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Usaría un PUNTO DE INTERRUPCIÓN CONDICIONAL (breakpoint condicional). En Visual Studio se coloca un punto de interrupción en la línea de interés dentro del bucle, después clic derecho sobre el círculo rojo → \"Condiciones...\" (o el icono de configuración del breakpoint) y se escribe la condición n > 250. Con ello el programa se ejecuta a velocidad normal e IGNORA el breakpoint en las vueltas n = 1..250, deteniéndose por primera vez en n = 251; entonces puedo inspeccionar en la ventana Variables locales / Inspección (Watch) los valores que toman las variables justo en ese instante. Es mucho más eficiente que ir pulsando Continuar 250 veces o que un breakpoint normal.\n\nEquivalente en Python (proyecto actual): en VSCode se hace igual: clic derecho en el breakpoint → \"Edit Breakpoint\" → Expression: n > 250; el programa se detiene en n=251 y se inspeccionan las variables en el panel VARIABLES/WATCH.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "¿En una aplicación programada en C, cómo podrías realizar la reconfiguración de un adaptador de red? Únicamente muestra la línea de código que produciría la reconfiguración. Al menos se ha de ver la función de C que lanzará la utilidad o comando que realizará la reconfiguración, y la utilidad o comando lanzado por esta. (2,5 puntos) Contestar la pregunta aproximadamente en 1 línea.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"netsh interface ip set dns name=\\\"Ethernet\\\" static 8.8.8.8\");"
+          ],
+          "answer": "Con la función system() (de stdlib.h) se lanza la utilidad netsh, que es la herramienta de Windows para configurar adaptadores de red por línea de comandos. Por ejemplo, para fijar el DNS del adaptador \"Ethernet\":\n    system(\"netsh interface ip set dns name=\\\"Ethernet\\\" static 8.8.8.8\");\nOtras reconfiguraciones típicas: fijar IP estática → system(\"netsh interface ip set address name=\\\"Ethernet\\\" static 192.168.1.50 255.255.255.0 192.168.1.1\"); o refrescar la caché DNS → system(\"ipconfig /flushdns\");. La idea pedida es: función de C = system(); utilidad lanzada = netsh (o ipconfig).\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('netsh interface ip set dns name=\"Ethernet\" static 8.8.8.8', shell=True)  (en sistemas operativos modernos suele requerir permisos de administrador).",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "¿En qué consiste la redirección de la salida estándar de un comando, y qué utilidad ha tenido en nuestro proyecto? A parte de explicar brevemente en qué consiste, se espera que expliques en qué casos se ha usado en el proyecto. (2,5 puntos) Contestar la pregunta aproximadamente en 7 líneas.",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La redirección de la salida estándar consiste en enviar lo que un comando imprimiría por pantalla (su salida estándar, stdout) a otro destino, normalmente un fichero de texto, usando el operador '>' (sobrescribe) o '>>' (añade al final). Ejemplo: system(\"ipconfig /all > c:\\\\archivo.txt\"); guarda toda la información de red en archivo.txt en lugar de mostrarla en consola.\n\nUtilidad en el proyecto: el programa lanza un comando con system() y redirige su salida a un .txt; luego ABRE ese fichero con fopen() y lo recorre/analiza con fgets()+strstr() para extraer la información que necesita. Se ha usado, entre otros casos, para: (1) comprobar si un ping fue correcto (ping IP > resultado.txt y buscar \"TTL\"/\"ms\"/\"bytes=\"); (2) obtener y analizar la configuración de los adaptadores de red (ipconfig /all > fichero.txt); y (3) añadir/consultar servidores DNS del adaptador. En resumen, la redirección es el puente entre \"lanzar un comando del SO\" y \"analizar su resultado desde C\", porque permite capturar la salida en un fichero procesable.\n\nEquivalente en Python (proyecto actual): se captura la salida directamente sin pasar por fichero con subprocess.run(comando, capture_output=True, text=True).stdout, o se redirige a fichero con subprocess.run(comando, shell=True, stdout=open('c:/archivo.txt','w')).",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Si pretendemos programar una aplicación en C que liste por pantalla el directorio que introduzca por teclado un usuario. Completa los espacios marcados con guiones bajos resaltados en amarillo de forma que el código funcione como se ha explicado. (2,5 puntos) Contestar la pregunta en los huecos señalados.",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "#include <string.h>",
+            "#include <stdlib.h>",
+            "int main()",
+            "{",
+            "    char directorio[20];",
+            "    //Inicializar comando",
+            "    char comando[30] = ______1______ ;",
+            "    printf(\"Introduce el directorio a listar.\\n\");",
+            "    scanf(\"%s\", directorio);",
+            "    //Construir el comando completo a partir de la ruta introducida por el usuario",
+            "    ______2______",
+            "    printf(\"%s\", comando);",
+            "    //Lanzar el comando",
+            "    ______3______",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "Huecos completados:\n  Hueco 1 (inicializar comando):   \"dir \"\n        → char comando[30] = \"dir \";\n  Hueco 2 (construir el comando completo):   strcat(comando, directorio);\n  Hueco 3 (lanzar el comando):   system(comando);\n\nCódigo completo funcionando:\n    #include <stdio.h>\n    #include <string.h>\n    #include <stdlib.h>\n    int main() {\n        char directorio[20];\n        char comando[30] = \"dir \";\n        printf(\"Introduce el directorio a listar.\\n\");\n        scanf(\"%s\", directorio);\n        strcat(comando, directorio);   // comando = \"dir \" + lo tecleado\n        printf(\"%s\", comando);\n        system(comando);               // ejecuta, p. ej., dir d:\\\\datos\n        return 0;\n    }\nExplicación: se parte de la cadena base \"dir \" (con el espacio final), se concatena con strcat() la ruta introducida por el usuario y se ejecuta el resultado con system().\n\nEquivalente en Python (proyecto actual):\n    import subprocess\n    directorio = input('Introduce el directorio a listar.\\n')\n    comando = 'dir ' + directorio        # o f'dir {directorio}'\n    print(comando)\n    subprocess.run(comando, shell=True)",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-2020-06-a",
+      "title": "Validación Junio 2020 (modelo A)",
+      "date": "27 de junio de 2020",
+      "source": "Examen_1",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Según lo documentado en el producto 1, ¿con qué herramientas de depuración contamos en Visual Studio y cuál es la utilidad de cada una de ellas? (2,5 puntos) (resolver en un máximo de 10 líneas aprox.)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Visual Studio incluye un depurador integrado con, entre otras, estas herramientas:\n• Puntos de interrupción (breakpoints, tecla F9 o clic en el margen): detienen la ejecución en una línea concreta para inspeccionar el estado. También los hay condicionales (paran solo si se cumple una condición) y por número de visitas.\n• Ejecución paso a paso: F10 = Paso a paso por procedimientos (Step Over, no entra en las funciones llamadas); F11 = Paso a paso por instrucciones (Step Into, entra en la función); Mayús+F11 = Paso a paso para salir (Step Out); también \"Ejecutar hasta el cursor\".\n• Ventana Variables locales / Automático: muestra el valor de las variables en cada momento de la pausa.\n• Ventana Inspección (Watch): permite vigilar expresiones concretas (p. ej. i, n>250, strlen(cad)).\n• Pila de llamadas (Call Stack): muestra la secuencia de funciones llamadas hasta el punto actual.\n• Ventana Inmediato (Immediate): evalúa expresiones y cambia valores mientras el programa está pausado.\n• DataTips: al pasar el ratón sobre una variable durante la pausa, aparece su valor.\nEn conjunto sirven para parar el programa donde interese, avanzar línea a línea e inspeccionar variables, localizando así errores de ejecución y de lógica.\n\nEquivalente en Python (proyecto actual): Visual Studio Code ofrece lo mismo con la extensión de Python: panel RUN AND DEBUG, breakpoints (F9), F5/F10/F11/Mayús+F11, paneles VARIABLES, WATCH, CALL STACK y DEBUG CONSOLE.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de lo tratado en los productos 2 y 3, muestra el código programado en C de no más de 5 líneas que te permite analizar el archivo creado por el lanzamiento de un ping redirigido hacia un archivo de texto situado en la carpeta \"D:/redirección\" de nombre \"comandoredirección.txt\". Se pide que muestres únicamente como la aplicación abre y analiza el archivo en busca de un patrón que indique si el ping fue exitoso o no. (2,5 puntos) (resolver en un máximo de 10 líneas aprox.)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "FILE* archivo = fopen(\"D:/redireccion/comandoredireccion.txt\", \"r\");",
+            "char linea[200];",
+            "int exito = 0;",
+            "while (fgets(linea, sizeof(linea), archivo) != NULL)",
+            "    if (strstr(linea, \"TTL\") != NULL) exito = 1;   // tambien valdria \"ms\" o \"bytes=\"",
+            "printf(exito ? \"Ping correcto\\n\" : \"Ping fallido\\n\");",
+            "fclose(archivo);"
+          ],
+          "answer": "Se abre el fichero con fopen(...,\"r\") y se recorre línea a línea con fgets(); con strstr() se busca un patrón que solo aparece en un ping correcto. El más fiable es \"TTL\" (las respuestas válidas contienen \"... bytes=32 tiempo=Xms TTL=Y\"); también sirven \"ms\" o \"bytes=\". Si el patrón aparece, el ping fue exitoso; si no se encuentra en ninguna línea (p. ej. \"Tiempo de espera agotado\" / \"Host de destino inaccesible\"), fue fallido. Ejemplo mínimo:\n    FILE* a = fopen(\"D:/redireccion/comandoredireccion.txt\", \"r\");\n    char l[200]; int ok = 0;\n    while (fgets(l, 200, a)) if (strstr(l, \"TTL\")) ok = 1;\n    printf(ok ? \"Ping correcto\\n\" : \"Ping fallido\\n\");\n    fclose(a);\n(Nota: conviene comprobar que fopen no devuelve NULL antes de leer.)\n\nEquivalente en Python (proyecto actual):\n    with open('D:/redireccion/comandoredireccion.txt') as a:\n        ok = any('TTL' in linea for linea in a)\n    print('Ping correcto' if ok else 'Ping fallido')",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "3",
+          "prompt": "Aplicando lo tratado en los productos 2 y 3, muestra la línea de código que permitiría a una aplicación programada en C listar los archivos y directorios contenidos en el directorio \"d:/archivos\" y que ese listado se escribiese en el archivo c:/listado.txt. (2,5 puntos) (resolver en una línea aprox.)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"dir d:\\\\archivos > c:/listado.txt\");"
+          ],
+          "answer": "system(\"dir d:\\\\archivos > c:/listado.txt\");\n\nLa función system() ejecuta el comando dir (que lista archivos y carpetas) y el operador '>' redirige la salida estándar de dir al fichero c:/listado.txt (lo crea o sobrescribe). Recuerda escribir la barra invertida doble en la cadena C (\"d:\\\\archivos\") porque '\\' es carácter de escape.\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('dir d:\\\\archivos > c:/listado.txt', shell=True).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué comandos o utilidades de línea de comandos has utilizado en los productos 2 y 3, y con qué propósito? (2,5 puntos) (resolver en un máximo de 10 líneas aprox.)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Comandos/utilidades de la consola de Windows usados en los productos 2 y 3:\n• ping IP → comprobar la conectividad con otra máquina (se redirige a un .txt y se busca \"TTL\" para saber si respondió).\n• ipconfig / ipconfig /all → mostrar la configuración de red (IP, máscara, puerta de enlace, DNS, MAC); se redirige a fichero para analizarla.\n• ipconfig /flushdns → vaciar la caché de resolución DNS.\n• netsh (interface ip set address / set dns) → reconfigurar el adaptador: fijar IP estática o cambiar los servidores DNS.\n• dir → listar archivos y directorios de una carpeta (con '>' se guarda el listado en un fichero).\n• getmac → obtener la dirección física (MAC) de los adaptadores.\n• tracert → ver los saltos (hops) hasta un destino, útil como criterio de desempate entre DNS.\nTodos se lanzan desde C con system() y, cuando hace falta analizar su resultado, se redirige su salida a un fichero de texto con '>' para luego leerlo con fopen/fgets.\n\nEquivalente en Python (proyecto actual): los mismos comandos del SO, lanzados con subprocess.run(); el análisis de su salida se hace con métodos de cadena (in, split, startswith) o con expresiones regulares en lugar de fgets/strstr.",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-2020-06-b",
+      "title": "Validación Junio 2020 (modelo B)",
+      "date": "27 de junio de 2020",
+      "source": "Examen_4 (incluye soluciones del estudiante)",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Según lo documentado en el producto 1, qué herramienta usarías para detectar un error de programación que detectas que aparece en un bucle cuando la variable contador \"i\" que se incrementa desde 0 y con paso 1 tiene un valor mayor a 100? (2,5 puntos) (resolver en un máximo de 10 líneas aprox.)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Usaría un PUNTO DE INTERRUPCIÓN CONDICIONAL en la línea del bucle, con la condición i > 100. Así el programa se ejecuta a velocidad normal y solo se detiene cuando i supera 100 (es decir, en i = 101), evitando tener que avanzar paso a paso las 100 primeras vueltas. Una vez detenido, inspecciono en la ventana Variables locales / Inspección (Watch) los valores y, si quiero, sigo con F10 (Step Over) / F11 (Step Into) para ver cómo evoluciona el error. También podría usar un breakpoint normal combinado con la ejecución paso a paso, pero el condicional es lo más eficiente para \"saltar\" directamente al caso problemático.\n\nEquivalente en Python (proyecto actual): en VSCode, clic derecho en el breakpoint → Edit Breakpoint → Expression: i > 100; el programa para en i = 101 y se inspeccionan las variables en el panel VARIABLES.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Según lo tratado en los productos 2 y 3, muestra la línea de código programado en C que permite lanzar a una aplicación un ping y redirigir la salida estándar de este hacia un archivo de texto situado en la carpeta \"D:/redirección\" de nombre \"comandoredirección.txt\". Solamente se te pide que muestres una línea de código. (2,5 puntos) (resolver en una línea)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"ping 192.168.1.1 > D:/redireccion/comandoredireccion.txt\");"
+          ],
+          "answer": "system(\"ping 192.168.1.1 > D:/redireccion/comandoredireccion.txt\");\n\nLa función system() lanza el comando ping hacia la IP indicada y el operador '>' redirige su salida estándar al fichero comandoredireccion.txt (creándolo o sobrescribiéndolo), de modo que después se pueda abrir y analizar para saber si hubo conectividad.\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('ping 192.168.1.1 > D:/redireccion/comandoredireccion.txt', shell=True).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "Según lo tratado en los productos 2 y 3, si suponemos que en el archivo \"archivos.txt\" que se encuentra en \"d:/archivos\", tenemos la redirección de la salida estándar del comando \"dir d:\\data\". Muestra el código de no más de 5 líneas que te permite analizar si en el directorio \"data\" se encuentra un archivo llamado \"alumnos.txt\". Se pide que muestres únicamente como la aplicación abre y analiza el código. (2,5 puntos) (resolver en un máximo de 10 líneas aprox.)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "FILE* archivo = fopen(\"D:/archivos/archivos.txt\", \"r\");",
+            "char linea[100];",
+            "int encontrado = 0;",
+            "while (fgets(linea, sizeof(linea), archivo) != NULL)",
+            "    if (strstr(linea, \"alumnos.txt\") != NULL) encontrado = 1;",
+            "printf(encontrado ? \"El archivo alumnos.txt esta en el directorio\\n\" : \"El archivo no esta en el directorio\\n\");",
+            "fclose(archivo);"
+          ],
+          "answer": "Se abre el fichero con fopen(...,\"r\"), se recorre línea a línea con fgets() y en cada línea se busca el texto \"alumnos.txt\" con strstr(). Si en alguna línea aparece, el archivo está en el directorio; si no se encuentra en ninguna, no está. Ejemplo:\n    FILE* a = fopen(\"D:/archivos/archivos.txt\", \"r\");\n    char l[100]; int ok = 0;\n    while (fgets(l, 100, a)) if (strstr(l, \"alumnos.txt\")) ok = 1;\n    printf(ok ? \"alumnos.txt esta\\n\" : \"no esta\\n\");\n    fclose(a);\nBuena práctica (como apuntaba la solución original): guardar \"alumnos.txt\" en una variable y comparar variables en vez de poner el literal; y comprobar que fopen no devuelve NULL.\n\nEquivalente en Python (proyecto actual):\n    with open('D:/archivos/archivos.txt') as a:\n        existe = any('alumnos.txt' in linea for linea in a)\n    print('alumnos.txt esta' if existe else 'no esta')",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué funciones de la librería string.h has utilizado en los productos 2 y 3, y con qué propósito? (2,5 puntos) (resolver en un máximo de 10 líneas aprox.)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Funciones de string.h usadas en los productos 2 y 3 y su propósito:\n• strlen(cad): devuelve la longitud (número de caracteres) de una cadena; útil para recorrerla o para recortarla (p. ej. cad[strlen(cad)-2]='\\0' quita los 2 últimos caracteres, como el \\n).\n• strcat(destino, origen): concatena/añade una cadena al final de otra; se usa para construir el comando completo, p. ej. \"dir \" + ruta o \"ping \" + ip.\n• strcpy(destino, origen): copia una cadena en otra (inicializar o reemplazar el contenido de un buffer).\n• strstr(cadena, subcadena): comprueba si una subcadena aparece dentro de otra (devuelve un puntero o NULL); se usa para analizar la salida redirigida, p. ej. buscar \"TTL\"/\"ms\" tras un ping o un nombre de archivo en un listado.\n• strtok(cadena, delimitadores): trocea una cadena por separadores (espacios, ':', etc.); útil para extraer campos de la salida de ipconfig (IP, máscara, DNS).\n(strcspn también es de string.h y sirve para localizar el '\\n' y eliminarlo.)\n\nEquivalente en Python (proyecto actual): no hay string.h; se usan operaciones nativas de str: len() (≈ strlen), '+' o ''.join() y f-strings (≈ strcat), el operador in (≈ strstr) y el método split() (≈ strtok).",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-sintesis-strlen-libreria",
+      "title": "Síntesis (sin fecha) — strlen, librerías y listado",
+      "date": "Sin fecha (prueba de síntesis / PS)",
+      "source": "Examen_2 (≡ TF6240791 Modelo B)",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Que printará el siguiente código y explica porqué. Recuerda que strlen() devuelve la longitud ocupada de una cadena. (2,5 puntos) (Resolver la pregunta en un espacio máximo de una página)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "int main() {",
+            "    char cadena[50] = \"La cadena es mia\\n\";",
+            "    cadena[strlen(\"La cadena\")] = '\\0';",
+            "    printf(\"CADENA: %s \\n\", cadena);",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "Salida exacta:\nCADENA: La cadena \n\nExplicación: strlen(\"La cadena\") cuenta los caracteres de \"La cadena\" = 9 ('L','a',' ','c','a','d','e','n','a'). Por tanto cadena[9] = '\\0' coloca el terminador nulo en el índice 9. Como en C una cadena termina en el primer '\\0', printf imprime solo desde el principio hasta justo antes de esa posición, es decir \"La cadena\" (los caracteres de índice 0 a 8). El resto del texto original (\" es mia\\n\") sigue en memoria pero ya no se imprime. El printf añade además \" \\n\" tras la cadena.\n\nEquivalente en Python (proyecto actual): las cadenas son inmutables y no llevan terminador '\\0'; el recorte se hace con slicing: s = 'La cadena es mia\\n'; s = s[:len('La cadena')]; print('CADENA:', s) → imprime \"CADENA: La cadena\".",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "¿En una aplicación programada en C, explica cómo se crea una librería de funciones y comenta de paso tanto como la linkaremos a un proyecto como cuál sería su utilidad? (2,5 puntos) (Resolver la pregunta en un espacio máximo de una página)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Para crear una librería de funciones propia en C se separan las funciones en dos ficheros:\n1) Un fichero de CABECERA (.h), p. ej. Ping.h, que contiene la declaración (el prototipo) de las funciones y, si procede, los #define y tipos. Ejemplo:\n     // Ping.h\n     #ifndef PING_H\n     #define PING_H\n     int hacerPing(char* ip);\n     #endif\n2) Un fichero de IMPLEMENTACIÓN (.c), p. ej. Ping.c, que incluye su propia cabecera (#include \"Ping.h\") y contiene el CÓDIGO de cada función.\n\nCómo se \"linka\" al proyecto: en el fichero que las usa se escribe #include \"Ping.h\" (comillas dobles = búsqueda en el directorio del proyecto, a diferencia de < > que busca las del sistema), y el fichero Ping.c se añade al proyecto/solución para que el compilador lo compile y el enlazador (linker) una su código objeto con el resto. En Visual Studio basta con añadir los .c y .h al proyecto.\n\nUtilidad: organiza el código y favorece la reutilización y el mantenimiento: las mismas funciones (ping, lectura de ficheros, manejo de DNS...) se pueden usar en varios programas sin reescribirlas, se prueban por separado y mantienen el archivo principal (main) limpio y legible.\n\nEquivalente en Python (proyecto actual): se crea un MÓDULO, que es simplemente un fichero .py (p. ej. ping.py) con las funciones, y desde otro fichero se importa con import ping / from ping import hacerPing. No hay fase de enlazado ni cabeceras .h: el propio import carga el módulo en tiempo de ejecución.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Indica que estamos haciendo en el siguiente código:\nInt longi=strlen(cad);\ncad[longi-2] = '\\0'; (2,5 puntos) (Resolver la pregunta en un espacio máximo de una página)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "int longi = strlen(cad);",
+            "cad[longi-2] = '\\0';"
+          ],
+          "answer": "Se está RECORTANDO la cadena cad eliminando sus DOS últimos caracteres. Primero se guarda en longi la longitud de cad con strlen(). Después se coloca el terminador nulo '\\0' en la posición longi-2; como en C la cadena termina en el primer '\\0', a partir de ahí los dos últimos caracteres dejan de formar parte de la cadena (se \"truncan\"). El caso típico es quitar el salto de línea final: por ejemplo, la salida de un comando o una línea leída de un fichero suele acabar en \"...\\r\\n\" (retorno de carro + nueva línea en Windows), y con cad[longi-2]='\\0' se eliminan esos dos caracteres de control para quedarnos con el texto limpio.\n\n(Nota: en el original aparece \"Int\" con mayúscula; en C correcto es int en minúscula.)\n\nEquivalente en Python (proyecto actual): se haría con slicing o con rstrip(): cad = cad[:-2]  (quita los 2 últimos), o cad = cad.rstrip('\\r\\n')  (quita los saltos de línea finales).",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Aplicando lo tratado en los productos 2 y 3, muestra la línea de código que permitiría a una aplicación programada en C listar los archivos y directorios contenidos en el directorio \"d:/archivos\" y que ese listado se escribiese en el archivo c:/listado.txt. Se ha de mostrar tanto la función de c que lo lanzaría, como el comando lanzado por esta. (2,5 puntos)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"dir d:\\\\archivos > c:/listado.txt\");"
+          ],
+          "answer": "system(\"dir d:\\\\archivos > c:/listado.txt\");\n\nFunción de C: system() (de stdlib.h), que ejecuta un comando del sistema. Comando lanzado: dir d:\\archivos > c:/listado.txt, donde dir lista el contenido de la carpeta y '>' redirige esa salida al fichero c:/listado.txt (lo crea o sobrescribe). En la cadena C la barra invertida va doble (\"d:\\\\archivos\").\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('dir d:\\\\archivos > c:/listado.txt', shell=True).",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-sintesis-actualidad",
+      "title": "Síntesis (sin fecha) — strlen, librerías y fecha/hora/SO",
+      "date": "Sin fecha (prueba de síntesis / PS — Modelo A)",
+      "source": "TF6240791 Modelo A",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Que printará el siguiente código y explica porqué. Recuerda que strlen() devuelve la longitud ocupada de una cadena. (2,5 puntos) (Resolver la pregunta en el espacio asignado)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "int main() {",
+            "    char cadena[50] = \"La cadena es mia\\n\";",
+            "    cadena[strlen(\"La cadena\")] = '\\0';",
+            "    printf(\"CADENA: %s \\n\", cadena);",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "Salida exacta:\nCADENA: La cadena \n\nExplicación: strlen(\"La cadena\") = 9, por lo que cadena[9] = '\\0'. El '\\0' en el índice 9 termina la cadena ahí, de modo que printf imprime solo \"La cadena\" (índices 0..8) y descarta el resto (\" es mia\\n\"), que sigue en memoria. printf añade \" \\n\" al final.\n\nEquivalente en Python (proyecto actual): str es inmutable; se recorta con slicing: s = 'La cadena es mia\\n'; s = s[:len('La cadena')]; print('CADENA:', s) → \"CADENA: La cadena\".",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "¿En una aplicación programada en C, explica cómo se crea una librería de funciones y comenta de paso tanto como la linkaremos a un proyecto como cuál sería su utilidad? (2,5 puntos) (Resolver la pregunta en el espacio asignado)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una librería propia se crea separando declaración e implementación en dos ficheros: un .h (cabecera) con los PROTOTIPOS de las funciones (y #define/tipos) protegido por guardas de inclusión (#ifndef/#define/#endif), y un .c con el CÓDIGO de cada función, que incluye su propia cabecera con #include \"Lib.h\". Para linkarla, en el fichero que la usa se pone #include \"Lib.h\" (las comillas indican búsqueda en el directorio del proyecto) y el .c se añade al proyecto/solución para que el compilador lo compile y el enlazador (linker) una su código objeto con el del programa principal. Utilidad: reutilizar funciones en distintos programas, mantener el main limpio, facilitar las pruebas y el mantenimiento, y permitir el trabajo modular en equipo.\n\nEquivalente en Python (proyecto actual): equivale a crear un MÓDULO (un fichero .py con las funciones) e importarlo con import modulo o from modulo import funcion; no existen .h ni fase de enlazado, el import carga el módulo en ejecución.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Indica las instrucciones que se debería usar para guardar la fecha, hora y versión del sistema operativo en un archivo 'actualidad.txt'. (2,5 puntos) (Resolver la pregunta en el espacio asignado)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"date /t > actualidad.txt\");",
+            "system(\"time /t >> actualidad.txt\");",
+            "system(\"ver >> actualidad.txt\");"
+          ],
+          "answer": "Se lanzan con system() los comandos del SO que devuelven esos datos, redirigiendo la salida al fichero actualidad.txt. Clave: el PRIMERO usa '>' (crea/sobrescribe) y los SIGUIENTES usan '>>' (añaden al final), para no borrar lo ya escrito:\n    system(\"date /t > actualidad.txt\");   // fecha\n    system(\"time /t >> actualidad.txt\");  // hora\n    system(\"ver >> actualidad.txt\");      // version del SO (Windows)\nAlternativa en un solo comando combinándolos con '&':\n    system(\"(date /t & time /t & ver) > actualidad.txt\");\n(date /t y time /t muestran fecha/hora sin pedir que se introduzcan; ver muestra la versión de Windows.)\n\nEquivalente en Python (proyecto actual): sin comandos externos, con la biblioteca estándar:\n    import datetime, platform\n    with open('actualidad.txt', 'w') as f:\n        f.write(str(datetime.datetime.now()) + '\\n')\n        f.write(platform.platform() + '\\n')",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "Aplicando lo tratado en los productos 2 y 3, muestra la línea de código que permitiría a una aplicación programada en C listar los archivos y directorios contenidos en el directorio \"d:/archivos\" y que ese listado se escribiese en el archivo c:/listado.txt. Se ha de mostrar tanto la función de c que lo lanzaría, como el comando lanzado por esta. (2,5 puntos) (Resolver la pregunta en el espacio asignado, máximo una cara)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"dir d:\\\\archivos > c:/listado.txt\");"
+          ],
+          "answer": "system(\"dir d:\\\\archivos > c:/listado.txt\");\n\nFunción de C: system(). Comando lanzado: dir d:\\archivos > c:/listado.txt; dir lista la carpeta y '>' redirige su salida al fichero c:/listado.txt. La barra invertida se escribe doble en la cadena de C.\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('dir d:\\\\archivos > c:/listado.txt', shell=True).",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-sintesis-fgetc-proyecto-h",
+      "title": "Síntesis (sin fecha) — lectura de fichero, Proyecto.h y conectividad",
+      "date": "Sin fecha (prueba de síntesis / PS)",
+      "source": "Examen_3",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "¿Que está realizando el siguiente código? (2,5 puntos) (Resolver la pregunta en un espacio máximo de una página)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "#define MAX 16",
+            "int main() {",
+            "    FILE* fp;",
+            "    char c;",
+            "    int i = 0;",
+            "    fp = fopen(\"c:/a/ips.txt\", \"r\");",
+            "    if (fp != NULL) {",
+            "        while (!feof(fp)) {",
+            "            c = fgetc(fp);",
+            "            printf(\"%c\", c);",
+            "            if (c == '\\n') { i++; };",
+            "            char aux[MAX];",
+            "            fgets(aux, MAX, fp);",
+            "        }",
+            "    }",
+            "    fclose(fp);",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "El código abre en modo lectura el fichero c:/a/ips.txt y, si existe (fp != NULL), lo recorre hasta el final (while(!feof(fp))). En cada vuelta: lee un carácter con fgetc() y lo imprime con printf(\"%c\"); si ese carácter es un salto de línea '\\n' incrementa el contador i (cuenta líneas); y luego, con fgets(aux, MAX, fp), lee y descarta hasta 15 caracteres más (MAX-1) de esa misma línea guardándolos en aux. Es decir, va imprimiendo el contenido y contando líneas, pero el fgets adicional hace que NO se imprima toda la línea: por cada carácter mostrado con fgetc se \"salta\" un trozo (hasta 15 caracteres o hasta el siguiente '\\n') que no se imprime, por lo que la salida es parcial. Al terminar cierra el fichero con fclose().\nDetalles/avisos: usar feof() para controlar el bucle puede provocar leer/procesar una vez de más al final; y mezclar fgetc con fgets sin un propósito claro hace que se pierdan caracteres. La intención didáctica es: leer carácter a carácter y contar líneas por el '\\n'.\n\nEquivalente en Python (proyecto actual): leer y contar líneas es directo:\n    with open('c:/a/ips.txt') as f:\n        contenido = f.read()\n        print(contenido, end='')\n        i = contenido.count('\\n')",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "Si en un código cometemos una depuración del mismo explica para qué se usan los puntos de interrupción. Pon un ejemplo de cómo usarlo para completar la explicación. (2,5 puntos) (Resolver la pregunta en un espacio máximo de una página)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Los puntos de interrupción (breakpoints) se usan para DETENER la ejecución del programa exactamente en la línea donde se colocan (antes de ejecutarla), de modo que mientras está pausado podamos inspeccionar el estado: el valor de las variables, la pila de llamadas, etc., y a partir de ahí avanzar paso a paso (F10/F11). Sirven para \"congelar\" el programa en el momento de interés y diagnosticar errores de ejecución o de lógica sin llenar el código de printf. Se colocan con clic en el margen izquierdo del editor (o F9) y aparece un círculo rojo.\nEjemplo: en el código que recorre ips.txt, pongo un breakpoint en la línea if (c=='\\n') { i++; }. Al ejecutar en modo depuración, el programa se detiene ahí y en la ventana Variables locales puedo ver qué valor tiene c en cada vuelta y cómo va subiendo i, confirmando si realmente cuenta bien las líneas. Si solo me interesa cuando i ya es grande, puedo convertirlo en breakpoint CONDICIONAL con la condición i > 100 para que pare directamente en ese caso.\n\nEquivalente en Python (proyecto actual): en VSCode es idéntico: F9 coloca el breakpoint; al depurar con F5 el programa se detiene en esa línea y se inspeccionan las variables en el panel VARIABLES (y se pueden hacer condicionales con clic derecho → Edit Breakpoint).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "Así empieza tu archivo Proyecto.c, Indica que representa la siguiente estructura de código para que se usa y que información debe ir incluido en Proyecto.h\n#include <stdio.h>\n#include \"Proyecto.h\"\n#include \"Ping.h\" (2,5 puntos) (Resolver la pregunta en un espacio máximo de una página)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "#include \"Proyecto.h\"",
+            "#include \"Ping.h\""
+          ],
+          "answer": "Son directivas del preprocesador #include, que insertan el contenido de otros ficheros (cabeceras) en Proyecto.c antes de compilar. La diferencia entre las dos formas:\n• #include <stdio.h> con ángulos < > → cabecera ESTÁNDAR del sistema/compilador (entrada-salida: printf, fopen, fgets...). El compilador la busca en sus directorios estándar.\n• #include \"Proyecto.h\" y #include \"Ping.h\" con comillas \" \" → cabeceras PROPIAS del proyecto. El compilador las busca primero en el directorio del proyecto. Sirven para declarar nuestras funciones, constantes y tipos y poder usarlos desde Proyecto.c.\nQué debe ir en Proyecto.h: las DECLARACIONES (prototipos) de las funciones definidas en Proyecto.c que queremos usar desde otros ficheros, los #define (constantes/macros, p. ej. #define MAX 16), las definiciones de tipos/estructuras y, recomendablemente, guardas de inclusión (#ifndef PROYECTO_H / #define PROYECTO_H / ... / #endif) para evitar que se incluya dos veces. NO debe contener el código (la implementación) de las funciones, que va en el .c.\n\nEquivalente en Python (proyecto actual): no existen #include ni ficheros .h; para usar funciones de otro fichero se IMPORTA el módulo correspondiente: import proyecto, import ping (o from ping import hacerPing). El import equivale a \"traer\" esas funciones a este fichero.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Cómo y mediante que funciones, comandos o utilidades podemos detectar en una aplicación programada en C que tenemos conectividad entre una máquina y otra máquina referenciada por su dirección ip? Explica la utilidad tanto de cada función de c, o de cada comando usado y cómo podemos determinar gracias a estas herramientas si hay o no conectividad. (2,5 puntos) (Resolver la pregunta en un espacio máximo de una página)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Se comprueba la conectividad lanzando el comando ping desde C y analizando su resultado. Pasos y herramientas:\n1) system() (stdlib.h): ejecuta el comando del SO. Lanzamos ping IP y redirigimos su salida a un fichero con '>', p. ej. system(\"ping 8.8.8.8 > result.txt\");. El comando ping envía paquetes ICMP a la IP y muestra si responde.\n2) fopen() (stdio.h): abre el fichero result.txt en modo lectura (\"r\").\n3) fgets() (stdio.h): lee el fichero línea a línea.\n4) strstr() (string.h): busca en cada línea un patrón que solo aparece cuando HAY respuesta, típicamente \"TTL\" (las respuestas válidas son del tipo \"Respuesta desde X: bytes=32 tiempo=Yms TTL=Z\"); también valen \"ms\" o \"bytes=\".\n5) fclose(): cierra el fichero.\nCómo se determina: si strstr() encuentra el patrón (\"TTL\"), HAY conectividad; si no aparece en ninguna línea (por ejemplo el fichero contiene \"Tiempo de espera agotado\" o \"Host de destino inaccesible\"), NO hay conectividad. Así, ping prueba la conexión y la combinación fopen/fgets/strstr interpreta su salida.\n\nEquivalente en Python (proyecto actual):\n    import subprocess\n    r = subprocess.run('ping 8.8.8.8', shell=True, capture_output=True, text=True)\n    print('hay conectividad' if 'TTL' in r.stdout else 'no hay conectividad')",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp047-sintesis-cadena-saltos",
+      "title": "Síntesis (sin fecha) — traza con saltos, sintaxis y conectividad",
+      "date": "Sin fecha (prueba de síntesis / PS)",
+      "source": "Examen_9 / TF6095399 (dedup; incluye soluciones del estudiante)",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Indica que mostrará el siguiente código y explica porqué. (2,5 puntos) (Resolver la pregunta aproximadamente en 3 líneas)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "int main() {",
+            "       char cadena[50] = \"La\\ncadena\\nes\\nmia\\n\";",
+            "       printf(\"CADENA: %s \\n\", cadena);",
+            "       for (int i = 0; i < strlen(cadena); i++) {",
+            "             if (cadena[i] == '\\n') cadena[i] = ' ';",
+            "       }",
+            "       printf(\"CADENA: %s \\n\", cadena);",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "Salida exacta (cada \\n es un salto de línea real):\nCADENA: La\ncadena\nes\nmia\n \nCADENA: La cadena es mia  \n\nExplicación: el primer printf muestra cadena tal cual, y como contiene varios '\\n' la imprime en líneas separadas (La / cadena / es / mia) y, por el último '\\n' de la cadena más el \" \\n\" del printf, deja una línea con un espacio. Después el bucle for recorre todos los caracteres y cada '\\n' lo sustituye por un espacio ' '. Por eso el segundo printf muestra todo en UNA sola línea: \"La cadena es mia \" (con los espacios donde antes había saltos), y termina con el \" \\n\" del propio printf.\n\nEquivalente en Python (proyecto actual): str es inmutable, así que se sustituye con replace():\n    s = 'La\\ncadena\\nes\\nmia\\n'\n    print('CADENA:', s)\n    s = s.replace('\\n', ' ')\n    print('CADENA:', s)   # CADENA: La cadena es mia",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Si en un código cometemos un error como por ejemplo el escribir una instrucción sin ser finalizada con un punto y coma, ¿podremos usar las herramientas de depuración para encontrar ese error? Justifica la respuesta. (2,5 puntos) (Resolver la pregunta aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Sí, en el sentido de que el entorno te avisa: olvidar el punto y coma es un error de SINTAXIS, y los errores de sintaxis los detecta el COMPILADOR. Al intentar compilar/depurar (F5) en Visual Studio, la compilación falla y la Lista de errores muestra un mensaje (p. ej. \"se esperaba ';'\") señalando la línea, de forma que el programa no llega a ejecutarse. Ahora bien, las herramientas de depuración propiamente dichas (breakpoints, paso a paso, inspección de variables) NO actúan sobre un error de sintaxis, porque solo funcionan con un programa en ejecución y este ni siquiera arranca. Conclusión: el compilador (a través de la Lista de errores del IDE) caza el ';' que falta; el depurador en ejecución sirve para los errores de ejecución y de lógica.\n\nEquivalente en Python (proyecto actual): el equivalente (olvidar ':' o cerrar un paréntesis) es un SyntaxError que detecta el INTÉRPRETE al compilar a bytecode, antes de ejecutar nada; el depurador no lo intercepta porque el programa no arranca.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "Muestra un código programado en C que pida al usuario que introduzca una ip y ejecute el comando necesario para comprobar la conectividad a dicha ip mostrando el mensaje \"hay conectividad\" o \"no hay conectividad\" en función de la respuesta obtenida. (2,5 puntos) (Resolver la pregunta aproximadamente en 8 líneas)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "#include <stdlib.h>",
+            "#include <string.h>",
+            "int main() {",
+            "    char ip[20];",
+            "    char comando[100] = \"ping \";",
+            "    char linea[200];",
+            "    int hay = 0;",
+            "    printf(\"Introduce una IP: \");",
+            "    scanf(\"%s\", ip);",
+            "    strcat(comando, ip);",
+            "    strcat(comando, \" > result.txt\");",
+            "    system(comando);",
+            "    FILE* archivo = fopen(\"result.txt\", \"r\");",
+            "    while (fgets(linea, sizeof(linea), archivo) != NULL)",
+            "        if (strstr(linea, \"TTL\") != NULL) hay = 1;",
+            "    fclose(archivo);",
+            "    printf(hay ? \"hay conectividad\\n\" : \"no hay conectividad\\n\");",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "El programa pide la IP, construye con strcat() el comando \"ping <ip> > result.txt\", lo lanza con system() (que crea result.txt con la salida del ping), y después abre ese fichero con fopen() y lo recorre con fgets() buscando \"TTL\" con strstr(). Si lo encuentra → \"hay conectividad\"; si no aparece en ninguna línea → \"no hay conectividad\". (Patrones válidos alternativos: \"ms\" o \"bytes=\".)\n\nLa solución original del examen usaba gets(ip) y fseek(archivo,-8,SEEK_END)+fgets para leer solo el final y buscar \"ms\"; funciona, pero gets() es insegura (mejor scanf(\"%s\",ip) o fgets) y leer solo los últimos bytes es frágil. La versión robusta es recorrer el fichero completo buscando \"TTL\".\n\nEquivalente en Python (proyecto actual):\n    import subprocess\n    ip = input('Introduce una IP: ')\n    r = subprocess.run('ping ' + ip, shell=True, capture_output=True, text=True)\n    print('hay conectividad' if 'TTL' in r.stdout else 'no hay conectividad')",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "Aplicando lo tratado en los productos 2 y 3, muestra la línea de código que permitiría a una aplicación programada en C listar los archivos y directorios contenidos en el directorio \"d:/archivos\" y que ese listado se escribiese en el archivo c:/listado.txt. Se ha de mostrar tanto la función de c que lo lanzaría, como el comando lanzado por esta. (2,5 puntos) (Resolver la pregunta aproximadamente en 1 línea)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"dir d:\\\\archivos > c:/listado.txt\");"
+          ],
+          "answer": "system(\"dir d:\\\\archivos > c:/listado.txt\");\n\nFunción de C: system(); comando lanzado: dir d:\\archivos > c:/listado.txt. dir lista el contenido del directorio y '>' redirige su salida estándar al fichero c:/listado.txt. La barra invertida se escribe doble en la cadena de C.\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('dir d:\\\\archivos > c:/listado.txt', shell=True).",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-sintesis-dns-xml",
+      "title": "Síntesis (sin fecha) — DNS, XML, atoi y depuración",
+      "date": "Sin fecha (prueba de síntesis / PS)",
+      "source": "Examen_8",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "¿Qué comando se ha usado en el producto 3 para desempatar en caso de que los dos DNS más rápidos hubiesen pasado el test de velocidad en el mismo tiempo? ¿En qué se basaba ese desempate? (2.5 puntos) (Resolver la pregunta aproximadamente en 2 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Se usó el comando tracert (traceroute). El desempate se basaba en el número de SALTOS (hops) hasta cada servidor DNS: si dos DNS tenían el mismo tiempo de respuesta en el test de velocidad (ping), se elegía como más rápido el que estuviera a MENOS saltos de distancia, ya que un menor número de saltos suele implicar una ruta más corta/eficiente hasta ese servidor.\n\nEquivalente en Python (proyecto actual): se ejecuta igual con subprocess.run('tracert 8.8.8.8', shell=True, capture_output=True, text=True) y se cuentan los saltos analizando las líneas de la salida (cada línea numerada es un salto).",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Cita algunas de las reglas que has tenido que cumplir al construirlo, de forma que en el producto 4 el XML generado fuese bien formado. (2.5 puntos) (Resolver la pregunta aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Reglas para que un XML esté BIEN FORMADO (well-formed):\n1) Debe existir un ÚNICO elemento raíz que contenga a todos los demás.\n2) Toda etiqueta de apertura debe tener su correspondiente etiqueta de CIERRE (<a>...</a>), o ser una etiqueta vacía autocerrada (<a/>).\n3) Las etiquetas deben estar correctamente ANIDADAS, sin solaparse: <a><b></b></a> es válido; <a><b></a></b> NO.\n4) XML distingue MAYÚSCULAS y minúsculas: <Dato> y </dato> no casan.\n5) Los VALORES de los atributos van siempre entre comillas: <ip valor=\"8.8.8.8\">.\n6) Los caracteres especiales se escriben con entidades: &lt; (<), &gt; (>), &amp; (&), &quot; (\"), &apos; (').\n7) Recomendable: una declaración inicial <?xml version=\"1.0\" encoding=\"UTF-8\"?> y nombres de elemento válidos (sin empezar por número ni contener espacios).\n(Importante: la indentación y los saltos de línea NO son requisito para que sea \"bien formado\"; solo mejoran la legibilidad.)\n\nEquivalente en Python (proyecto actual): en lugar de construir el XML \"a mano\" concatenando cadenas, se genera con el módulo estándar xml.etree.ElementTree (ET.Element/SubElement + ET.ElementTree(...).write('salida.xml')), que ya garantiza un XML bien formado (cierre y anidamiento correctos, escape de caracteres especiales).",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "¿Qué función de C convierte una cadena compuesta por los símbolos que representan los números, a un entero? ¿En qué casos la has usado? (2.5 puntos) (Resolver la pregunta aproximadamente en 2 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La función atoi() (de stdlib.h), de \"ASCII to integer\": convierte una cadena de dígitos (p. ej. \"123\") en el entero correspondiente (123). Se ha usado para pasar a número los valores que se leen como TEXTO de un fichero o de la salida de un comando y poder operar con ellos: por ejemplo, extraer de la salida del ping el tiempo en milisegundos (\"32\" → 32) para COMPARAR velocidades de los DNS y quedarse con el menor, o convertir cualquier dato numérico leído con fgets antes de usarlo en cálculos/comparaciones.\n(También existen atol/atof para long y float, y strtol como versión más segura con control de errores.)\n\nEquivalente en Python (proyecto actual): la conversión cadena→entero se hace con int(), p. ej. int('123') → 123 (y la inversa, entero→cadena, con str(123) → '123').",
+          "difficulty": "facil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué tipo de errores podemos solventar usando las herramientas de depuración? (2.5 puntos) (Resolver la pregunta aproximadamente en 3 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Las herramientas de depuración (breakpoints, ejecución paso a paso, inspección de variables) ayudan sobre todo con los errores que se manifiestan al EJECUTAR el programa:\n• Errores de EJECUCIÓN (runtime): el programa se interrumpe por una excepción/fallo en tiempo de ejecución (división por cero, acceso a un índice fuera de rango, abrir un fichero que no existe, puntero nulo...). El depurador detiene la ejecución en el punto del fallo y permite ver el estado.\n• Errores de LÓGICA: el programa NO se rompe, pero produce un resultado incorrecto (un contador que cuenta de más, una condición mal puesta, un bucle que no itera lo esperado). Avanzando paso a paso e inspeccionando variables se localiza dónde el valor deja de ser el correcto.\nLos errores de SINTAXIS, en cambio, NO se resuelven con el depurador: los detecta el compilador/intérprete antes de ejecutar, porque el programa ni siquiera arranca.\n\nEquivalente en Python (proyecto actual): igual que en C: el depurador de VSCode sirve para errores de ejecución (excepciones: ZeroDivisionError, IndexError, FileNotFoundError...) y de lógica; los de sintaxis (SyntaxError) los caza el intérprete antes de arrancar.",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-sintesis-modos-apertura",
+      "title": "Síntesis (sin fecha) — modos de apertura, marcas y cadenas",
+      "date": "Sin fecha (prueba de síntesis / PS)",
+      "source": "Examen_10",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "¿Qué modos de apertura de archivos existen, y para que usaremos cada uno de ellos? (2.5 puntos) (Resolver la pregunta aproximadamente en 4 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Modos de apertura de fopen() en C (segundo argumento) y su uso:\n• \"r\" (read): solo LECTURA. El fichero debe existir; el cursor se sitúa al PRINCIPIO. Si no existe, fopen devuelve NULL.\n• \"w\" (write): ESCRITURA. CREA el fichero si no existe y, si existe, lo SOBRESCRIBE (borra su contenido). Cursor al principio.\n• \"a\" (append): AÑADIR al final. Crea el fichero si no existe; si existe, conserva el contenido y escribe siempre al FINAL.\n• \"r+\": lectura y escritura; el fichero debe existir; cursor al principio (no borra).\n• \"w+\": lectura y escritura; crea/sobrescribe (borra el contenido); cursor al principio.\n• \"a+\": lectura y escritura; crea si no existe; escribe al final.\nAdemás se puede añadir \"b\" para modo BINARIO (rb, wb, ab...) frente al modo texto por defecto.\nEn resumen: r = leer existente, w = crear/sobrescribir, a = añadir al final, y los '+' permiten leer y escribir a la vez.\n\nEquivalente en Python (proyecto actual): open() usa los mismos modos: 'r' (leer), 'w' (crear/sobrescribir), 'a' (añadir), 'r+'/'w+'/'a+', 'x' (crear y fallar si ya existe), y 'b' para binario. Ej.: open('datos.txt', 'a').",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Cita al menos dos marcas importantes relacionadas con el trabajo con ficheros de texto. (2.5 puntos) (Resolver la pregunta aproximadamente en 4 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Marcas (caracteres/indicadores especiales) importantes al trabajar con ficheros de texto:\n• El SALTO DE LÍNEA '\\n' (newline): separa unas líneas de otras dentro del fichero. Es la marca que se busca para contar líneas o para recortar el final de lo leído con fgets. En Windows el fin de línea suele ser la pareja '\\r\\n' (retorno de carro + nueva línea).\n• El FIN DE FICHERO (EOF / End Of File): marca que indica que se ha llegado al final del archivo. En C se detecta con la función feof() o porque fgetc() devuelve la constante EOF y fgets() devuelve NULL; sirve para saber cuándo dejar de leer.\n• El TERMINADOR NULO '\\0': aunque es propio de las cadenas en memoria (no del fichero en sí), es la marca que indica dónde termina una cadena de C tras leerla.\n\nEquivalente en Python (proyecto actual): el '\\n' sigue siendo el separador de líneas (y se quita con .strip()/.rstrip()); el fin de fichero no se gestiona con EOF: al iterar 'for linea in f:' o usar f.readline(), el bucle simplemente termina (readline devuelve '' al llegar al final). No existe el terminador '\\0'.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "¿Se pueden usar las herramientas de depuración para encontrar un error de sintaxis? (2.5 puntos) (Resolver la pregunta aproximadamente en 3 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "No con el depurador propiamente dicho. Un error de sintaxis impide que el programa COMPILE, y las herramientas de depuración (breakpoints, paso a paso, inspección de variables) solo funcionan sobre un programa que YA está en ejecución; si no compila, no arranca y no hay nada que depurar. Quien detecta y localiza el error de sintaxis es el COMPILADOR: al pulsar Compilar/Depurar, falla la compilación y la Lista de errores del IDE indica la línea y el motivo (p. ej. falta un ';'). Es decir, el entorno te avisa del error de sintaxis, pero no a través del depurador, sino del compilador.\n\nEquivalente en Python (proyecto actual): igual; un SyntaxError lo detecta el INTÉRPRETE al compilar a bytecode antes de ejecutar, y el depurador de VSCode no llega a intervenir porque el programa no arranca.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué función para cadenas usarás para construir un comando formado por diferentes partes que se encuentran en dos variables distintas? ¿A que biblioteca pertenece esa función? (2.5 puntos) (Resolver la pregunta aproximadamente en 1 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La función strcat() (concatenar cadenas), que pertenece a la biblioteca string.h. Une el contenido de una cadena al final de otra, por lo que sirve para construir un comando a partir de varias partes; por ejemplo: strcat(comando, ip); o encadenando: char comando[100]=\"ping \"; strcat(comando, ip); strcat(comando, \" > result.txt\");. (Si las partes están en dos variables y se quiere volcar a una tercera con formato, también se usa sprintf()/snprintf(), igualmente disponibles; sprintf está en stdio.h.)\n\nEquivalente en Python (proyecto actual): se concatena con el operador '+' o, preferiblemente, con f-strings: comando = 'ping ' + ip   o   comando = f'ping {ip} > result.txt' (no hace falta importar nada).",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp047-sintesis-contar-i",
+      "title": "Síntesis (sin fecha) — contar líneas, breakpoints y adaptadores",
+      "date": "Sin fecha (prueba de síntesis / PS)",
+      "source": "TF6240788 (Modelo A; Modelo B casi idéntico, dedup)",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Que se está contando gracias a la variable \"i\" en el siguiente código: (2,5 puntos) (Resolver la pregunta en el espacio asignado, no mas de una cara)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "#include <stdio.h>",
+            "int main() {",
+            "    FILE* fp;",
+            "    char c;",
+            "    int i = 0;",
+            "    fp = fopen(\"c:/a/ips.txt\", \"r\");",
+            "    if (fp != NULL) {",
+            "        while (!feof(fp)) {",
+            "            c = fgetc(fp);",
+            "            printf(\"%c\", c);",
+            "            if (c == '\\n') { i++; };",
+            "        }",
+            "    }",
+            "    fclose(fp);",
+            "    return 0;",
+            "}"
+          ],
+          "answer": "Con la variable i se está contando el número de SALTOS DE LÍNEA ('\\n') del fichero c:/a/ips.txt, lo que equivale a contar las LÍNEAS del fichero (en este proyecto, el número de IPs, porque hay una IP por línea). El programa abre el fichero en lectura, lo recorre carácter a carácter con fgetc() imprimiéndolo, y cada vez que el carácter leído es '\\n' incrementa i. Por tanto, al final i contiene cuántos saltos de línea (≈ cuántas líneas/IPs) tiene el archivo.\nMatiz: si la última línea no termina en '\\n', esa línea no se contaría; y como el bucle usa !feof(), puede procesarse un carácter de más al final (EOF), que conviene controlar.\n\nEquivalente en Python (proyecto actual): contar líneas es directo: i = open('c:/a/ips.txt').read().count('\\n')  (o sum(1 for _ in open('c:/a/ips.txt')) para contar líneas reales).",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Si en un código cometemos una depuración del mismo explica para que se usan los puntos de interrupción. Pon un ejemplo de cómo usarlo para completar la explicación. (2,5 puntos) (Resolver la pregunta en el espacio asignado, no mas de una cara)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Los puntos de interrupción (breakpoints) sirven para DETENER la ejecución en una línea concreta (antes de ejecutarla) y poder inspeccionar el estado del programa en ese instante: valores de las variables, pila de llamadas, etc., y luego avanzar paso a paso (F10/F11). Permiten diagnosticar errores de ejecución y de lógica sin llenar el código de printf. Se colocan con clic en el margen izquierdo del editor o con F9 (aparece un círculo rojo).\nEjemplo (con el código anterior que cuenta líneas): coloco un breakpoint en la línea if (c=='\\n') { i++; }. Al ejecutar en modo depuración, el programa se detiene ahí en cada vuelta y en la ventana Variables locales compruebo el valor de c y cómo se incrementa i, verificando si realmente cuenta bien. Si solo me interesa cuando i sea grande, lo convierto en breakpoint CONDICIONAL con la condición i > 50.\n\nEquivalente en Python (proyecto actual): en VSCode es idéntico: F9 pone el breakpoint, F5 arranca la depuración, el programa se detiene en esa línea y se inspeccionan las variables en el panel VARIABLES (los condicionales se editan con clic derecho → Edit Breakpoint).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "A partir de lo aprendido en los productos 2 y 3 responde a la siguiente pregunta: ¿Qué modos de apertura existen para un archivo de texto y donde se sitúa el cursor o indicador de posición corriente en un primer momento en cada uno de ellos? (2,5 puntos) (Resolver la pregunta en el espacio asignado, no mas de una cara)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Modos de apertura de un archivo de texto con fopen() y dónde queda el cursor (indicador de posición) al abrirlo:\n• \"r\" (lectura): el fichero debe existir; el cursor se sitúa al PRINCIPIO del archivo.\n• \"w\" (escritura): crea el fichero o, si existe, lo VACÍA (sobrescribe); el cursor queda al principio (sobre un archivo vacío).\n• \"a\" (añadir/append): crea si no existe; conserva el contenido y el cursor se sitúa al FINAL, de modo que todo lo que se escriba se añade tras lo existente.\n• \"r+\" (lectura/escritura): el fichero debe existir; cursor al PRINCIPIO; no borra el contenido.\n• \"w+\" (lectura/escritura): crea o vacía el fichero; cursor al PRINCIPIO.\n• \"a+\" (lectura/escritura): crea si no existe; las escrituras van al FINAL; para leer, el cursor se puede mover (al abrir, la lectura empieza al principio pero la escritura siempre al final).\nResumen del cursor inicial: r, w, r+, w+ → al principio; a, a+ → al final (para escribir).\n\nEquivalente en Python (proyecto actual): open() usa los mismos modos y la misma colocación del cursor: 'r'/'w'/'r+'/'w+' empiezan al principio, 'a'/'a+' escriben al final; con f.seek()/f.tell() se consulta o mueve la posición.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Aplicando lo tratado en los productos 3, muestra la línea de código que permitiría a una aplicación programada en C qué es capaz de almacenar/guardar en el archivo c:/adaptadores.txt la lista de nombres de adaptadores de red que se pasan a dicha aplicación. (2,5 puntos) (Resolver la pregunta en el espacio asignado, no mas de una cara)",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "c",
+          "codeLines": [
+            "system(\"ipconfig /all > c:/adaptadores.txt\");"
+          ],
+          "answer": "La forma más sencilla y acorde al proyecto es lanzar con system() un comando que liste los adaptadores de red y redirigir su salida con '>' al fichero pedido:\n    system(\"ipconfig /all > c:/adaptadores.txt\");\nipconfig /all muestra todos los adaptadores de red (con sus nombres y configuración) y '>' guarda esa salida en c:/adaptadores.txt. Si lo que tenemos son los nombres en variables/argumentos de la aplicación y queremos escribirlos nosotros mismos, se haría abriendo el fichero y escribiéndolos:\n    FILE* f = fopen(\"c:/adaptadores.txt\", \"w\");\n    fprintf(f, \"%s\\n\", nombreAdaptador);   // por cada adaptador\n    fclose(f);\n\nEquivalente en Python (proyecto actual): import subprocess; subprocess.run('ipconfig /all > c:/adaptadores.txt', shell=True)  — o, escribiendo una lista de nombres propia: open('c:/adaptadores.txt','w').write('\\n'.join(adaptadores)).",
+          "difficulty": "media"
+        }
+      ]
+    }
+  ]
+}

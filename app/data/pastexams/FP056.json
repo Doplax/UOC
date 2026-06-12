@@ -1,0 +1,326 @@
+{
+  "id": "FP056",
+  "subject": "FP.056 — Programación orientada a objetos",
+  "exams": [
+    {
+      "id": "fp056-ex1",
+      "title": "Examen 1 (sin fecha)",
+      "date": "",
+      "source": "Examen_1 Modelo A / Examen_2 Modelo B",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "¿Cómo aplicarías una relación de asociación de un diagrama de clases en Java? (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una relación de ASOCIACIÓN (línea simple que une dos clases en el diagrama, normalmente con una flecha que indica la navegabilidad) se traduce en Java haciendo que una clase tenga un ATRIBUTO cuyo tipo es la otra clase. Es decir, ambas clases COMPARTEN un objeto: una conoce y puede usar a la otra.\n\nCaracterísticas:\n• Es una relación 'débil'/flexible: los objetos son INDEPENDIENTES. Si una clase desaparece, la otra puede seguir existiendo.\n• El objeto asociado se suele crear FUERA y se pasa por el constructor o por un setter.\n• La flecha indica quién conoce a quién (navegabilidad). A→B significa que A puede acceder a B.\n\nEjemplo (un Alumno está asociado a un Aula):\n\n  class Aula {\n      private String codigo;\n      public Aula(String codigo) { this.codigo = codigo; }\n  }\n\n  class Alumno {\n      private Aula aula;                 // ASOCIACIÓN: atributo del otro tipo\n      public Alumno(Aula aula) {\n          this.aula = aula;             // el aula se crea fuera y se pasa\n      }\n      public Aula getAula() { return aula; }\n  }\n\n  // Uso:\n  Aula a = new Aula(\"INF-101\");\n  Alumno al = new Alumno(a);            // se comparte el objeto\n\nSi la cardinalidad fuera 'a muchos' (un Aula con varios Alumnos), el atributo sería una colección: private ArrayList<Alumno> alumnos = new ArrayList<>();",
+          "difficulty": "facil"
+        },
+        {
+          "n": "2",
+          "prompt": "En la actividad AA2 realizaste un Diagrama de casos de uso que se ajustara a los requisitos planteados en la actividad.\n• ¿Qué funcionalidad tiene el Diagrama de casos de uso?\n• Pon un ejemplo de Diagrama de casos de uso.\n(Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "FUNCIONALIDAD DEL DIAGRAMA DE CASOS DE USO\nEs un diagrama de comportamiento de UML que muestra QUÉ hace el sistema desde el punto de vista del usuario, sin entrar en CÓMO lo hace. Sirve para:\n• Capturar y documentar los REQUISITOS FUNCIONALES del sistema de forma visual y comprensible (también para clientes no técnicos).\n• Identificar los ACTORES (usuarios o sistemas externos que interactúan) y las funcionalidades (casos de uso) que el sistema ofrece a cada uno.\n• Delimitar el ALCANCE del sistema (qué queda dentro y qué fuera, mediante la 'caja' o frontera del sistema).\n• Servir de base para el diseño, la planificación y las pruebas.\n\nElementos: actores (muñecos), casos de uso (óvalos), la frontera del sistema (rectángulo que los engloba), y relaciones (asociación actor–caso de uso, y entre casos «include» y «extend»).\n\nEJEMPLO: sistema de un cajero automático.\n• Actor: Cliente.\n• Actor: Banco (sistema externo).\n• Casos de uso (óvalos): «Consultar saldo», «Retirar dinero», «Ingresar dinero», «Autenticarse».\n• «Retirar dinero» y «Consultar saldo» incluyen («include») «Autenticarse», porque siempre hay que validar el PIN antes.\n\nRepresentación esquemática:\n\n  Cliente ── (Autenticarse)\n  Cliente ── (Consultar saldo) ··«include»··> (Autenticarse)\n  Cliente ── (Retirar dinero)  ··«include»··> (Autenticarse) ──── Banco",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "En la actividad AA3 generaste código en Java a partir de un diagrama de clases. Pon un ejemplo y escribe el código en Java de la implementación de una clase con sus atributos y que hereda de otra clase. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una relación de HERENCIA del diagrama de clases (flecha con triángulo hueco que apunta a la clase padre) se implementa en Java con la palabra clave 'extends'. La subclase hereda los atributos y métodos del padre y puede añadir los suyos propios.\n\nEjemplo: una clase Empleado que HEREDA de Persona.\n\n  // Clase padre (superclase)\n  class Persona {\n      protected String nombre;\n      protected int edad;\n\n      public Persona(String nombre, int edad) {\n          this.nombre = nombre;\n          this.edad = edad;\n      }\n      public void saludar() {\n          System.out.println(\"Hola, soy \" + nombre);\n      }\n  }\n\n  // Clase hija (subclase) que hereda de Persona\n  class Empleado extends Persona {\n      private double salario;           // atributo propio\n\n      public Empleado(String nombre, int edad, double salario) {\n          super(nombre, edad);          // llama al constructor del padre\n          this.salario = salario;\n      }\n      public double getSalario() { return salario; }\n  }\n\nClaves: 'extends Persona' establece la herencia; 'super(nombre, edad)' invoca el constructor de la clase padre; los atributos del padre se declaran 'protected' para que la subclase pueda usarlos. Empleado dispone de nombre, edad, saludar() (heredados) y salario (propio).",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "En la actividad AA3 generaste código en Java a partir de un diagrama de clases. Pon un ejemplo y escribe el código en Java de la implementación de una relación de agregación. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una relación de AGREGACIÓN (rombo VACÍO en el extremo del 'todo' en UML) es una relación 'todo-parte' DÉBIL: las partes existen de forma INDEPENDIENTE del todo. En Java se implementa con un atributo del tipo de la parte, pero el objeto se CREA FUERA y se RECIBE por parámetro (no se hace 'new' dentro del contenedor). Si el contenedor se destruye, las partes siguen vivas.\n\nEjemplo: un Equipo agrega Jugadores (un jugador puede existir sin el equipo y fichar por otro).\n\n  class Jugador {\n      private String nombre;\n      public Jugador(String nombre) { this.nombre = nombre; }\n  }\n\n  class Equipo {\n      private ArrayList<Jugador> jugadores;   // la parte\n\n      public Equipo(ArrayList<Jugador> jugadores) {\n          this.jugadores = jugadores;         // RECIBE objetos ya creados\n      }\n      public void addJugador(Jugador j) {     // o se añaden uno a uno\n          jugadores.add(j);\n      }\n  }\n\n  // Uso:\n  Jugador j1 = new Jugador(\"Ana\");           // creado FUERA\n  ArrayList<Jugador> lista = new ArrayList<>();\n  lista.add(j1);\n  Equipo e = new Equipo(lista);              // se le pasa la lista\n\nClave que la distingue de la composición: el Equipo NO hace 'new Jugador(...)' en su constructor; recibe jugadores que ya existían y que sobreviven aunque el Equipo desaparezca.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp056-ex2",
+      "title": "Examen 2 (sin fecha)",
+      "date": "",
+      "source": "Examen_1 Modelo B / Examen_2 Modelo A / TF6095408 Modelo B",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "¿Cómo aplicarías una relación de asociación de un diagrama de clases en Java? (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una relación de ASOCIACIÓN (línea simple entre dos clases, normalmente con flecha de navegabilidad) se implementa en Java añadiendo a una clase un ATRIBUTO del tipo de la clase asociada: ambas clases comparten un objeto y una puede usar a la otra.\n\nCaracterísticas:\n• Relación 'débil': los objetos son INDEPENDIENTES; si una clase desaparece, la otra puede seguir existiendo.\n• El objeto asociado se crea FUERA y se pasa por constructor o setter.\n• La flecha indica la navegabilidad (A→B: A conoce a B).\n\nEjemplo (un Pedido está asociado a un Cliente):\n\n  class Cliente {\n      private String nombre;\n      public Cliente(String nombre) { this.nombre = nombre; }\n  }\n\n  class Pedido {\n      private Cliente cliente;          // ASOCIACIÓN\n      public Pedido(Cliente cliente) {\n          this.cliente = cliente;       // se pasa un cliente externo\n      }\n      public Cliente getCliente() { return cliente; }\n  }\n\nSi la cardinalidad fuera 'a muchos' se usaría una colección: private ArrayList<Pedido> pedidos = new ArrayList<>();\n\nLa asociación es la base; la AGREGACIÓN y la COMPOSICIÓN son formas más fuertes de asociación que añaden semántica 'todo-parte'.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "2",
+          "prompt": "En la actividad AA2 realizaste un Diagrama de comportamiento que se ajustara a los requisitos planteados en la actividad. Describe en qué casos se aplica una relación de «Extend» o «Include». (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "«Include» y «Extend» son relaciones entre CASOS DE USO (no entre actores) que se dibujan con una flecha discontinua y el estereotipo correspondiente.\n\nINCLUDE («include») — comportamiento OBLIGATORIO y reutilizable.\n• Se aplica cuando un caso de uso SIEMPRE necesita ejecutar otro caso de uso como parte de su proceso.\n• Sirve para factorizar funcionalidad común a varios casos de uso (evita repetir).\n• La flecha va del caso base AL caso incluido: Base ··«include»··> Incluido.\n• Ejemplo: «Retirar dinero» include «Autenticarse», y «Consultar saldo» también include «Autenticarse». La autenticación es obligatoria y compartida.\n\nEXTEND («extend») — comportamiento OPCIONAL/condicional.\n• Se aplica cuando un caso de uso AÑADE un comportamiento a otro SOLO en ciertas condiciones (no siempre).\n• El caso base es completo por sí mismo; la extensión es un 'extra' que ocurre a veces.\n• La flecha va del caso de extensión AL caso base: Extensión ··«extend»··> Base.\n• Ejemplo: «Imprimir recibo» extend «Retirar dinero» (solo si el cliente lo pide).\n\nResumen: usa «include» para lo que SIEMPRE pasa y se reutiliza; usa «extend» para lo que pasa OPCIONALMENTE o bajo condición. Ojo a la dirección de la flecha, que es opuesta en cada caso.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "En la actividad AA3 generaste código en Java a partir de un diagrama de clases. Pon un ejemplo y escribe el código en Java de la implementación de una clase con sus atributos y que hereda de otra clase. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La HERENCIA (flecha con triángulo hueco hacia el padre en el diagrama de clases) se implementa en Java con 'extends'. La subclase reutiliza atributos y métodos del padre y añade los propios.\n\nEjemplo: Coche HEREDA de Vehiculo.\n\n  // Superclase\n  class Vehiculo {\n      protected String marca;\n      protected int velocidadMax;\n\n      public Vehiculo(String marca, int velocidadMax) {\n          this.marca = marca;\n          this.velocidadMax = velocidadMax;\n      }\n      public void arrancar() {\n          System.out.println(marca + \" arrancando\");\n      }\n  }\n\n  // Subclase\n  class Coche extends Vehiculo {\n      private int numPuertas;           // atributo propio\n\n      public Coche(String marca, int velocidadMax, int numPuertas) {\n          super(marca, velocidadMax);   // constructor del padre\n          this.numPuertas = numPuertas;\n      }\n      public int getNumPuertas() { return numPuertas; }\n  }\n\nClaves: 'extends Vehiculo' crea la herencia; 'super(...)' inicializa la parte heredada; los atributos del padre son 'protected' para ser accesibles desde la subclase. Coche dispone de marca, velocidadMax y arrancar() (heredados) más numPuertas (propio).",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Cómo aplicarías una relación de agregación de un diagrama de clases en Java? (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una relación de AGREGACIÓN (rombo VACÍO en el lado del 'todo' en UML) es una relación 'todo-parte' DÉBIL: las partes existen de forma INDEPENDIENTE del contenedor. En Java se aplica con un atributo del tipo de la parte, pero el objeto se CREA FUERA y se RECIBE (por constructor o setter), NUNCA con 'new' dentro del contenedor. Si el contenedor muere, las partes siguen existiendo.\n\nEjemplo: una Biblioteca agrega Libros (un libro puede existir sin la biblioteca).\n\n  class Libro {\n      private String titulo;\n      public Libro(String titulo) { this.titulo = titulo; }\n  }\n\n  class Biblioteca {\n      private ArrayList<Libro> libros;        // la parte\n\n      public Biblioteca(ArrayList<Libro> libros) {\n          this.libros = libros;               // RECIBE objetos ya creados\n      }\n      public void addLibro(Libro l) {\n          libros.add(l);\n      }\n  }\n\n  // Uso:\n  Libro l1 = new Libro(\"El Quijote\");        // creado FUERA\n  ArrayList<Libro> coleccion = new ArrayList<>();\n  coleccion.add(l1);\n  Biblioteca b = new Biblioteca(coleccion);\n\nLa diferencia con la COMPOSICIÓN es que aquí el contenedor NO crea las partes con 'new'; las recibe y estas sobreviven a su destrucción.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp056-ex3",
+      "title": "Examen 3 (sin fecha)",
+      "date": "",
+      "source": "Examen_3",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "En los diagramas de clases que has realizado en el seminario, ¿implementaste alguna relación de herencia? (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Sí. La HERENCIA modela la relación 'ES-UN': una subclase es un tipo especializado de la superclase y reutiliza sus atributos y métodos. En el diagrama se representa con una flecha de triángulo hueco que apunta a la clase padre, y en Java se codifica con 'extends'.\n\nEjemplo del seminario: una jerarquía Animal → Perro / Gato, donde Perro y Gato heredan de Animal el atributo 'nombre' y el método 'comer()', y cada uno añade su propio comportamiento (ladrar(), maullar()).\n\n  class Animal {\n      protected String nombre;\n      void comer() { System.out.println(\"Comiendo\"); }\n  }\n  class Perro extends Animal {\n      void ladrar() { System.out.println(\"Guau\"); }\n  }\n\nLa herencia evita duplicar el código común (lo que comparten todos los animales se define una sola vez en Animal) y habilita el polimorfismo (tratar Perro y Gato como Animal).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "2",
+          "prompt": "Describe un ejemplo de diagrama de casos de uso. (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Un diagrama de casos de uso muestra los ACTORES (usuarios o sistemas externos, dibujados como muñecos) y los CASOS DE USO (funcionalidades, dibujadas como óvalos) que el sistema ofrece, todo dentro de la frontera del sistema (un rectángulo).\n\nEjemplo: sistema de una TIENDA ONLINE.\n• Actor: Cliente.\n• Actor: Administrador.\n• Casos de uso del Cliente: «Buscar producto», «Añadir al carrito», «Realizar pedido», «Pagar».\n• Casos de uso del Administrador: «Gestionar catálogo», «Ver pedidos».\n• «Realizar pedido» incluye («include») «Pagar», porque para completar el pedido siempre hay que pagar.\n\nEsquema:\n\n  Cliente ──── (Buscar producto)\n  Cliente ──── (Realizar pedido) ··«include»··> (Pagar)\n  Administrador ──── (Gestionar catálogo)\n\nEl diagrama deja claro QUÉ puede hacer cada actor con el sistema, sin describir cómo se implementa.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "Escribe en Java la implementación de una clase con sus atributos y que hereda de otra clase. (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Se usa la palabra clave 'extends' para que una clase herede de otra. La subclase obtiene los atributos y métodos del padre y añade los suyos.\n\n  // Clase padre\n  class Persona {\n      protected String nombre;\n      public Persona(String nombre) {\n          this.nombre = nombre;\n      }\n  }\n\n  // Clase hija que HEREDA de Persona\n  class Estudiante extends Persona {\n      private String matricula;          // atributo propio\n\n      public Estudiante(String nombre, String matricula) {\n          super(nombre);                 // constructor del padre\n          this.matricula = matricula;\n      }\n      public String getMatricula() { return matricula; }\n  }\n\nClaves: 'extends Persona' establece la herencia; 'super(nombre)' llama al constructor de la superclase para inicializar la parte heredada; 'nombre' es 'protected' para que la subclase lo pueda usar. Estudiante tiene 'nombre' (heredado) y 'matricula' (propio).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Cómo se añade un objeto en un ArrayList en Java? (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Un ArrayList es una lista dinámica de la librería java.util. Para añadir un objeto se usa el método add().\n\nPasos:\n1) Importar la clase: import java.util.ArrayList;\n2) Crear la lista indicando el tipo de objetos que contendrá (genéricos <>).\n3) Llamar a add(objeto) para insertar al final, o add(indice, objeto) para insertar en una posición concreta.\n\n  import java.util.ArrayList;\n\n  ArrayList<String> nombres = new ArrayList<>();\n  nombres.add(\"Ana\");           // añade al final → [Ana]\n  nombres.add(\"Luis\");          // añade al final → [Ana, Luis]\n  nombres.add(0, \"Eva\");        // inserta en la posición 0 → [Eva, Ana, Luis]\n\nTambién se pueden guardar objetos de clases propias:\n\n  ArrayList<Alumno> alumnos = new ArrayList<>();\n  alumnos.add(new Alumno(\"Pepe\"));\n\nadd() devuelve true al insertar; el ArrayList crece automáticamente, no hay que indicar un tamaño fijo. Para recorrerlo se usa for-each: for (String n : nombres) { ... }",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp056-ex4",
+      "title": "Examen 4 (sin fecha)",
+      "date": "",
+      "source": "Examen_4",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "En los diagramas de clases que has realizado en el seminario, ¿implementaste alguna relación de agregación? (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Sí. La AGREGACIÓN es una relación 'todo-parte' DÉBIL en la que las partes existen de forma INDEPENDIENTE del todo. En el diagrama se representa con un rombo VACÍO en el lado del contenedor, y en Java se implementa con un atributo (a menudo una colección) cuyos objetos se CREAN FUERA y se RECIBEN por parámetro (no se hace 'new' dentro del contenedor).\n\nEjemplo del seminario: un Equipo y sus Jugadores. Un jugador puede existir sin el equipo y fichar por otro, por eso es agregación y no composición.\n\n  class Equipo {\n      private ArrayList<Jugador> jugadores;\n      public Equipo(ArrayList<Jugador> jugadores) {\n          this.jugadores = jugadores;   // recibe jugadores ya creados\n      }\n  }\n\nSi el Equipo desaparece, los Jugadores siguen existiendo: ese es el rasgo que la diferencia de la composición (donde la parte muere con el todo).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "2",
+          "prompt": "Describe un ejemplo de diagrama de casos de uso. (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Un diagrama de casos de uso representa los ACTORES (muñecos: usuarios o sistemas externos) y los CASOS DE USO (óvalos: funcionalidades) dentro de la frontera del sistema (rectángulo), mostrando QUÉ puede hacer cada actor.\n\nEjemplo: sistema de una BIBLIOTECA.\n• Actor: Socio.\n• Actor: Bibliotecario.\n• Casos de uso del Socio: «Buscar libro», «Reservar libro», «Prestar libro».\n• Casos de uso del Bibliotecario: «Registrar socio», «Gestionar fondos».\n• «Prestar libro» incluye («include») «Comprobar disponibilidad», porque siempre hay que verificarla antes de prestar.\n\nEsquema:\n\n  Socio ──── (Buscar libro)\n  Socio ──── (Prestar libro) ··«include»··> (Comprobar disponibilidad)\n  Bibliotecario ──── (Registrar socio)\n\nAsí se documentan los requisitos funcionales de forma visual y comprensible para el cliente.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "Escribe en Java la implementación de una clase con sus atributos y que hereda de otra clase. (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La herencia se codifica en Java con 'extends'. La subclase hereda atributos y métodos del padre y puede añadir los propios.\n\n  // Clase padre\n  class Figura {\n      protected String color;\n      public Figura(String color) {\n          this.color = color;\n      }\n      public void dibujar() {\n          System.out.println(\"Dibujando figura \" + color);\n      }\n  }\n\n  // Clase hija que HEREDA de Figura\n  class Circulo extends Figura {\n      private double radio;              // atributo propio\n\n      public Circulo(String color, double radio) {\n          super(color);                 // constructor del padre\n          this.radio = radio;\n      }\n      public double area() { return Math.PI * radio * radio; }\n  }\n\nClaves: 'extends Figura' establece la herencia; 'super(color)' inicializa la parte heredada; 'color' es 'protected' para usarlo desde la subclase. Circulo tiene 'color' y dibujar() (heredados) más 'radio' y area() (propios).",
+          "difficulty": "facil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Cómo se añade un objeto en un ArrayList en Java? (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Un ArrayList (java.util) es una lista dinámica. Para añadir un objeto se utiliza el método add().\n\nPasos:\n1) Importar: import java.util.ArrayList;\n2) Crear la lista con su tipo genérico entre <>.\n3) Usar add(objeto) para añadir al final, o add(indice, objeto) para una posición concreta.\n\n  import java.util.ArrayList;\n\n  ArrayList<Producto> carrito = new ArrayList<>();\n  carrito.add(new Producto(\"Leche\"));   // añade al final\n  carrito.add(new Producto(\"Pan\"));     // añade al final\n  carrito.add(0, new Producto(\"Agua\")); // inserta en la posición 0\n\nEl ArrayList crece automáticamente (no hay tamaño fijo) y add() devuelve true al insertar. Otros métodos útiles: get(i) para leer, remove(i) para borrar, size() para el número de elementos. Se recorre con for-each: for (Producto p : carrito) { ... }",
+          "difficulty": "facil"
+        }
+      ]
+    },
+    {
+      "id": "fp056-ex5",
+      "title": "Examen 5 (sin fecha)",
+      "date": "",
+      "source": "Examen_5",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "¿En qué casos se implementa una relación de herencia en un diagrama de clases? (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Se implementa una relación de HERENCIA cuando entre dos clases existe la relación 'ES-UN' (is-a): una clase es un tipo especializado de otra. En el diagrama se dibuja con una flecha de triángulo hueco hacia la clase padre, y en Java se usa 'extends'.\n\nCasos concretos en los que se aplica:\n• Cuando varias clases COMPARTEN atributos y métodos comunes que conviene definir UNA sola vez en una clase padre (reutilización, evitar duplicar código).\n• Cuando una clase es una ESPECIALIZACIÓN de otra: Perro es-un Animal, Empleado es-una Persona, Círculo es-una Figura.\n• Cuando se quiere aprovechar el POLIMORFISMO (tratar las subclases a través del tipo padre y sobrescribir métodos).\n\nNO se usa para relaciones 'TIENE-UN' (un Coche tiene un Motor): eso es composición/agregación, no herencia. La pregunta clave es: '¿X es un tipo de Y?' Si la respuesta es sí, hay herencia.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "2",
+          "prompt": "¿Qué es un Actor en un diagrama de casos de uso? Pon un ejemplo. (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Un ACTOR en un diagrama de casos de uso es una entidad EXTERNA al sistema que interactúa con él para obtener un resultado. Representa un ROL, no a una persona concreta (una misma persona puede ejercer varios roles, y varias personas el mismo rol). Se dibuja como un muñeco (stick figure) situado FUERA de la frontera del sistema, conectado por una línea a los casos de uso que utiliza.\n\nUn actor puede ser:\n• Un usuario humano (un rol): Cliente, Administrador, Cajero.\n• Otro sistema o hardware externo que se comunica con el nuestro: una pasarela de pago, un servidor del banco, un sensor.\n\nEjemplo: en el sistema de un cajero automático, el actor 'Cliente' interactúa con los casos de uso «Retirar dinero» y «Consultar saldo», y el actor 'Banco' (sistema externo) participa en «Autorizar operación». Ambos son externos al sistema y desencadenan o reciben funcionalidades.",
+          "difficulty": "facil"
+        },
+        {
+          "n": "3",
+          "prompt": "¿Qué es el constructor en una clase y cómo se codifica en Java? (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "El CONSTRUCTOR es un método especial que se ejecuta AUTOMÁTICAMENTE al crear (instanciar) un objeto con 'new'. Su función es INICIALIZAR los atributos del objeto para dejarlo en un estado válido.\n\nCaracterísticas de cómo se codifica en Java:\n• Tiene EXACTAMENTE el mismo nombre que la clase.\n• NO tiene tipo de retorno (ni siquiera void).\n• Puede recibir parámetros para inicializar los atributos.\n• Puede haber varios (sobrecarga) con distintos parámetros.\n• Si no escribes ninguno, Java crea uno por defecto sin parámetros.\n\n  class Coche {\n      private String marca;\n      private int anyo;\n\n      // Constructor\n      public Coche(String marca, int anyo) {\n          this.marca = marca;       // 'this' distingue atributo de parámetro\n          this.anyo = anyo;\n      }\n  }\n\n  // Se invoca con new:\n  Coche c = new Coche(\"Seat\", 2020);\n\n'this.marca = marca' asigna el parámetro al atributo del objeto. En una subclase, el constructor puede llamar al del padre con super(...).",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Pon un ejemplo y escribe en lenguaje Java cómo implementar una relación de herencia. (Resolver aproximadamente en 5 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La HERENCIA se implementa en Java con la palabra clave 'extends': la subclase hereda los atributos y métodos de la superclase y añade los propios. Modela la relación 'ES-UN'.\n\nEjemplo: un Gato ES-UN Animal.\n\n  // Superclase (padre)\n  class Animal {\n      protected String nombre;\n      public Animal(String nombre) {\n          this.nombre = nombre;\n      }\n      public void comer() {\n          System.out.println(nombre + \" está comiendo\");\n      }\n  }\n\n  // Subclase (hija) que HEREDA de Animal\n  class Gato extends Animal {\n      public Gato(String nombre) {\n          super(nombre);            // llama al constructor del padre\n      }\n      public void maullar() {\n          System.out.println(\"Miau\");\n      }\n  }\n\n  // Uso:\n  Gato g = new Gato(\"Tom\");\n  g.comer();     // método heredado de Animal\n  g.maullar();   // método propio de Gato\n\nClaves: 'extends Animal' crea la herencia; 'super(nombre)' inicializa la parte heredada; Gato reutiliza nombre y comer() y añade maullar(). Además, gracias a la herencia se puede hacer 'Animal a = new Gato(...);' (polimorfismo).",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp056-ex6",
+      "title": "Examen 6 (sin fecha)",
+      "date": "",
+      "source": "TF6095408 Modelo A",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "¿Qué es la cardinalidad en un diagrama de clases? Pon ejemplos de los distintos tipos de cardinalidad que conozcas. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La CARDINALIDAD (o multiplicidad) en un diagrama de clases indica CUÁNTOS objetos de una clase pueden relacionarse con CUÁNTOS objetos de otra clase en una asociación. Se escribe en los extremos de la línea que une las dos clases.\n\nNotación habitual:\n• 1 → exactamente uno.\n• 0..1 → cero o uno (opcional).\n• * o 0..* → cero o muchos.\n• 1..* → uno o muchos (al menos uno).\n• n..m → entre n y m (p. ej. 2..4).\n\nTIPOS de cardinalidad (relación entre clases A y B):\n• UNO A UNO (1 — 1): un País tiene una Capital y una Capital pertenece a un País.\n• UNO A MUCHOS (1 — *): un Equipo tiene muchos Jugadores, pero cada Jugador pertenece a un solo Equipo.\n• MUCHOS A MUCHOS (* — *): un Alumno cursa muchas Asignaturas y una Asignatura tiene muchos Alumnos.\n\nEn Java, la cardinalidad 'muchos' se traduce en una COLECCIÓN (p. ej. ArrayList<Jugador>), mientras que la cardinalidad 'uno' se traduce en un único atributo de ese tipo (private Capital capital;). La cardinalidad, por tanto, decide si el atributo es simple o una lista.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "En la actividad AA2 realizaste un Diagrama de casos de uso que se ajustara a los requisitos planteados en la actividad. Explica para qué sirve un diagrama de casos de uso y cómo puede ayudar a la implementación del proyecto. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "PARA QUÉ SIRVE\nUn diagrama de casos de uso es un diagrama de comportamiento de UML que describe las FUNCIONALIDADES que el sistema ofrece a sus usuarios (actores), desde el punto de vista de QUÉ hace el sistema, no de cómo. Sirve para:\n• Capturar y documentar los REQUISITOS FUNCIONALES de forma visual y comprensible también para el cliente.\n• Identificar los ACTORES (usuarios/sistemas externos) y delimitar el ALCANCE del sistema (frontera).\n• Acordar con el cliente qué se va a construir antes de programar.\n\nCÓMO AYUDA A LA IMPLEMENTACIÓN\n• Cada caso de uso suele corresponderse con una FUNCIONALIDAD/MÉTODO o conjunto de operaciones a desarrollar: orienta qué hay que programar.\n• Los actores ayudan a definir ROLES y permisos en el sistema.\n• Las relaciones «include»/«extend» indican funcionalidad común reutilizable y comportamientos opcionales, lo que guía el diseño de clases y métodos.\n• Sirve de base para PLANIFICAR el trabajo (priorizar casos de uso) y para diseñar las PRUEBAS (cada caso de uso es un escenario a probar).\n\nEjemplo: en una tienda online, el caso de uso «Realizar pedido» indica que habrá que implementar esa operación; «Realizar pedido» include «Pagar», así que el método de pago se diseña una vez y se reutiliza. Así el diagrama conecta los requisitos con el código a escribir.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Imagina que te dan un diagrama de clases para que implementes un proyecto en Java. Describe paso a paso cómo lo harías, incluyendo la descripción de qué componentes aparecen en un diagrama de clases. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "COMPONENTES de un diagrama de clases:\n• CLASES: rectángulos divididos en tres partes (nombre, atributos, métodos).\n• ATRIBUTOS: con visibilidad (+ público, - privado, # protegido), nombre y tipo.\n• MÉTODOS: con visibilidad, nombre, parámetros y tipo de retorno.\n• RELACIONES: asociación (línea), agregación (rombo vacío), composición (rombo relleno), herencia (triángulo hueco) y dependencia (flecha discontinua).\n• CARDINALIDADES en los extremos de las asociaciones (1, *, 0..1, 1..*).\n\nPASOS para implementarlo en Java:\n1) Crear una CLASE Java (.java) por cada clase del diagrama.\n2) Declarar los ATRIBUTOS con su tipo y su visibilidad (normalmente 'private').\n3) Añadir el CONSTRUCTOR y los getters/setters para acceder a los atributos privados (encapsulación).\n4) Implementar los MÉTODOS indicados con su firma (parámetros y retorno).\n5) Traducir las RELACIONES:\n   - Herencia (es-un) → 'extends'.\n   - Asociación/Agregación → atributo del otro tipo; si la cardinalidad es 'muchos', usar ArrayList. En agregación el objeto se recibe; en composición se crea con 'new' dentro.\n6) Respetar las CARDINALIDADES: 'uno' = atributo simple; 'muchos' = colección.\n7) Crear una clase con 'main' para instanciar objetos y probar que todo funciona.\n\nResumen: un fichero por clase, atributos privados + getters/setters, relaciones traducidas según su tipo y cardinalidad, y una clase de prueba.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "Si ves una relación de agregación en un diagrama de clases, describe los pasos para traducirlo a código Java. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La AGREGACIÓN (rombo VACÍO en el lado del 'todo') es una relación 'todo-parte' DÉBIL: las partes existen de forma INDEPENDIENTE del contenedor. Pasos para traducirla a Java:\n\n1) Identificar el TODO (contenedor) y la PARTE (lo contenido), y mirar la CARDINALIDAD del extremo.\n2) En la clase contenedora, declarar un ATRIBUTO del tipo de la parte:\n   - Si la cardinalidad es 'uno' → un atributo simple: private Motor motor;\n   - Si es 'muchos' (*) → una colección: private ArrayList<Jugador> jugadores;\n3) Hacer que el objeto de la parte se CREE FUERA y se RECIBA por el constructor o por un setter (NUNCA con 'new' dentro del contenedor). Esto refleja que la parte ya existía.\n4) (Opcional) Añadir métodos para gestionar la colección, como addJugador(Jugador j) o removeJugador(...).\n\nEjemplo:\n\n  class Equipo {\n      private ArrayList<Jugador> jugadores;\n      public Equipo(ArrayList<Jugador> jugadores) {\n          this.jugadores = jugadores;     // RECIBE objetos externos\n      }\n      public void addJugador(Jugador j) { jugadores.add(j); }\n  }\n\nClave: como es agregación, si el Equipo desaparece los Jugadores siguen vivos. Si en lugar de recibirlos los creara con 'new' dentro del constructor, sería COMPOSICIÓN (rombo relleno) y no agregación.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp056-ex7",
+      "title": "Examen 7 (sin fecha)",
+      "date": "",
+      "source": "TF6095409 Modelo A",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "En las actividades AA1 y AA2 realizaste diagramas de clases. Explica qué es la composición de clases y cómo se diferencia de la agregación. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Tanto la COMPOSICIÓN como la AGREGACIÓN son relaciones 'todo-parte' (un objeto contiene a otro), pero se diferencian en si la parte PUEDE EXISTIR SIN el todo.\n\nCOMPOSICIÓN (relación fuerte, rombo RELLENO en UML):\n• El objeto contenido NO puede existir sin el contenedor.\n• El contenedor CREA la parte en su propio constructor con 'new'.\n• Ciclo de vida LIGADO: si se destruye el contenedor, se destruyen las partes.\n\n  class Casa {\n      private Habitacion habitacion;\n      public Casa() {\n          this.habitacion = new Habitacion();  // la crea ELLA MISMA\n      }\n  }\n  // Sin la Casa, la Habitación no tiene sentido.\n\nAGREGACIÓN (relación débil, rombo VACÍO en UML):\n• Los objetos existen de forma INDEPENDIENTE.\n• El contenedor RECIBE la parte ya creada (por parámetro), no la crea.\n• Ciclo de vida SEPARADO: si se destruye el contenedor, las partes siguen vivas.\n\n  class Equipo {\n      private ArrayList<Jugador> jugadores;\n      public Equipo(ArrayList<Jugador> jugadores) {\n          this.jugadores = jugadores;          // los recibe ya creados\n      }\n  }\n  // Si el Equipo desaparece, los Jugadores siguen existiendo.\n\nREGLA RÁPIDA: ¿el contenedor hace 'new' de la parte en su constructor? → COMPOSICIÓN. ¿La recibe ya creada por parámetro? → AGREGACIÓN. Pregunta clave: '¿la parte sobrevive si destruyo el todo?' Sí = agregación; No = composición.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Relacionado con los diagramas de casos de uso, pon un ejemplo de herencia de un actor. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La HERENCIA DE ACTOR (o generalización de actores) en un diagrama de casos de uso permite que un actor 'hijo' HEREDE todos los casos de uso a los que tiene acceso un actor 'padre', y además pueda tener los suyos propios. Se dibuja con la misma flecha de triángulo hueco que la herencia entre clases, apuntando al actor general (padre).\n\nSe usa cuando varios actores comparten un conjunto común de funcionalidades y uno de ellos es una especialización del otro (relación 'es-un' entre roles).\n\nEjemplo: en el sistema de gestión de un banco.\n• Actor padre: Usuario, que puede «Consultar saldo» y «Ver movimientos».\n• Actor hijo: Administrador, que HEREDA de Usuario.\n\nEl Administrador, al heredar de Usuario, puede hacer TODO lo que hace el Usuario («Consultar saldo», «Ver movimientos») y ADEMÁS sus casos de uso propios: «Crear cuenta», «Bloquear cliente».\n\nEsquema:\n\n  Administrador ──▷ Usuario        (el triángulo apunta al padre)\n  Usuario ──── (Consultar saldo)\n  Usuario ──── (Ver movimientos)\n  Administrador ──── (Crear cuenta)\n\nVentaja: evita repetir, en el diagrama, las mismas asociaciones para los dos actores; lo común se define una vez en el actor padre.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Describe en qué casos se aplica una relación de «Extend» o «Include», pero aplicada a los diagramas de casos de uso (no a la herencia). (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "«Include» y «Extend» son relaciones entre CASOS DE USO (óvalos), no entre actores ni de herencia. Se dibujan con una flecha discontinua etiquetada con el estereotipo.\n\nINCLUDE («include») — comportamiento OBLIGATORIO y reutilizable:\n• Se aplica cuando un caso de uso SIEMPRE ejecuta otro como parte de su flujo.\n• Sirve para FACTORIZAR funcionalidad común a varios casos de uso (evita repetir).\n• Dirección: del caso BASE al caso INCLUIDO → Base ··«include»··> Incluido.\n• Ejemplo: «Retirar dinero» y «Consultar saldo» ambos include «Autenticarse» (la autenticación es obligatoria y compartida).\n\nEXTEND («extend») — comportamiento OPCIONAL/condicional:\n• Se aplica cuando un caso de uso AÑADE comportamiento a otro SOLO bajo ciertas condiciones (no siempre).\n• El caso base es completo por sí solo; la extensión es un 'extra' eventual.\n• Dirección: del caso de EXTENSIÓN al caso BASE → Extensión ··«extend»··> Base (flecha opuesta a include).\n• Ejemplo: «Imprimir recibo» extend «Retirar dinero» (solo si el cliente lo solicita).\n\nResumen: «include» para lo que pasa SIEMPRE y se reutiliza; «extend» para lo OPCIONAL/condicional. Importante: la flecha apunta en sentidos contrarios en cada caso. No confundir con la herencia/generalización de actores, que es otra relación distinta.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Cuándo declararías una clase como abstracta? ¿Qué consecuencias tiene? (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una CLASE ABSTRACTA es una clase que NO se puede instanciar directamente (no se puede hacer 'new' de ella); está pensada para ser SUPERCLASE de otras. En Java se declara con la palabra clave 'abstract'.\n\nCUÁNDO declararla abstracta:\n• Cuando representa un CONCEPTO GENERAL que no tiene sentido como objeto concreto, sino solo a través de sus subclases. Por ejemplo 'Figura' (no existe 'una figura' a secas; existen Círculo, Cuadrado...).\n• Cuando quieres definir una BASE COMÚN (atributos y métodos compartidos) y OBLIGAR a las subclases a implementar ciertos métodos, declarándolos como métodos abstractos (sin cuerpo).\n\nCONSECUENCIAS:\n• NO se puede crear un objeto de la clase abstracta: 'new Figura()' da error de compilación.\n• Puede tener métodos ABSTRACTOS (solo la firma, sin código): toda subclase concreta está OBLIGADA a sobrescribirlos, o también deberá declararse abstracta.\n• Puede tener también atributos y métodos NORMALES (con código) que las subclases heredan.\n• Sí se puede usar como TIPO de referencia para el polimorfismo: Figura f = new Circulo();\n\nEjemplo:\n\n  abstract class Figura {\n      abstract double area();              // método abstracto, sin cuerpo\n      void describir() { System.out.println(\"Soy una figura\"); }\n  }\n  class Circulo extends Figura {\n      double radio;\n      double area() { return Math.PI * radio * radio; }  // obligatorio implementarlo\n  }\n\nAsí se garantiza que toda figura concreta sepa calcular su área, pero impidiendo crear figuras 'genéricas'.",
+          "difficulty": "dificil"
+        }
+      ]
+    },
+    {
+      "id": "fp056-ex8",
+      "title": "Examen 8 (sin fecha)",
+      "date": "",
+      "source": "TF6095409 Modelo B",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Describe con tus propias palabras qué es la herencia y cómo se relaciona con el polimorfismo. (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La HERENCIA es el mecanismo por el que una clase (subclase/hija) REUTILIZA y AMPLÍA los atributos y métodos de otra (superclase/padre). Modela la relación 'ES-UN' (un Perro ES-UN Animal) y en Java se usa 'extends'. Sirve para no duplicar código: lo común se define una vez en el padre y las hijas lo heredan, añadiendo o redefiniendo lo que necesiten.\n\n  class Animal {\n      void hacerSonido() { System.out.println(\"...\"); }\n  }\n  class Perro extends Animal {\n      void hacerSonido() { System.out.println(\"Guau\"); }   // sobrescribe\n  }\n  class Gato extends Animal {\n      void hacerSonido() { System.out.println(\"Miau\"); }   // sobrescribe\n  }\n\nRELACIÓN CON EL POLIMORFISMO\nEl polimorfismo ('muchas formas') significa que una referencia del tipo PADRE puede apuntar a un objeto de cualquier SUBCLASE y, al llamar a un método sobrescrito, Java ejecuta la versión del objeto REAL (binding dinámico en tiempo de ejecución):\n\n  Animal a = new Perro();\n  a.hacerSonido();   // imprime \"Guau\" (versión de Perro)\n  a = new Gato();\n  a.hacerSonido();   // imprime \"Miau\" (versión de Gato)\n\nLa CONEXIÓN es: la herencia crea la jerarquía 'es-un' que HACE POSIBLE el polimorfismo. Sin herencia (o interfaces) no podríamos sustituir un objeto padre por uno hijo ni ejecutar la versión sobrescrita. Gracias a ello podemos recorrer una ArrayList<Animal> con Perros y Gatos y que cada uno responda a su manera con el mismo código.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Relacionado con los diagramas de casos de uso, ¿qué es la herencia de un actor? (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La HERENCIA DE ACTOR (también llamada generalización de actores) es una relación de un diagrama de casos de uso por la que un actor 'hijo' HEREDA todos los casos de uso a los que tiene acceso un actor 'padre' (más general), pudiendo además tener casos de uso propios. Expresa una relación 'ES-UN' entre roles: el actor hijo es un tipo especializado del actor padre.\n\nSe representa con la misma flecha de TRIÁNGULO HUECO que la herencia entre clases, apuntando del actor especializado (hijo) al actor general (padre).\n\n¿Para qué sirve?\n• Para no repetir, en el diagrama, las mismas asociaciones actor–caso de uso cuando varios actores comparten funcionalidades comunes.\n• Lo común se define UNA vez en el actor padre; el hijo lo hereda automáticamente.\n\nEjemplo: en una plataforma de cursos.\n• Actor padre: Usuario → puede «Ver catálogo» e «Iniciar sesión».\n• Actor hijo: UsuarioPremium HEREDA de Usuario.\n\nUsuarioPremium puede hacer todo lo del Usuario («Ver catálogo», «Iniciar sesión») y ADEMÁS «Descargar material» y «Acceder a directos».\n\nEsquema:\n\n  UsuarioPremium ──▷ Usuario        (triángulo hacia el padre)\n\nEn resumen: la herencia de actor traslada el concepto de generalización/especialización de la herencia de clases al nivel de los actores de los casos de uso.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Pon un ejemplo de un diagrama de clases (muy esquemático) donde se represente una relación de agregación.",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una AGREGACIÓN es una relación 'todo-parte' DÉBIL (las partes existen sin el todo) y se dibuja con un ROMBO VACÍO en el extremo del contenedor (el 'todo').\n\nEjemplo esquemático: un Equipo agrega Jugadores (un jugador puede existir sin el equipo).\n\nDiagrama (esquemático):\n\n  +----------------+                 +----------------+\n  |     Equipo     |◇--------------- |    Jugador     |\n  +----------------+ 1            *  +----------------+\n  | - nombre       |                 | - nombre       |\n  | - jugadores    |                 | - dorsal       |\n  +----------------+                 +----------------+\n  | + addJugador() |                 +----------------+\n  +----------------+\n\nLectura del diagrama:\n• El ROMBO VACÍO (◇) está en el lado del Equipo (el 'todo'), indicando agregación.\n• Cardinalidad 1 — * : un Equipo tiene MUCHOS Jugadores; cada Jugador pertenece a UN Equipo.\n• Es agregación (no composición) porque los Jugadores se crean fuera y sobreviven si el Equipo desaparece.\n\nTraducción a Java de ese diagrama:\n\n  class Equipo {\n      private String nombre;\n      private ArrayList<Jugador> jugadores;   // la cardinalidad * → colección\n      public Equipo(String nombre, ArrayList<Jugador> jugadores) {\n          this.nombre = nombre;\n          this.jugadores = jugadores;         // los recibe (agregación)\n      }\n  }",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué es una clase asociativa? (Resolver aproximadamente en 10 líneas)",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Una CLASE ASOCIATIVA es una clase que se usa para almacenar la INFORMACIÓN PROPIA DE UNA ASOCIACIÓN entre dos clases, normalmente cuando esa asociación es de MUCHOS A MUCHOS (* — *) y la relación en sí tiene atributos que no pertenecen ni a una clase ni a la otra.\n\nEn UML se dibuja como una clase normal UNIDA con una línea DISCONTINUA a la línea de la asociación entre las dos clases.\n\n¿Cuándo se usa?\n• Cuando entre A y B hay una relación muchos-a-muchos y necesitas guardar datos QUE SURGEN de la combinación de ambos, no de A ni de B por separado.\n\nEjemplo clásico: Alumno — Asignatura (muchos a muchos). La NOTA y la FECHA de matrícula no son del Alumno (tiene notas distintas en cada asignatura) ni de la Asignatura (tiene notas distintas por alumno): pertenecen a la RELACIÓN entre ambos. Esa información se modela en una clase asociativa 'Matricula'.\n\n  Alumno  *────────────────*  Asignatura\n                  |\n            (Matricula)         ← clase asociativa\n            - nota\n            - fecha\n\nEn la práctica (Java), una relación muchos-a-muchos con clase asociativa suele implementarse creando una clase intermedia que tiene referencias a las dos clases más los atributos propios:\n\n  class Matricula {\n      private Alumno alumno;\n      private Asignatura asignatura;\n      private double nota;\n      private String fecha;\n  }\n\nAsí, la clase asociativa resuelve el muchos-a-muchos y aloja los datos que son exclusivos de la relación.",
+          "difficulty": "dificil"
+        }
+      ]
+    }
+  ]
+}

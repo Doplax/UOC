@@ -1,0 +1,574 @@
+{
+  "id": "FP055",
+  "subject": "FP.055 — Introducción a las bases de datos",
+  "exams": [
+    {
+      "id": "fp055-2023-01-a",
+      "title": "Síntesis Enero 2023 — Modelo A (alquiler de barcos)",
+      "date": "25 de enero de 2023",
+      "source": "Introduccion_Base_Datos_-_Examen_6.pdf",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño diagrama con las tablas resultantes del siguiente enunciado. Una agencia de alquiler de barcos necesita una pequeña base de datos donde registrar la siguiente información: Para los CLIENTE: NIF, nombre, apellidos, teléfonos. Para los BARCO: Codigo, nombre, descripción, precio_dia. También queremos registrar fecha_alquiler, numero_dias que se alquila. Identifica las PK y FK de cada tabla.",
+          "points": 3,
+          "type": "text",
+          "answer": "ANÁLISIS: un cliente alquila muchos barcos y un barco lo alquilan muchos clientes → relación N:M → nace una tabla intermedia (HISTORICO/ALQUILER). 'teléfonos' es multivaluado → tabla aparte (1FN). fecha_alquiler y numero_dias son atributos de la relación → van en la intermedia.\n\nTABLAS RESULTANTES (PK = clave primaria, FK = clave foránea):\n\nCLIENTE(NIF PK, nombre, apellidos)\n\nTELEFONOS_CLIENTE(NIF FK→CLIENTE, telefono;  PK compuesta = NIF + telefono)\n→ los teléfonos van aparte por ser multivaluados (1FN).\n\nBARCO(Codigo PK, nombre, descripcion, precio_dia)\n\nALQUILER(NIF_cliente FK→CLIENTE, Codigo_barco FK→BARCO, fecha_alquiler, numero_dias;\n         PK compuesta = NIF_cliente + Codigo_barco + fecha_alquiler)\n→ nace de la relación N:M entre CLIENTE y BARCO.\n→ fecha_alquiler y numero_dias son atributos de relación.\n→ se incluye fecha_alquiler en la PK para permitir que el mismo cliente alquile el mismo barco en fechas distintas.\n\nLa solución oficial del examen lo expresa así: en CLIENTE la PK es 'nif', en BARCO la PK es 'codigo', y es en la tabla HISTÓRICO donde está la relación con las FK (cliente/nif y barco/codigo) y la PK compuesta (fecha_alquiler + numero_dias). Es más correcto incluir las dos FK en la PK de la intermedia que solo fecha+numero_dias.\n\nSQL de ejemplo:\n  CREATE TABLE CLIENTE (NIF VARCHAR(9) PRIMARY KEY, nombre VARCHAR(50), apellidos VARCHAR(80));\n  CREATE TABLE BARCO (Codigo INT PRIMARY KEY, nombre VARCHAR(60), descripcion VARCHAR(255), precio_dia DECIMAL(8,2));\n  CREATE TABLE ALQUILER (\n    NIF_cliente VARCHAR(9), Codigo_barco INT, fecha_alquiler DATE, numero_dias INT,\n    PRIMARY KEY (NIF_cliente, Codigo_barco, fecha_alquiler),\n    FOREIGN KEY (NIF_cliente) REFERENCES CLIENTE(NIF),\n    FOREIGN KEY (Codigo_barco) REFERENCES BARCO(Codigo));",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de las tablas de la Pregunta 1 realiza la siguiente consulta: Clientes que han alquilado un barco con un precio por día superior a 1000€.",
+          "points": 2.5,
+          "type": "text",
+          "answer": "La información está repartida en tres tablas (quién es el cliente, qué barco y su precio, y el alquiler que los une), así que hay que unirlas con INNER JOIN y filtrar por precio_dia > 1000.\n\nSOLUCIÓN:\n  SELECT DISTINCT c.NIF, c.nombre, c.apellidos\n  FROM CLIENTE c\n  INNER JOIN ALQUILER a ON c.NIF = a.NIF_cliente\n  INNER JOIN BARCO b ON a.Codigo_barco = b.Codigo\n  WHERE b.precio_dia > 1000;\n\nEXPLICACIÓN:\n• INNER JOIN ALQUILER: enlaza cada cliente con sus alquileres.\n• INNER JOIN BARCO: trae el precio_dia del barco alquilado.\n• WHERE b.precio_dia > 1000: filtra los barcos de más de 1000€/día.\n• DISTINCT: para que cada cliente salga una sola vez aunque tenga varios alquileres de barcos caros.\n\nLa solución oficial escribe (equivalente, sin DISTINCT):\n  SELECT nif, nombre, apellidos FROM clientes\n  JOIN Historico ON clientes.nif = historico.nif\n  JOIN barcos ON historico.codigo = barcos.codigo\n  WHERE barcos.precio_dia > 1000;\n\nNota: JOIN sin más equivale a INNER JOIN. Conviene añadir DISTINCT para no repetir clientes.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Dadas las siguientes tablas que relacionan los empleados con sus nóminas, ¿qué resultado me daría la instrucción SQL que se muestra a continuación?",
+          "points": 2,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT e.first_name, e.last_name, SUM(e.salary) AS sueldo",
+            "FROM employees e INNER JOIN salaries s",
+            "  ON e.emp_no = s.emp_no",
+            "GROUP BY s",
+            "ORDER BY e.last_name;"
+          ],
+          "answer": "QUÉ PRETENDE: para cada empleado, mostrar nombre, apellido y la SUMA de su salario, uniendo employees con salaries por emp_no, ordenado por apellido.\n\nLO QUE DEVOLVERÍA (idea general): una tabla con las columnas first_name, last_name y sueldo (la suma de salarios de cada empleado), ordenada por apellido. Une la tabla employees (e) con salaries (s) por la clave emp_no.\n\nPERO LA CONSULTA TIENE ERRORES (es la trampa del enunciado):\n\n1) 'GROUP BY s' es INCORRECTO: no se puede agrupar por el alias de una tabla entera; hay que agrupar por columnas concretas. Como en el SELECT hay columnas no agregadas (first_name, last_name) junto con una función de agregación (SUM), TODAS esas columnas deben aparecer en el GROUP BY. Lo correcto sería: GROUP BY e.emp_no, e.first_name, e.last_name (o como mínimo agrupar por el empleado).\n\n2) 'SUM(e.salary)': el salario normalmente está en la tabla salaries (s.salary), no en employees; lo coherente sería SUM(s.salary).\n\nVERSIÓN CORRECTA:\n  SELECT e.first_name, e.last_name, SUM(s.salary) AS sueldo\n  FROM employees e\n  INNER JOIN salaries s ON e.emp_no = s.emp_no\n  GROUP BY e.emp_no, e.first_name, e.last_name\n  ORDER BY e.last_name;\n\nCONCLUSIÓN: tal y como está escrita, en MySQL con modo estricto (ONLY_FULL_GROUP_BY) la consulta daría ERROR por el 'GROUP BY s'. La intención era listar cada empleado con la suma total de su salario, ordenado por apellido.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "Dado un usuario (user1), si quisiera dar privilegio solo de actualización de los datos en una base de datos Empleados, ¿estaría bien esta sentencia? ¿Qué otro tipo de privilegios hay?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "GRANT ALTER ON Bd.Empleados TO user1;"
+          ],
+          "answer": "NO, la sentencia NO es correcta para 'actualizar los datos'.\n\nMOTIVO: el privilegio para MODIFICAR LOS DATOS (las filas) de una tabla es UPDATE, no ALTER. ALTER es un privilegio de DDL que permite cambiar la ESTRUCTURA de la tabla (añadir/quitar columnas, etc.), no sus datos. Por tanto ALTER no concede lo que se pide.\n\nSENTENCIA CORRECTA (dar solo actualización de datos):\n  GRANT UPDATE ON Bd.Empleados TO 'user1'@'localhost';\n\nLa solución oficial lo resume así: 'No es correcta, porque ALTER no sirve para otorgar la actualización de los datos', y propone conceder los privilegios de manipulación de datos. Si se quisieran TODOS los de manipulación: GRANT SELECT, INSERT, UPDATE, DELETE ON Bd.Empleados TO user1;\n\nOTROS PRIVILEGIOS HABITUALES:\n• De datos (DML): SELECT (consultar), INSERT (insertar), UPDATE (modificar), DELETE (borrar filas).\n• De estructura (DDL): CREATE, ALTER, DROP, INDEX.\n• Administrativos / control: GRANT OPTION (poder reotorgar privilegios), ALL PRIVILEGES (todos).\n\nRECORDATORIO: GRANT concede y usa TO; REVOKE retira y usa FROM (no TO).",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-2023-01-b",
+      "title": "Síntesis Enero 2023 — Modelo B (sistema de salud)",
+      "date": "25 de enero de 2023",
+      "source": "Introduccion_Base_Datos_-_Examen_6.pdf",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño Diagrama Entidad-Relación dado el siguiente enunciado. El sistema de salud de tu comunidad autónoma necesita gestionar el proceso de visitas de los pacientes. Para los PACIENTES: NSS, nombre, ciudad, apellidos, teléfonos. Para los MÉDICOS: num_colegiado, DNI, ciudad, especialidad. Los pacientes pedirán al hospital visita para el especialista al que le haya enviado el médico de cabecera de su centro de salud. De las visitas también necesitamos registrar: la fecha de la visita y la hora.",
+          "points": 3,
+          "type": "text",
+          "answer": "DIAGRAMA E-R: dos entidades fuertes, PACIENTE y MÉDICO, unidas por una relación N:M llamada VISITA (un paciente tiene muchas visitas con distintos médicos, y un médico atiende a muchos pacientes). Los atributos fecha y hora pertenecen a la relación VISITA.\n\n  PACIENTE  ──N───< VISITA >───M──  MÉDICO\n  (NSS)        (fecha, hora)      (num_colegiado)\n\n• PACIENTE: NSS (identificador), nombre, apellidos, ciudad, teléfonos (multivaluado).\n• MÉDICO: num_colegiado (identificador), DNI, ciudad, especialidad.\n• VISITA (relación N:M): atributos fecha y hora; es donde se concreta qué paciente ve a qué médico y cuándo.\n\nfecha y hora son atributos de relación: no son del paciente ni del médico, sino de cada cita concreta entre ambos.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Describe cómo quedaría la estructura de tablas si pasamos al modelo relacional el diagrama de la Pregunta 1. Indica las claves primarias y foráneas necesarias.",
+          "points": 3,
+          "type": "text",
+          "answer": "PASO A TABLAS (la relación N:M genera una tabla intermedia VISITA):\n\nPACIENTE(NSS PK, nombre, apellidos, ciudad)\n\nTELEFONOS_PACIENTE(NSS FK→PACIENTE, telefono;  PK compuesta = NSS + telefono)\n→ los teléfonos son multivaluados → tabla aparte (1FN).\n\nMEDICO(num_colegiado PK, DNI, ciudad, especialidad)\n\nVISITA(NSS_paciente FK→PACIENTE, num_colegiado FK→MEDICO, fecha, hora;\n       PK compuesta = NSS_paciente + num_colegiado + fecha + hora)\n→ nace de la relación N:M entre PACIENTE y MÉDICO.\n→ fecha y hora son atributos de la relación; se incluyen en la PK para distinguir varias visitas del mismo paciente con el mismo médico en momentos distintos (alternativa: usar un ID_visita propio como PK).\n\nClaves: PK de cada tabla subrayadas arriba; FK = NSS_paciente (→PACIENTE), num_colegiado (→MEDICO) y NSS en la tabla de teléfonos.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Aplicando lo que hicimos en la actividad 4, ¿podría normalizarse el modelo anterior de la Pregunta 1 y 2? ¿Qué norma formal le aplicarías? ¿Cómo quedarían las tablas?",
+          "points": 2,
+          "type": "text",
+          "answer": "SÍ se puede (y se debe) normalizar.\n\n1FN (Primera Forma Normal): exige valores atómicos. El atributo 'teléfonos' del paciente es multivaluado, así que viola la 1FN si se guarda en la propia tabla PACIENTE. Se aplica la 1FN sacando los teléfonos a una tabla propia:\n  PACIENTE(NSS PK, nombre, apellidos, ciudad)\n  TELEFONOS_PACIENTE(NSS FK, telefono;  PK = NSS + telefono)\n\n2FN: como las tablas con PK compuesta (TELEFONOS_PACIENTE y VISITA) no tienen atributos que dependan solo de una parte de la clave, ya cumplen 2FN.\n\n3FN: si en MÉDICO hubiera datos que dependen de otro atributo no clave (por ejemplo, si 'centro de salud' tuviera nombre y dirección), se sacarían a una tabla CENTRO(id_centro PK, nombre, direccion) y MÉDICO guardaría id_centro como FK, eliminando la dependencia transitiva (3FN).\n\nRESUMEN: la norma clave aquí es la 1FN (por los teléfonos multivaluados); el resto del modelo, una vez creada la tabla intermedia VISITA y la de teléfonos, queda en 3FN.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Pon un ejemplo de entidad débil de los que vimos en la actividad 2 y explica con tus palabras por qué sería una entidad débil.",
+          "points": 2,
+          "type": "text",
+          "answer": "ENTIDAD DÉBIL: es una entidad que NO tiene una clave primaria propia suficiente para identificarse por sí sola; necesita de otra entidad (la entidad fuerte) para existir y para identificarse. Su clave se forma combinando la clave de la entidad fuerte con un atributo discriminante propio. Si desaparece la entidad fuerte, desaparecen también sus entidades débiles (dependencia de existencia).\n\nEJEMPLO (del propio dominio sanitario): la entidad VISITA puede verse como débil respecto a PACIENTE: una visita no existe sin un paciente, y para identificarla necesitamos el NSS del paciente más la fecha/hora.\n\nOTRO EJEMPLO CLÁSICO:\n  EDIFICIO(id_edificio PK, direccion)\n  HABITACION(numero, ...)  ← entidad débil\n  Una 'habitación número 3' no significa nada por sí sola: hay una habitación 3 en cada edificio. Solo se identifica como (id_edificio + numero). Por eso HABITACION es débil: depende de EDIFICIO para existir e identificarse.\n\nPOR QUÉ ES DÉBIL: porque su atributo identificador (el número) se repite entre distintas entidades fuertes y solo es único dentro del contexto de su 'padre'. Su PK es compuesta = clave de la entidad fuerte (FK) + atributo discriminante.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-2022-01-dam",
+      "title": "Validación Enero 2022 (DAM) — alquiler de espacios para eventos",
+      "date": "29 de enero de 2022",
+      "source": "Introduccion_Base_Datos_-_Examen_3.pdf",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño Diagrama Entidad-Relación dado el siguiente enunciado. Una agencia de alquiler de espacios para eventos necesita una pequeña base de datos donde registrar la siguiente información. Para los CLIENTES: NIF, nombre, apellidos, teléfonos. Para los ESPACIOS: Id_espacio, ciudad, dirección, código postal, descripción, precio_hora. También queremos registrar fecha_alquiler, numero_horas que se alquila.",
+          "points": 3,
+          "type": "text",
+          "answer": "DIAGRAMA E-R: dos entidades fuertes, CLIENTE y ESPACIO, unidas por una relación N:M (ALQUILER): un cliente alquila muchos espacios y un espacio lo alquilan muchos clientes.\n\n  CLIENTE  ──N───< ALQUILER >───M──  ESPACIO\n  (NIF)       (fecha_alquiler,        (Id_espacio)\n               numero_horas)\n\n• CLIENTE: NIF (identificador), nombre, apellidos, teléfonos (multivaluado).\n• ESPACIO: Id_espacio (identificador), ciudad, dirección, código postal, descripción, precio_hora.\n• ALQUILER (relación N:M): fecha_alquiler y numero_horas son atributos de la relación (no son del cliente ni del espacio, sino de cada alquiler concreto).\n\nEl coste de un alquiler se obtendría como numero_horas * precio_hora.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Describe cómo quedaría la estructura de tablas si pasamos al modelo relacional el diagrama de la Pregunta 1. Indica las claves primarias y foráneas necesarias.",
+          "points": 3,
+          "type": "text",
+          "answer": "PASO A TABLAS:\n\nCLIENTE(NIF PK, nombre, apellidos)\n\nTELEFONOS_CLIENTE(NIF FK→CLIENTE, telefono;  PK compuesta = NIF + telefono)\n→ teléfonos multivaluados → tabla aparte (1FN).\n\nESPACIO(Id_espacio PK, ciudad, direccion, codigo_postal, descripcion, precio_hora)\n\nALQUILER(NIF_cliente FK→CLIENTE, Id_espacio FK→ESPACIO, fecha_alquiler, numero_horas;\n         PK compuesta = NIF_cliente + Id_espacio + fecha_alquiler)\n→ nace de la relación N:M.\n→ fecha_alquiler y numero_horas son atributos de relación.\n→ se añade fecha_alquiler a la PK para permitir varios alquileres del mismo espacio por el mismo cliente en fechas distintas.\n\nFK: NIF_cliente (→CLIENTE), Id_espacio (→ESPACIO) y NIF en la tabla de teléfonos. precio_hora se modela con DECIMAL por ser monetario.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Aplicando lo que hicimos en la actividad 4, ¿podría normalizarse el modelo anterior de la Pregunta 1 y 2? ¿Qué norma formal le aplicarías? ¿Cómo quedarían las tablas?",
+          "points": 2,
+          "type": "text",
+          "answer": "SÍ se puede normalizar.\n\nLa norma clave es la 1FN (Primera Forma Normal): exige que todos los atributos sean atómicos. El atributo 'teléfonos' del cliente es multivaluado y viola la 1FN si se guarda dentro de CLIENTE. Se aplica la 1FN sacándolo a su propia tabla:\n  CLIENTE(NIF PK, nombre, apellidos)\n  TELEFONOS_CLIENTE(NIF FK, telefono;  PK = NIF + telefono)\n\n2FN: las tablas con PK compuesta (TELEFONOS_CLIENTE y ALQUILER) no tienen atributos que dependan solo de parte de la clave → cumplen 2FN.\n\n3FN: si dentro de ESPACIO 'ciudad' y 'código postal' generaran dependencia (el CP determina la ciudad), podría sacarse una tabla CODIGO_POSTAL(cp PK, ciudad) y dejar el cp como FK en ESPACIO, eliminando la dependencia transitiva (3FN). En la práctica, con la tabla de teléfonos y la intermedia, el modelo queda en 3FN.\n\nRESUMEN: aplicar 1FN a los teléfonos es lo esencial; tras crear la tabla intermedia ALQUILER y la de teléfonos, el esquema está normalizado.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Pon un ejemplo de atributo de relación (pertenece a la relación entre dos entidades) de los que vimos en la actividad 2 y explica por qué pertenece a la relación con tus palabras.",
+          "points": 2,
+          "type": "text",
+          "answer": "ATRIBUTO DE RELACIÓN: es un dato que no pertenece a ninguna de las dos entidades por separado, sino al vínculo (la relación) entre ambas. Solo tiene sentido cuando se combinan las dos entidades.\n\nEJEMPLO (de este propio enunciado): en la relación ALQUILER entre CLIENTE y ESPACIO, los atributos fecha_alquiler y numero_horas son atributos de relación.\n\nPOR QUÉ PERTENECEN A LA RELACIÓN:\n• numero_horas no es del cliente (un cliente no tiene 'un número de horas'; tiene muchos, uno por cada alquiler) ni del espacio (tampoco). Es cuántas horas se alquiló ESE espacio en ESE alquiler concreto.\n• fecha_alquiler tampoco es del cliente ni del espacio: es la fecha de ESE alquiler en particular.\nAmbos dependen de la pareja (cliente, espacio) en un momento dado, por eso son de la relación.\n\nPASO A TABLAS: estos atributos se convierten en columnas de la tabla intermedia ALQUILER (la que nace de la relación N:M), no de CLIENTE ni de ESPACIO.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-2022-01-daw",
+      "title": "Validación Enero 2022 (DAW) — sistema de salud (pacientes/médicos)",
+      "date": "28 de enero de 2022",
+      "source": "Introduccion_Base_Datos_-_Examen_4.pdf",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño Diagrama Entidad-Relación dado el siguiente enunciado. El sistema de salud de tu comunidad autónoma necesita gestionar el proceso de visitas de los pacientes. Para los PACIENTES: NSS, nombre, ciudad, apellidos, teléfonos. Para los MÉDICOS: num_colegiado, DNI, ciudad, especialidad. Los pacientes pedirán al hospital visita para el especialista al que le haya enviado el médico de cabecera de su centro de salud. De las visitas también necesitamos registrar: la fecha de la visita y la hora.",
+          "points": 3,
+          "type": "text",
+          "answer": "DIAGRAMA E-R: entidades PACIENTE y MÉDICO unidas por una relación N:M (VISITA): un paciente tiene muchas visitas con distintos médicos y un médico atiende a muchos pacientes.\n\n  PACIENTE  ──N───< VISITA >───M──  MÉDICO\n  (NSS)        (fecha, hora)      (num_colegiado)\n\n• PACIENTE: NSS (identificador), nombre, apellidos, ciudad, teléfonos (multivaluado).\n• MÉDICO: num_colegiado (identificador), DNI, ciudad, especialidad.\n• VISITA (relación N:M): fecha y hora como atributos de la relación.\n\nfecha y hora son atributos de relación: pertenecen a cada cita concreta entre un paciente y un médico, no a las entidades por separado.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Describe cómo quedaría la estructura de tablas si pasamos al modelo relacional el diagrama de la Pregunta 1. Indica las claves primarias y foráneas necesarias.",
+          "points": 3,
+          "type": "text",
+          "answer": "PASO A TABLAS:\n\nPACIENTE(NSS PK, nombre, apellidos, ciudad)\n\nTELEFONOS_PACIENTE(NSS FK→PACIENTE, telefono;  PK compuesta = NSS + telefono)\n→ teléfonos multivaluados → tabla aparte (1FN).\n\nMEDICO(num_colegiado PK, DNI, ciudad, especialidad)\n\nVISITA(NSS_paciente FK→PACIENTE, num_colegiado FK→MEDICO, fecha, hora;\n       PK compuesta = NSS_paciente + num_colegiado + fecha + hora)\n→ nace de la relación N:M.\n→ fecha y hora son atributos de relación; se añaden a la PK para distinguir varias visitas del mismo paciente con el mismo médico (alternativa: ID_visita propio).\n\nFK: NSS_paciente (→PACIENTE), num_colegiado (→MEDICO) y NSS en la tabla de teléfonos.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Aplicando lo que hicimos en la actividad 4, ¿podría normalizarse el modelo anterior de la Pregunta 1 y 2? ¿Qué norma formal le aplicarías? ¿Cómo quedarían las tablas?",
+          "points": 2,
+          "type": "text",
+          "answer": "SÍ se puede normalizar.\n\nLa norma clave es la 1FN (valores atómicos): 'teléfonos' del paciente es multivaluado y viola la 1FN dentro de PACIENTE. Se aplica sacándolo a una tabla:\n  PACIENTE(NSS PK, nombre, apellidos, ciudad)\n  TELEFONOS_PACIENTE(NSS FK, telefono;  PK = NSS + telefono)\n\n2FN: las tablas con PK compuesta (teléfonos y VISITA) no tienen dependencias parciales → cumplen 2FN.\n\n3FN: si el médico tuviera datos de su 'centro de salud' (nombre, dirección) que dependen de un código de centro, se sacaría CENTRO(id_centro PK, nombre, direccion) y MÉDICO guardaría id_centro como FK, eliminando la dependencia transitiva (3FN).\n\nRESUMEN: lo esencial es aplicar la 1FN a los teléfonos; con la tabla intermedia VISITA y la de teléfonos el modelo queda en 3FN.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Pon un ejemplo de entidad débil de los que vimos en la actividad 2 y explica con tus palabras por qué sería una entidad débil.",
+          "points": 2,
+          "type": "text",
+          "answer": "ENTIDAD DÉBIL: entidad que no puede identificarse por sí sola; necesita de otra entidad (la fuerte) para existir e identificarse. Su clave primaria se forma combinando la clave de la entidad fuerte (como FK) con un atributo discriminante propio. Tiene dependencia de existencia: si se borra la entidad fuerte, desaparecen sus entidades débiles.\n\nEJEMPLO CLÁSICO:\n  EDIFICIO(id_edificio PK, direccion)  ← entidad fuerte\n  HABITACION(numero, superficie, ...)  ← entidad débil\n  La 'habitación 3' no existe por sí misma: hay una habitación 3 en cada edificio. Solo se identifica como (id_edificio + numero).\n\nEJEMPLO EN ESTE DOMINIO: la VISITA puede considerarse débil respecto al PACIENTE: una visita no existe sin un paciente y se identifica usando el NSS del paciente más la fecha/hora.\n\nPOR QUÉ ES DÉBIL: su identificador propio se repite entre distintas entidades fuertes y solo es único dentro del contexto de su 'padre'. Por eso su PK es compuesta = clave de la entidad fuerte (FK) + atributo discriminante.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-2020-06",
+      "title": "Validación Junio 2020 — cita en gimnasio (fase 3)",
+      "date": "26 de junio de 2020",
+      "source": "Introduccion_Base_Datos_-_Examen_2.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza el Diagrama Entidad-Relación dado el siguiente enunciado. Para ir a una actividad dirigida en un gimnasio durante la fase 3 de la desescalada es necesario pedir cita y hora. Se desea registrar estas citas de los SOCIOS en una base de datos. Para los SOCIOS: idSocio, nombre, apellidos, dni, teléfonos, email. Para la ACTIVIDAD: Codigo, nombre, duración, nombre_monitor. También registraremos la hora y la fecha exacta que el socio hace la reserva. Relación de registro de muchos a muchos.",
+          "points": 3,
+          "type": "text",
+          "answer": "DIAGRAMA E-R: entidades SOCIO y ACTIVIDAD unidas por una relación N:M (REGISTRO/RESERVA): un socio se apunta a muchas actividades y a una actividad se apuntan muchos socios.\n\n  SOCIO  ──N───< REGISTRO >───M──  ACTIVIDAD\n  (idSocio)    (fecha, hora)      (Codigo)\n\n• SOCIO: idSocio (PK), nombre, apellidos, dni, teléfonos (multivaluado), email.\n• ACTIVIDAD: Codigo (PK), nombre, duración, nombre_monitor.\n• REGISTRO (relación N:M): fecha y hora de la reserva como atributos de la relación.\n\nfecha y hora pertenecen a la relación (a cada reserva concreta), no al socio ni a la actividad por separado.",
+          "difficulty": "media"
+        },
+        {
+          "n": "2",
+          "prompt": "Describe cómo quedaría la estructura de tablas si pasamos al modelo relacional el diagrama de la Pregunta 1. Indica las claves primarias y foráneas necesarias.",
+          "points": 3,
+          "type": "text",
+          "answer": "PASO A TABLAS (la relación N:M genera la tabla intermedia REGISTRO):\n\nSOCIO(idSocio PK, nombre, apellidos, dni, email)\n\nTELEFONOS_SOCIO(idSocio FK→SOCIO, telefono;  PK compuesta = idSocio + telefono)\n→ teléfonos multivaluados → tabla aparte (1FN).\n\nACTIVIDAD(Codigo PK, nombre, duracion, nombre_monitor)\n\nREGISTRO(idSocio FK→SOCIO, Codigo FK→ACTIVIDAD, fecha, hora;\n         PK compuesta = idSocio + Codigo + fecha + hora)\n→ nace de la relación N:M; fecha y hora son atributos de relación.\n\nLa respuesta del estudiante (correcta en lo esencial) lo expresó así:\n  SOCIOS(idSocio, nombre, apellidos, dni, teléfonos, email)\n  Registro(fecha y hora, idSocio, Codigo)  donde {idSocio} referencia SOCIOS y {Codigo} referencia Actividad\n  Actividad(Codigo, nombre, duración, nombre_monitor)\nMejora: los teléfonos deberían ir en una tabla aparte por ser multivaluados.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "¿Podría normalizarse el modelo anterior de la Pregunta 1 y 2? ¿Qué norma formal le aplicarías? ¿Cómo quedaría?",
+          "points": 2,
+          "type": "text",
+          "answer": "SÍ. Hay dos aspectos a normalizar:\n\n1FN: 'teléfonos' del socio es multivaluado → viola la 1FN. Se aplica sacándolo a su tabla:\n  TELEFONOS_SOCIO(idSocio FK, telefono;  PK = idSocio + telefono)\n\n3FN (lo que apunta el estudiante): en ACTIVIDAD el dato 'nombre_monitor' depende del monitor, no de la actividad; es una dependencia que conviene eliminar creando una tabla MONITOR:\n  MONITOR(IdMonitor PK, NombreMonitor)\n  ACTIVIDAD(Codigo PK, nombre, duracion, IdMonitor FK→MONITOR)\nAsí, la información del monitor se guarda una sola vez y la actividad solo referencia su IdMonitor (se elimina la redundancia / dependencia transitiva → 3FN).\n\nNota: el estudiante dice 'pasar de 1FN a 2FN', pero el cambio de sacar el monitor a su propia tabla corresponde realmente a eliminar una dependencia transitiva, que es 3FN. La idea (crear la tabla MONITOR y relacionarla por FK) es correcta.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Explica brevemente qué es la herencia entre entidades y pon un ejemplo.",
+          "points": 2,
+          "type": "text",
+          "answer": "HERENCIA ENTRE ENTIDADES (generalización/especialización): es un tipo de relación entre una entidad 'padre' (supertipo) y una o varias entidades 'hijo' (subtipos). La entidad hijo HEREDA todos los atributos y relaciones del padre y añade los suyos propios; así no hay que repetir esos atributos en cada hijo. Modela el caso 'X es un tipo de Y'.\n\nSe representa con un triángulo: la entidad conectada por el vértice superior es el padre; los hijos cuelgan de la base. Solo puede existir un padre (herencia simple).\n\nEJEMPLO:\n  PERSONA(NIF, nombre, apellidos)            ← padre (lo común)\n    ├── SOCIO(idSocio, email)                ← hereda NIF, nombre, apellidos\n    └── MONITOR(especialidad)                ← hereda NIF, nombre, apellidos\n  Tanto un socio como un monitor SON una persona, así que comparten NIF, nombre y apellidos; cada subtipo añade solo lo suyo.\n\nTIPOS: total/parcial (¿todo padre es de algún subtipo?) y exclusiva/solapada (¿puede ser de varios subtipos a la vez?).\n\nPASO A TABLAS (lo habitual): una tabla para el padre y una por cada hijo, cuya PK es a la vez FK hacia el padre:\n  PERSONA(NIF PK, nombre, apellidos)\n  SOCIO(NIF PK y FK→PERSONA, email)\n  MONITOR(NIF PK y FK→PERSONA, especialidad)",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-sf-quimica-a",
+      "title": "Síntesis (sin fecha) — Modelo A: empresa de productos químicos",
+      "date": "Sin fecha — prueba de síntesis (Modelo A)",
+      "source": "Introduccion_Base_Datos_-_Examen_1.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño diagrama con las tablas resultantes del siguiente enunciado. Una empresa de venta de productos químicos necesita una pequeña base de datos donde registrar la siguiente información de los clientes que compran productos potencialmente peligrosos. Para los CLIENTES: NIF, nombre, apellidos, teléfonos. Para el PRODUCTO: Código, nomProd. También queremos registrar fecha_compra, cantidad que se compra. Identifica las PK y FK de cada tabla.",
+          "points": 3,
+          "type": "text",
+          "answer": "ANÁLISIS: un cliente compra muchos productos y un producto lo compran muchos clientes → relación N:M → tabla intermedia (COMPRA/HISTORICO). 'teléfonos' es multivaluado → tabla aparte (1FN). fecha_compra y cantidad son atributos de la relación.\n\nTABLAS RESULTANTES:\n\nCLIENTES(NIF PK, nombre, apellidos)\n\nTELEFONOS_CLIENTES(NIF FK→CLIENTES, telefono;  PK compuesta = NIF + telefono)\n\nPRODUCTO(Codigo PK, nomProd)\n\nCOMPRA(NIF_cliente FK→CLIENTES, Codigo_producto FK→PRODUCTO, fecha_compra, cantidad;\n       PK compuesta = NIF_cliente + Codigo_producto)\n→ nace de la relación N:M; fecha_compra y cantidad son atributos de relación.\n\nFK: NIF_cliente (→CLIENTES), Codigo_producto (→PRODUCTO) y NIF en la tabla de teléfonos.\n\nMATIZ: si un mismo cliente puede comprar el mismo producto en fechas distintas, se añade fecha_compra a la PK (NIF_cliente + Codigo_producto + fecha_compra) o se usa un id propio de compra.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de las tablas de la Pregunta 1 realiza la siguiente consulta: Clientes que han comprado más de 300 unidades de nitrato potásico.",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Hay que unir las tres tablas (cliente, producto y la intermedia COMPRA) con INNER JOIN y filtrar por el nombre del producto y la cantidad.\n\nSOLUCIÓN:\n  SELECT DISTINCT c.NIF, c.nombre, c.apellidos\n  FROM CLIENTES c\n  INNER JOIN COMPRA co ON c.NIF = co.NIF_cliente\n  INNER JOIN PRODUCTO p ON co.Codigo_producto = p.Codigo\n  WHERE p.nomProd = 'nitrato potásico'\n    AND co.cantidad > 300;\n\n• INNER JOIN COMPRA: enlaza cada cliente con sus compras.\n• INNER JOIN PRODUCTO: para poder filtrar por nombre de producto.\n• WHERE: nos quedamos con las compras de nitrato potásico de más de 300 unidades.\n• DISTINCT: para no repetir un cliente con varias compras que cumplan.\n\nVARIANTE (si '>300' se interpreta como el total acumulado de varias compras):\n  SELECT c.NIF, c.nombre, c.apellidos, SUM(co.cantidad) AS total\n  FROM CLIENTES c\n  INNER JOIN COMPRA co ON c.NIF = co.NIF_cliente\n  INNER JOIN PRODUCTO p ON co.Codigo_producto = p.Codigo\n  WHERE p.nomProd = 'nitrato potásico'\n  GROUP BY c.NIF, c.nombre, c.apellidos\n  HAVING SUM(co.cantidad) > 300;",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Dadas las siguientes tablas correspondientes a las marcas que pueden proporcionar un producto de la empresa química, ¿qué resultado me daría la instrucción SQL a continuación?",
+          "points": 2,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT p.nomProd AS producto, COUNT(m.codMarca) AS num_marcas",
+            "FROM producto p INNER JOIN Marca m",
+            "  ON p.codProducto = m.codProducto",
+            "GROUP BY m",
+            "ORDER BY p.nomProd;"
+          ],
+          "answer": "QUÉ PRETENDE: para cada producto, contar cuántas marcas lo proporcionan (COUNT de codMarca), uniendo producto con Marca por codProducto, ordenado por nombre de producto.\n\nLO QUE DEVOLVERÍA (idea): una tabla con dos columnas, 'producto' (nomProd) y 'num_marcas' (número de marcas que ofrecen ese producto), ordenada alfabéticamente por nombre de producto.\n\nERROR DE LA CONSULTA (la trampa): 'GROUP BY m' es INCORRECTO. No se puede agrupar por el alias de una tabla entera; hay que agrupar por columnas concretas. Como el SELECT mezcla una columna no agregada (p.nomProd) con una función de agregación (COUNT), esa columna debe figurar en el GROUP BY. Lo correcto es:\n  GROUP BY p.nomProd  (o, mejor, GROUP BY p.codProducto, p.nomProd)\n\nVERSIÓN CORRECTA:\n  SELECT p.nomProd AS producto, COUNT(m.codMarca) AS num_marcas\n  FROM producto p\n  INNER JOIN Marca m ON p.codProducto = m.codProducto\n  GROUP BY p.codProducto, p.nomProd\n  ORDER BY p.nomProd;\n\nCONCLUSIÓN: tal cual está, en MySQL con modo estricto daría ERROR por 'GROUP BY m'. La intención era listar cada producto con el número de marcas que lo proporcionan, ordenado por nombre.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué significa la siguiente instrucción? ¿Qué otro tipo de privilegios hay?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "GRANT SELECT, DELETE ON BdQuimica.clientes TO 'auditoria'@'localhost';"
+          ],
+          "answer": "SIGNIFICADO: concede (GRANT) al usuario 'auditoria' que se conecta desde 'localhost' (el servidor local) los privilegios de SELECT (consultar/leer filas) y DELETE (borrar filas) sobre la tabla 'clientes' de la base de datos 'BdQuimica'. Es decir, ese usuario podrá leer y borrar registros de esa tabla, pero NO insertar ni actualizar (porque no se le han dado INSERT ni UPDATE).\n\nFORMA: GRANT privilegios ON base.tabla TO 'usuario'@'host'; (GRANT usa TO).\n\nOTROS PRIVILEGIOS:\n• De datos (DML): INSERT (insertar), UPDATE (modificar). Junto con SELECT y DELETE forman los cuatro básicos sobre los datos.\n• De estructura (DDL): CREATE, ALTER, DROP, INDEX.\n• De control: GRANT OPTION (poder reotorgar privilegios a otros), ALL PRIVILEGES (todos).\n\nRECORDATORIO: para quitar privilegios se usa REVOKE ... FROM (con FROM, no TO).\n(Nota: en el enunciado original falta la comilla de cierre tras 'localhost; lo correcto es TO 'auditoria'@'localhost';)",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-sf-mascotas-a",
+      "title": "Síntesis (sin fecha) — Modelo A: tienda de productos para mascotas",
+      "date": "Sin fecha — prueba de síntesis (Modelo A)",
+      "source": "Introduccion_Base_Datos_-_Examen_5.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño diagrama con las tablas resultantes del siguiente enunciado. Una tienda de venta de productos para mascotas necesita una pequeña base de datos donde registrar la siguiente información de los clientes que compran productos. Para los CLIENTES: NIF, nombre, apellidos, teléfono. Para el PRODUCTO: Código, nomProd, tipo_producto. También queremos registrar fecha_compra, cantidad que se compra. Identifica las PK y FK de cada tabla.",
+          "points": 3,
+          "type": "text",
+          "answer": "ANÁLISIS: relación N:M entre CLIENTES y PRODUCTO → tabla intermedia (HISTORICO/COMPRA). Aquí 'teléfono' es singular → se queda como columna en CLIENTES. fecha_compra y cantidad son atributos de la relación.\n\nTABLAS RESULTANTES:\n\nCLIENTES(NIF PK, nombre, apellidos, telefono)\n\nPRODUCTO(Codigo PK, nomProd, tipo_producto)\n\nHISTORICO(NIF_cliente FK→CLIENTES, Codigo_producto FK→PRODUCTO, fecha_compra, cantidad;\n          PK compuesta = NIF_cliente + Codigo_producto)\n→ nace de la relación N:M; fecha_compra y cantidad son atributos de relación.\n\nLa respuesta del estudiante lo describe bien: en CLIENTES el NIF es PK, en PRODUCTO el Código es PK, y en HISTÓRICO hay una PK compuesta y las FK Cliente_NIF y Producto_Codigo.\n\nMATIZ: si el mismo cliente puede comprar el mismo producto en fechas distintas, conviene añadir fecha_compra a la PK.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de las tablas de la Pregunta 1 realiza la siguiente consulta: Clientes que han comprado más de 20 unidades del tipo de producto Comida_perros.",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Hay que unir CLIENTES, HISTORICO y PRODUCTO y filtrar por cantidad > 20 y tipo_producto = 'Comida_perros'.\n\nSOLUCIÓN:\n  SELECT DISTINCT c.NIF, c.nombre, c.apellidos\n  FROM Clientes c\n  INNER JOIN Historico h ON c.NIF = h.Clientes_NIF\n  INNER JOIN Producto p ON p.Codigo = h.Producto_Codigo\n  WHERE h.cantidad > 20\n    AND p.tipo_producto = 'Comida_perros';\n\n• INNER JOIN Historico: enlaza el cliente con sus compras.\n• INNER JOIN Producto: para filtrar por tipo_producto.\n• WHERE: cantidad > 20 unidades del tipo 'Comida_perros'.\n• DISTINCT: para no repetir clientes con varias compras que cumplan.\n\nLa respuesta del estudiante tenía errores de sintaxis (CONCAT mal cerrado, puntos y comas de más, faltaba el alias p. en tipo_producto). La versión correcta es la de arriba; si se quiere mostrar el nombre completo: SELECT DISTINCT CONCAT(c.NIF, ' ', c.nombre, ' ', c.apellidos) AS cliente ...",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Dadas las siguientes tablas correspondientes a los departamentos a los que pertenecen los profesores, ¿qué resultado me daría la instrucción SQL a continuación?",
+          "points": 2,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT p.nombre AS Nombre, p.apellido1 AS Apellido, COUNT(d.departamento) AS departamentos",
+            "FROM profesor p INNER JOIN departamento d",
+            "  ON p.id_departamento = d.id",
+            "GROUP BY d",
+            "ORDER BY p.nombre;"
+          ],
+          "answer": "QUÉ PRETENDE: mostrar, por profesor, su nombre, su primer apellido y el número de departamentos a los que pertenece (COUNT), uniendo profesor con departamento por id_departamento, ordenado por nombre.\n\nLO QUE DEVOLVERÍA (idea): una tabla con columnas 'Nombre' (nombre del profesor), 'Apellido' (apellido1) y 'departamentos' (recuento de departamentos), ordenada por el nombre del profesor.\n\nERROR DE LA CONSULTA (la trampa): 'GROUP BY d' es INCORRECTO: no se agrupa por el alias de una tabla entera. Como el SELECT mezcla columnas no agregadas (p.nombre, p.apellido1) con COUNT, esas columnas deben ir en el GROUP BY. Lo correcto: GROUP BY p.nombre, p.apellido1 (o por la PK del profesor).\n\nVERSIÓN CORRECTA:\n  SELECT p.nombre AS Nombre, p.apellido1 AS Apellido, COUNT(d.id) AS departamentos\n  FROM profesor p\n  INNER JOIN departamento d ON p.id_departamento = d.id\n  GROUP BY p.id, p.nombre, p.apellido1\n  ORDER BY p.nombre;\n\nOJO CON EL MODELO: si p.id_departamento es una sola columna, cada profesor pertenece a un único departamento, así que el COUNT daría 1 para todos. Para contar varios departamentos por profesor haría falta una tabla intermedia N:M.\n\nLa respuesta del estudiante describe bien la intención (nombre, apellido y recuento de departamentos agrupado y ordenado), pero no detecta que 'GROUP BY d' provoca error en modo estricto.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué significa la siguiente instrucción? ¿Qué otro tipo de privilegios hay?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "REVOKE DELETE ON BdMascota.clientes TO 'owner'@'localhost';"
+          ],
+          "answer": "SIGNIFICADO: retira (REVOKE) al usuario 'owner' que se conecta desde 'localhost' el privilegio de DELETE (borrar filas) sobre la tabla 'clientes' de la base de datos 'BdMascota'. Tras ejecutarla, ese usuario ya no podrá borrar registros de esa tabla (conserva los demás privilegios que tuviera).\n\nERROR DE SINTAXIS EN EL ENUNCIADO (muy importante): REVOKE usa FROM, NO TO. La forma correcta es:\n  REVOKE DELETE ON BdMascota.clientes FROM 'owner'@'localhost';\nLa diferencia clave: GRANT ... TO (conceder a); REVOKE ... FROM (retirar de). El enunciado lo escribe mal con TO.\n\nLa respuesta del estudiante explica bien el significado ('se le quita al usuario owner el privilegio de borrar registros en clientes de BdMascota desde el servidor local'), pero no señala que debería ser FROM en lugar de TO.\n\nOTROS PRIVILEGIOS: SELECT, INSERT, UPDATE (DML); CREATE, ALTER, DROP, INDEX (DDL); GRANT OPTION, ALL PRIVILEGES (control).",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-sf-universidad-a",
+      "title": "Síntesis (sin fecha) — Modelo A: universidad (profesores/departamentos)",
+      "date": "Sin fecha — prueba de síntesis (Modelo A)",
+      "source": "Introduccion_Base_Datos_-_Examen_7.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño diagrama con las tablas resultantes del siguiente enunciado. La universidad necesita almacenar información sobre los profesores que forman parte de cada departamento; un profesor puede formar parte de más de un departamento. Para los PROFESORES: NIF, nombre, apellidos, teléfono. Para el DEPARTAMENTO: Código, nomDep, Num_despacho. También queremos registrar fecha_ingreso, como la fecha en que el profesor empezó a trabajar en el departamento. Identifica las PK y FK de cada tabla.",
+          "points": 3,
+          "type": "text",
+          "answer": "ANÁLISIS: 'un profesor puede formar parte de más de un departamento' (y un departamento tiene varios profesores) → relación N:M → tabla intermedia (PERTENECE). 'teléfono' es singular → columna en PROFESORES. fecha_ingreso es atributo de la relación.\n\nTABLAS RESULTANTES:\n\nPROFESORES(NIF PK, nombre, apellidos, telefono)\n\nDEPARTAMENTO(Codigo PK, nomDep, Num_despacho)\n\nPERTENECE(NIF_profesor FK→PROFESORES, Cod_departamento FK→DEPARTAMENTO, fecha_ingreso;\n          PK compuesta = NIF_profesor + Cod_departamento)\n→ nace de la relación N:M; fecha_ingreso es el atributo de relación (la fecha en que ESE profesor entró en ESE departamento).\n\nIDEA CLAVE: 'un X puede pertenecer a varios Y' es la señal típica de N:M, que SIEMPRE se resuelve con tabla intermedia cuya PK son las dos FK y donde van los atributos de la relación.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de las tablas de la Pregunta 1 realiza la siguiente consulta: Profesores que pertenecen al departamento de Matemáticas y de Física.",
+          "points": 2.5,
+          "type": "text",
+          "answer": "CLAVE: se piden los profesores que están en AMBOS departamentos a la vez. Cada pertenencia es una FILA distinta de PERTENECE, así que NO sirve 'nomDep = Matemáticas AND nomDep = Física' (una fila solo tiene un departamento → 0 resultados). Hay que unir DOS VECES con la tabla de relación, o agrupar y contar.\n\nSOLUCIÓN A (doble JOIN):\n  SELECT p.NIF, p.nombre, p.apellidos\n  FROM PROFESORES p\n  INNER JOIN PERTENECE pe1 ON p.NIF = pe1.NIF_profesor\n  INNER JOIN DEPARTAMENTO d1 ON pe1.Cod_departamento = d1.Codigo\n  INNER JOIN PERTENECE pe2 ON p.NIF = pe2.NIF_profesor\n  INNER JOIN DEPARTAMENTO d2 ON pe2.Cod_departamento = d2.Codigo\n  WHERE d1.nomDep = 'Matemáticas' AND d2.nomDep = 'Física';\n\nSOLUCIÓN B (GROUP BY + HAVING, más corta):\n  SELECT p.NIF, p.nombre, p.apellidos\n  FROM PROFESORES p\n  INNER JOIN PERTENECE pe ON p.NIF = pe.NIF_profesor\n  INNER JOIN DEPARTAMENTO d ON pe.Cod_departamento = d.Codigo\n  WHERE d.nomDep IN ('Matemáticas', 'Física')\n  GROUP BY p.NIF, p.nombre, p.apellidos\n  HAVING COUNT(DISTINCT d.nomDep) = 2;\n\nNOTA: 'Matemáticas Y Física' = intersección (ambos). No confundir con 'O' (unión), que sería un simple WHERE ... IN (...).",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "3",
+          "prompt": "Dadas las siguientes tablas correspondientes a los salarios de los empleados no docentes de la universidad, ¿qué resultado me daría la instrucción SQL a continuación?",
+          "points": 2,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT e.first_name, e.last_name, SUM(e.salary) AS sueldo",
+            "FROM employees e INNER JOIN salaries s",
+            "  ON e.emp_no = s.emp_no",
+            "GROUP BY s",
+            "ORDER BY e.last_name;"
+          ],
+          "answer": "QUÉ PRETENDE: por cada empleado, mostrar nombre, apellido y la suma de su salario, uniendo employees con salaries por emp_no, ordenado por apellido.\n\nLO QUE DEVOLVERÍA (idea): una tabla con first_name, last_name y 'sueldo' (suma de salarios de cada empleado), ordenada por apellido.\n\nERRORES (la trampa, idénticos al examen de barcos):\n1) 'GROUP BY s' es INCORRECTO: no se agrupa por el alias de la tabla; hay columnas no agregadas (first_name, last_name) junto a SUM, que deben ir en el GROUP BY. Correcto: GROUP BY e.emp_no, e.first_name, e.last_name.\n2) 'SUM(e.salary)': el salario suele estar en salaries (s.salary), no en employees → debería ser SUM(s.salary).\n\nVERSIÓN CORRECTA:\n  SELECT e.first_name, e.last_name, SUM(s.salary) AS sueldo\n  FROM employees e\n  INNER JOIN salaries s ON e.emp_no = s.emp_no\n  GROUP BY e.emp_no, e.first_name, e.last_name\n  ORDER BY e.last_name;\n\nCONCLUSIÓN: tal cual, en MySQL con modo estricto daría ERROR por 'GROUP BY s'. La intención era listar cada empleado con la suma total de su salario, ordenado por apellido.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué significa la siguiente instrucción? ¿Qué otro tipo de privilegios hay?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "REVOKE DELETE ON BdUniversidad.profesor TO 'owner'@'localhost';"
+          ],
+          "answer": "SIGNIFICADO: retira (REVOKE) al usuario 'owner' que se conecta desde 'localhost' el privilegio de DELETE (borrar filas) sobre la tabla 'profesor' de la base de datos 'BdUniversidad'. Después ya no podrá borrar registros de esa tabla.\n\nERROR DE SINTAXIS EN EL ENUNCIADO: REVOKE usa FROM, no TO. Lo correcto es:\n  REVOKE DELETE ON BdUniversidad.profesor FROM 'owner'@'localhost';\nRegla: GRANT ... TO (conceder a); REVOKE ... FROM (retirar de). El enunciado lo escribe mal con TO.\n\nOTROS PRIVILEGIOS:\n• DML: SELECT, INSERT, UPDATE (y DELETE, el que aquí se retira).\n• DDL: CREATE, ALTER, DROP, INDEX.\n• Control: GRANT OPTION, ALL PRIVILEGES.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-sf-puerto-b",
+      "title": "Síntesis (sin fecha) — Modelo B: puerto deportivo (socios/embarcaciones/amarres)",
+      "date": "Sin fecha — prueba de síntesis (Modelo B)",
+      "source": "Introduccion_Base_Datos_-_Examen_7.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño Diagrama Entidad-Relación dado el siguiente enunciado. Queremos gestionar un puerto deportivo; necesitamos guardar información de los socios y de sus barcos. Para los SOCIOS: DNI, nombre, ciudad, apellidos, teléfonos. Para las EMBARCACIONES: matrícula, eslora, nombre. Un socio puede tener más de un barco y cada barco puede pertenecer a un único socio. Por otra parte, cada embarcación tendrá un amarre del que almacenaremos: número de amarre, embarcación que lo utilizará y lectura de los suministros de luz y de agua del amarre.",
+          "points": 3,
+          "type": "text",
+          "answer": "DIAGRAMA E-R: tres entidades en cadena con relaciones 1:N.\n\n  SOCIO  ──1───< posee >───N──  EMBARCACION  ──1───< ocupa >───1──  AMARRE\n  (DNI)                          (matricula)                       (num_amarre)\n\n• SOCIO–EMBARCACION es 1:N: un socio tiene varias embarcaciones y cada embarcación pertenece a un único socio → la FK va en EMBARCACION (lado 'muchos').\n• EMBARCACION–AMARRE es 1:1 (cada embarcación tiene un amarre): la FK puede ir en AMARRE (la embarcación que lo utiliza). En el amarre se registran las lecturas de luz y agua.\n• 'teléfonos' del socio es multivaluado → tabla aparte (1FN).\n\nREGLA: en 1:N NO se crea tabla intermedia; la PK del lado '1' se copia como FK en el lado 'N'.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "Describe cómo quedaría la estructura de tablas si pasamos al modelo relacional el diagrama de la Pregunta 1. Indica las claves primarias y foráneas necesarias.",
+          "points": 3,
+          "type": "text",
+          "answer": "PASO A TABLAS (relaciones 1:N → la FK baja al lado 'muchos'; NO hay tabla intermedia):\n\nSOCIO(DNI PK, nombre, apellidos, ciudad)\n\nTELEFONOS_SOCIO(DNI FK→SOCIO, telefono;  PK compuesta = DNI + telefono)\n→ teléfonos multivaluados → tabla aparte (1FN).\n\nEMBARCACION(matricula PK, nombre, eslora, DNI_socio FK→SOCIO)\n→ relación 1:N: la FK DNI_socio va en EMBARCACION (lado 'muchos').\n\nAMARRE(num_amarre PK, matricula_embarcacion FK→EMBARCACION, lectura_luz, lectura_agua)\n→ la embarcación que ocupa el amarre se referencia con una FK; las lecturas de luz y agua son atributos del amarre.\n\nFK: DNI_socio (→SOCIO) en EMBARCACION, matricula_embarcacion (→EMBARCACION) en AMARRE, y DNI en la tabla de teléfonos.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "Aplicando lo que hicimos en la actividad 4, ¿podría normalizarse el modelo anterior de la Pregunta 1 y 2? ¿Qué norma formal le aplicarías? ¿Cómo quedarían las tablas?",
+          "points": 2,
+          "type": "text",
+          "answer": "SÍ se puede normalizar.\n\nLa norma clave es la 1FN (valores atómicos): 'teléfonos' del socio es multivaluado y viola la 1FN dentro de SOCIO. Se aplica sacándolo a una tabla propia:\n  SOCIO(DNI PK, nombre, apellidos, ciudad)\n  TELEFONOS_SOCIO(DNI FK, telefono;  PK = DNI + telefono)\n\n2FN: las tablas con PK compuesta no presentan dependencias parciales → cumplen 2FN.\n\n3FN: si 'ciudad' del socio dependiera de un código postal, se podría sacar a una tabla aparte (CODIGO_POSTAL) para eliminar la dependencia transitiva. En este modelo, una vez sacados los teléfonos y con las FK 1:N bien colocadas, el esquema queda en 3FN.\n\nRESUMEN: lo esencial es la 1FN por los teléfonos; el resto del diseño ya está normalizado.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "Pon un ejemplo de herencia entre los que vimos en la actividad 2 y explica por qué se produce esta herencia con tus palabras.",
+          "points": 2,
+          "type": "text",
+          "answer": "HERENCIA (generalización/especialización): relación entre una entidad 'padre' y entidades 'hijo' donde los hijos heredan los atributos y relaciones del padre y añaden los propios. Modela 'X es un tipo de Y'.\n\nEJEMPLO (en el dominio del puerto deportivo): la entidad EMBARCACION (padre) podría especializarse en subtipos:\n  EMBARCACION(matricula PK, nombre, eslora)        ← padre (lo común)\n    ├── VELERO(superficie_vela, num_mastiles)      ← hereda matricula, nombre, eslora\n    └── LANCHA(potencia_motor, tipo_motor)         ← hereda matricula, nombre, eslora\n\nPOR QUÉ SE PRODUCE LA HERENCIA: tanto un velero como una lancha SON una embarcación, así que comparten los atributos generales (matrícula, nombre, eslora); no tiene sentido repetirlos en cada subtipo. Cada subtipo solo añade lo que lo distingue (un velero tiene superficie de vela; una lancha, potencia de motor). De ese modo lo común se modela una sola vez en el padre y los hijos lo heredan.\n\nPASO A TABLAS: una tabla para el padre y una por cada hijo cuya PK es a la vez FK hacia el padre (EMBARCACION(matricula PK); VELERO(matricula PK y FK→EMBARCACION, ...); LANCHA(matricula PK y FK→EMBARCACION, ...)).",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-sf-rodajes-a",
+      "title": "Síntesis (sin fecha) — Modelo A: agencia de localizaciones para rodajes",
+      "date": "Sin fecha — prueba de síntesis (Modelo A)",
+      "source": "TF6095404.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño diagrama con las tablas resultantes del siguiente enunciado. Una agencia que gestiona el alquiler de localizaciones para rodajes necesita una pequeña base de datos donde registrar la siguiente información. Para los CLIENTE: NIF, nombre, apellidos, teléfonos. Para los ESPACIO: Codigo, nombre, ciudad, dirección, descripción, precio_dia. También queremos registrar fecha_alquiler, numero_dias que se alquila. Identifica las PK y FK de cada tabla.",
+          "points": 3,
+          "type": "text",
+          "answer": "ANÁLISIS: relación N:M entre CLIENTE y ESPACIO → tabla intermedia (ALQUILER). 'teléfonos' multivaluado → tabla aparte (1FN). fecha_alquiler y numero_dias son atributos de la relación.\n\nTABLAS RESULTANTES:\n\nCLIENTE(NIF PK, nombre, apellidos)\n\nTELEFONOS_CLIENTE(NIF FK→CLIENTE, telefono;  PK compuesta = NIF + telefono)\n\nESPACIO(Codigo PK, nombre, ciudad, direccion, descripcion, precio_dia)\n\nALQUILER(NIF_cliente FK→CLIENTE, Codigo_espacio FK→ESPACIO, fecha_alquiler, numero_dias;\n         PK compuesta = NIF_cliente + Codigo_espacio + fecha_alquiler)\n→ nace de la relación N:M; fecha_alquiler y numero_dias son atributos de relación; se añade fecha_alquiler a la PK para permitir varios alquileres del mismo espacio por el mismo cliente.\n\nLa respuesta del estudiante (válida en lo esencial): CLIENTE NIF PK, ESPACIO Código PK, ALQUILER con su PK (Id Alquiler) y las FK NIF_Cliente y Código_Espacio. Es igual de correcto usar la PK compuesta de las dos FK + fecha en la intermedia.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de las tablas Facturas / Productos / DetallesFactura realiza la siguiente consulta: compras realizadas en detalles de factura que han superado el importe de 3000€ (precio*cantidad > 3000). Concretamente se pide el ID del producto y el ID de la factura. [Facturas(ID PK, ClienteID FK, Fecha, Total); Productos(ID PK, Nombre, Precio); DetallesFactura(ID PK, FacturaID FK, ProductoID FK, Cantidad)]",
+          "points": 2.5,
+          "type": "text",
+          "answer": "El precio unitario está en Productos y la cantidad en DetallesFactura, así que hay que unir esas dos tablas y multiplicar precio*cantidad en el WHERE. No hace falta unir Facturas (el FacturaID ya está en DetallesFactura y no se filtra por nada de Facturas).\n\nSOLUCIÓN:\n  SELECT df.ProductoID, df.FacturaID\n  FROM DetallesFactura df\n  INNER JOIN Productos p ON df.ProductoID = p.ID\n  WHERE (p.Precio * df.Cantidad) > 3000;\n\n• FROM DetallesFactura: cada fila es una línea (un producto en una factura).\n• INNER JOIN Productos: trae el precio unitario.\n• WHERE (p.Precio * df.Cantidad) > 3000: el importe de la línea supera 3000€.\n• SELECT df.ProductoID, df.FacturaID: lo pedido.\n\nLa respuesta del estudiante tenía erratas (ProdcutoID, DetallesFacturas) pero la idea era correcta. Versión limpia: la de arriba.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "¿Qué resultado me daría la instrucción SQL a continuación?",
+          "points": 2,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT c.NIF, c.nombre, c.apellidos",
+            "FROM CLIENTE c",
+            "INNER JOIN ALQUILER a ON c.NIF = a.NIF_cliente",
+            "INNER JOIN ESPACIO e ON a.Codigo_espacio = e.Codigo",
+            "WHERE e.ciudad = 'Madrid' AND a.numero_dias > 3 AND (a.numero_dias * e.precio_dia) > 500;"
+          ],
+          "answer": "QUÉ DEVUELVE: el NIF, nombre y apellidos de los CLIENTES que han alquilado un ESPACIO situado en la ciudad de Madrid, durante más de 3 días, y cuyo coste del alquiler (numero_dias * precio_dia) supera los 500€.\n\nCÓMO FUNCIONA:\n• INNER JOIN ALQUILER: enlaza cada cliente con sus alquileres (por NIF_cliente).\n• INNER JOIN ESPACIO: enlaza cada alquiler con el espacio alquilado (por Codigo), para poder filtrar por ciudad y precio.\n• WHERE combina tres condiciones (todas con AND, deben cumplirse a la vez):\n   - e.ciudad = 'Madrid': el espacio está en Madrid.\n   - a.numero_dias > 3: se alquiló más de 3 días.\n   - (a.numero_dias * e.precio_dia) > 500: el importe total del alquiler pasa de 500€.\n\nESTA CONSULTA SÍ ES CORRECTA (a diferencia de las de GROUP BY de otros modelos). Devuelve los datos de los clientes que cumplen las tres condiciones.\n\nMATIZ: un cliente que tenga varios alquileres que cumplan aparecería repetido; para listarlo una sola vez se añadiría DISTINCT. La respuesta del estudiante describe bien el resultado.",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué significa la siguiente instrucción? ¿Qué otro tipo de privilegios hay?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "GRANT SELECT, INSERT ON BdQuimica.clientes TO 'auditoria'@'localhost';"
+          ],
+          "answer": "SIGNIFICADO: concede (GRANT) al usuario 'auditoria' que se conecta desde 'localhost' los privilegios de SELECT (consultar/leer) e INSERT (insertar filas) sobre la tabla 'clientes' de la base de datos 'BdQuimica'. Ese usuario podrá leer e insertar registros en esa tabla, pero NO actualizar ni borrar (no se le han dado UPDATE ni DELETE).\n\nFORMA: GRANT privilegios ON base.tabla TO 'usuario'@'host'; (GRANT usa TO).\n\nOTROS PRIVILEGIOS:\n• DML: UPDATE (modificar), DELETE (borrar). Con SELECT e INSERT completan los cuatro básicos sobre datos.\n• DDL: CREATE, ALTER, DROP, INDEX.\n• Control: GRANT OPTION (reotorgar), ALL PRIVILEGES (todos).\n\nLa respuesta del estudiante acierta el significado; pequeño matiz: 'REMOVE' no es un privilegio de SQL (los de borrado son DELETE para filas y DROP para objetos). RECORDATORIO: para quitar privilegios, REVOKE ... FROM (con FROM).",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-sf-oficina-a",
+      "title": "Síntesis (sin fecha) — Modelo A: tienda de material de oficina",
+      "date": "Sin fecha — prueba de síntesis (Modelo A)",
+      "source": "TF6095406.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño diagrama con las tablas resultantes del siguiente enunciado. Una tienda de venta de material de oficina necesita una pequeña base de datos donde registrar la siguiente información de los clientes que compran productos. Para los CLIENTES: NIF, nombre, apellidos, teléfono. Para el PRODUCTO: Código, nomProd, tipo_producto, stock. También queremos registrar fecha_compra, cantidad que se compra. Identifica las PK y FK de cada tabla.",
+          "points": 3,
+          "type": "text",
+          "answer": "ANÁLISIS: relación N:M entre CLIENTES y PRODUCTO → tabla intermedia (COMPRA). 'teléfono' singular → columna en CLIENTES. fecha_compra y cantidad son atributos de la relación. 'stock' es un atributo propio del producto.\n\nTABLAS RESULTANTES:\n\nCLIENTES(NIF PK, nombre, apellidos, telefono)\n\nPRODUCTO(Codigo PK, nomProd, tipo_producto, stock)\n\nCOMPRA(NIF_cliente FK→CLIENTES, Codigo_producto FK→PRODUCTO, fecha_compra, cantidad;\n       PK compuesta = NIF_cliente + Codigo_producto)\n→ nace de la relación N:M; fecha_compra y cantidad son atributos de relación.\n\nFK: NIF_cliente (→CLIENTES) y Codigo_producto (→PRODUCTO). Si el mismo cliente puede comprar el mismo producto en fechas distintas, añadir fecha_compra a la PK.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de las tablas Facturas / Productos / DetallesFactura realiza la siguiente consulta: productos que se han vendido más de 300 veces en los detalles de factura; concretamente se pide el nombre del producto y su ID. [Facturas(ID PK, ClienteID FK, Fecha, Total); Productos(ID PK, Nombre, Precio); DetallesFactura(ID PK, FacturaID FK, ProductoID FK, Cantidad)]",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Hay que AGREGAR: sumar las unidades vendidas de cada producto en DetallesFactura y quedarse con los que superen 300. Esto pide GROUP BY (por producto) + SUM + HAVING (porque el filtro recae sobre el agregado).\n\nSOLUCIÓN (interpretando '300 veces' como 300 unidades vendidas en total):\n  SELECT p.ID, p.Nombre, SUM(df.Cantidad) AS total_vendido\n  FROM Productos p\n  INNER JOIN DetallesFactura df ON p.ID = df.ProductoID\n  GROUP BY p.ID, p.Nombre\n  HAVING SUM(df.Cantidad) > 300;\n\n• INNER JOIN: enlaza cada producto con todas sus líneas de venta.\n• GROUP BY p.ID, p.Nombre: agrupa por producto (Nombre va en el GROUP BY porque sale en el SELECT y no está agregado).\n• HAVING SUM(df.Cantidad) > 300: conserva los productos cuya suma supera 300.\n\nVARIANTE (si '300 veces' = aparece en más de 300 líneas/facturas distintas): usar COUNT(*) en vez de SUM:\n  ... GROUP BY p.ID, p.Nombre HAVING COUNT(*) > 300;\n\nWHERE vs HAVING: WHERE filtra filas antes de agrupar; HAVING filtra grupos después y es el único que admite funciones de agregación.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "¿Qué resultado me daría la instrucción SQL a continuación?",
+          "points": 2,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT c.Nombre, SUM(co.Cantidad_compra) AS Total_compras,",
+            "       p.Tipo_producto, SUM(co.Cantidad_compra * p.Precio) AS Ingresos",
+            "FROM Clientes c",
+            "INNER JOIN Compras co ON c.NIF = co.NIF_cliente",
+            "INNER JOIN Productos p ON co.Codigo_producto = p.Codigo",
+            "GROUP BY c.Nombre, p.Tipo_producto",
+            "ORDER BY c.Nombre;"
+          ],
+          "answer": "QUÉ DEVUELVE: para cada combinación de CLIENTE (por nombre) y TIPO DE PRODUCTO, una fila con cuatro columnas:\n• c.Nombre: nombre del cliente.\n• Total_compras = SUM(co.Cantidad_compra): número total de unidades que ese cliente ha comprado de ese tipo de producto.\n• p.Tipo_producto: el tipo de producto.\n• Ingresos = SUM(co.Cantidad_compra * p.Precio): el dinero total generado por ese cliente en ese tipo de producto (suma de cantidad × precio de cada compra).\n\nCÓMO FUNCIONA:\n• Une Clientes con Compras (por NIF) y con Productos (por Codigo).\n• GROUP BY c.Nombre, p.Tipo_producto: agrupa por cada pareja (cliente, tipo de producto), de modo que las funciones SUM se calculan dentro de cada grupo.\n• ORDER BY c.Nombre: ordena el resultado alfabéticamente por nombre de cliente.\n\nESTA CONSULTA SÍ ES CORRECTA: el GROUP BY incluye todas las columnas no agregadas del SELECT (c.Nombre y p.Tipo_producto), por lo que no da error. Es un ejemplo bien construido de doble agregación (cantidades e ingresos) por cliente y tipo de producto.\n\nNota: si un cliente compró varios tipos de producto, aparecerá en varias filas (una por tipo).",
+          "difficulty": "media"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué significa la siguiente instrucción? ¿Qué otro tipo de privilegios hay?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "REVOKE DELETE ON BdOfice.clientes TO 'owner'@'localhost';"
+          ],
+          "answer": "SIGNIFICADO: retira (REVOKE) al usuario 'owner' que se conecta desde 'localhost' el privilegio de DELETE (borrar filas) sobre la tabla 'clientes' de la base de datos 'BdOfice'. Después ya no podrá borrar registros de esa tabla.\n\nERROR DE SINTAXIS EN EL ENUNCIADO: REVOKE usa FROM, no TO. Lo correcto es:\n  REVOKE DELETE ON BdOfice.clientes FROM 'owner'@'localhost';\nRegla: GRANT ... TO (conceder a); REVOKE ... FROM (retirar de).\n\nOTROS PRIVILEGIOS:\n• DML: SELECT, INSERT, UPDATE (y DELETE, el aquí retirado).\n• DDL: CREATE, ALTER, DROP, INDEX.\n• Control: GRANT OPTION, ALL PRIVILEGES.",
+          "difficulty": "media"
+        }
+      ]
+    },
+    {
+      "id": "fp055-sf-ropa-a",
+      "title": "Síntesis (sin fecha) — Modelo A: tienda de ropa al por mayor",
+      "date": "Sin fecha — prueba de síntesis (Modelo A)",
+      "source": "TF6253161.docx",
+      "questions": [
+        {
+          "n": "1",
+          "prompt": "Realiza un pequeño diagrama con las tablas resultantes del siguiente enunciado. Una tienda de venta de ropa al por mayor necesita una pequeña base de datos donde registrar la siguiente información de los clientes que compran productos. Para los CLIENTES: NIF, nombre, apellidos, teléfono. Para el PRODUCTO: Código, nomProd, tipo_producto, stock. También queremos registrar fecha_compra, cantidad que se compra. Identifica las PK y FK de cada tabla.",
+          "points": 3,
+          "type": "text",
+          "answer": "ANÁLISIS: relación N:M entre CLIENTES y PRODUCTO → tabla intermedia (COMPRA). 'teléfono' singular → columna en CLIENTES. fecha_compra y cantidad son atributos de la relación. 'stock' es atributo del producto.\n\nTABLAS RESULTANTES:\n\nCLIENTES(NIF PK, nombre, apellidos, telefono)\n\nPRODUCTO(Codigo PK, nomProd, tipo_producto, stock)\n\nCOMPRA(NIF_cliente FK→CLIENTES, Codigo_producto FK→PRODUCTO, fecha_compra, cantidad;\n       PK compuesta = NIF_cliente + Codigo_producto)\n→ nace de la relación N:M; fecha_compra y cantidad son atributos de relación.\n\nFK: NIF_cliente (→CLIENTES) y Codigo_producto (→PRODUCTO). Si el mismo cliente puede comprar el mismo producto en fechas distintas, añadir fecha_compra a la PK.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "2",
+          "prompt": "A partir de las tablas Facturas / Productos / DetallesFactura realiza la siguiente consulta: productos que se han vendido más de 150 veces en los detalles de factura; concretamente se pide el nombre del producto y su ID. [Facturas(ID PK, ClienteID FK, Fecha, Total); Productos(ID PK, Nombre, Precio); DetallesFactura(ID PK, FacturaID FK, ProductoID FK, Cantidad)]",
+          "points": 2.5,
+          "type": "text",
+          "answer": "Hay que sumar las unidades vendidas de cada producto (GROUP BY por producto + SUM) y quedarse con los que superen 150 (HAVING).\n\nSOLUCIÓN (interpretando '150 veces' como 150 unidades vendidas en total):\n  SELECT p.ID, p.Nombre, SUM(df.Cantidad) AS total_vendido\n  FROM Productos p\n  INNER JOIN DetallesFactura df ON p.ID = df.ProductoID\n  GROUP BY p.ID, p.Nombre\n  HAVING SUM(df.Cantidad) > 150;\n\n• INNER JOIN: une cada producto con sus líneas de venta.\n• GROUP BY p.ID, p.Nombre: agrupa por producto.\n• HAVING SUM(df.Cantidad) > 150: conserva los que superan 150 unidades.\n\nVARIANTE (si '150 veces' = nº de líneas/facturas en las que aparece):\n  ... GROUP BY p.ID, p.Nombre HAVING COUNT(*) > 150;\n\nRecuerda: el filtro sobre un agregado (SUM/COUNT) va en HAVING, nunca en WHERE.",
+          "difficulty": "media"
+        },
+        {
+          "n": "3",
+          "prompt": "¿Qué resultado me daría la instrucción SQL a continuación?",
+          "points": 2,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "SELECT PLAN, COUNT(SOCIO.ID_PLAN) AS 'NUMERO DE SOCIOS',",
+            "       FORMAT(CUOTA_MENSUAL,2) AS 'CUOTA MENSUAL',",
+            "       FORMAT(COUNT(SOCIO.ID_PLAN)*CUOTA_MENSUAL,2) AS 'TOTAL'",
+            "FROM (plan INNER JOIN SOCIO",
+            "  ON plan.ID_PLAN = SOCIO.ID_PLAN)",
+            "GROUP BY PLAN.PLAN",
+            "HAVING COUNT(SOCIO.ID_PLAN) > 1;"
+          ],
+          "answer": "QUÉ DEVUELVE: un informe que, por cada PLAN de socios (uniendo la tabla 'plan' con 'SOCIO' por ID_PLAN), muestra cuatro columnas:\n• PLAN: el nombre/tipo de plan.\n• 'NUMERO DE SOCIOS' = COUNT(SOCIO.ID_PLAN): cuántos socios están en ese plan.\n• 'CUOTA MENSUAL' = FORMAT(CUOTA_MENSUAL, 2): la cuota mensual del plan, formateada con 2 decimales.\n• 'TOTAL' = FORMAT(COUNT(...) * CUOTA_MENSUAL, 2): la recaudación mensual de ese plan = nº de socios × cuota, con 2 decimales.\n\nCÓMO FUNCIONA:\n• INNER JOIN plan–SOCIO por ID_PLAN: relaciona cada socio con su plan.\n• GROUP BY PLAN.PLAN: agrupa por plan, de modo que COUNT cuenta los socios de cada plan.\n• HAVING COUNT(SOCIO.ID_PLAN) > 1: solo muestra los planes que tienen MÁS DE UN socio (descarta planes con 0 o 1 socio).\n• FORMAT(x, 2): función de MySQL que muestra el número con 2 decimales y separadores de miles (resultado tipo texto).\n\nCONCLUSIÓN: lista, para cada plan con más de un socio, cuántos socios tiene, su cuota mensual y la recaudación total mensual del plan. Es una consulta correcta y un buen ejemplo de GROUP BY + HAVING + función FORMAT.",
+          "difficulty": "dificil"
+        },
+        {
+          "n": "4",
+          "prompt": "¿Qué significa la siguiente instrucción? ¿Qué otro tipo de privilegios hay?",
+          "points": 2.5,
+          "type": "code",
+          "codeLang": "sql",
+          "codeLines": [
+            "REVOKE DELETE ON BdGym.abonados TO 'owner'@'localhost';"
+          ],
+          "answer": "SIGNIFICADO: retira (REVOKE) al usuario 'owner' que se conecta desde 'localhost' el privilegio de DELETE (borrar filas) sobre la tabla 'abonados' de la base de datos 'BdGym'. Después ya no podrá borrar registros de esa tabla.\n\nERROR DE SINTAXIS EN EL ENUNCIADO: REVOKE usa FROM, no TO. Lo correcto es:\n  REVOKE DELETE ON BdGym.abonados FROM 'owner'@'localhost';\nRegla mnemotécnica: GRANT ... TO (conceder a); REVOKE ... FROM (retirar de).\n\nOTROS PRIVILEGIOS:\n• DML: SELECT, INSERT, UPDATE (y DELETE, el aquí retirado).\n• DDL: CREATE, ALTER, DROP, INDEX.\n• Control: GRANT OPTION (poder reotorgar), ALL PRIVILEGES (todos).",
+          "difficulty": "media"
+        }
+      ]
+    }
+  ]
+}

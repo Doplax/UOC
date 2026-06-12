@@ -17,6 +17,7 @@ const ROOT = __dirname;
 const PUBLIC_DIR = path.join(ROOT, 'public');
 const EXAMS_DIR = path.join(ROOT, 'data', 'exams');
 const ATTEMPTS_DIR = path.join(ROOT, 'data', 'attempts');
+const PASTEXAMS_DIR = path.join(ROOT, 'data', 'pastexams');
 const CONFIG_FILE = path.join(ROOT, 'data', 'config.json');
 
 const PORT = process.env.PORT || 3939;
@@ -112,6 +113,13 @@ function listExams() {
 
 function getExam(id) {
   const file = path.join(EXAMS_DIR, id + '.json');
+  if (!fs.existsSync(file)) return null;
+  return readJson(file);
+}
+
+// Exámenes reales de años anteriores (reconstruidos), agrupados por convocatoria.
+function getPastExams(id) {
+  const file = path.join(PASTEXAMS_DIR, id + '.json');
   if (!fs.existsSync(file)) return null;
   return readJson(file);
 }
@@ -221,7 +229,9 @@ function createAttempt(examId, opts) {
     status: 'draft',
     questionIds: ids,
     answers: {},
+    doubts: {},
     corrections: {},
+    doubtResponses: {},
     totalScore: null,
     maxScore: Math.round(maxScore * 100) / 100,
     globalFeedback: ''
@@ -238,6 +248,10 @@ function updateAttempt(examId, attemptId, patch) {
   // Solo se permiten estos campos desde el cliente (las correcciones las pone el profesor editando el JSON).
   if (patch.answers && typeof patch.answers === 'object') {
     current.answers = Object.assign({}, current.answers, patch.answers);
+  }
+  // Dudas anotadas por el estudiante mientras practica (se resuelven al corregir).
+  if (patch.doubts && typeof patch.doubts === 'object') {
+    current.doubts = Object.assign({}, current.doubts, patch.doubts);
   }
   if (patch.status === 'submitted') {
     current.status = 'submitted';
@@ -322,7 +336,8 @@ const CORRECTION_TOOL = {
             questionId: { type: 'string', description: 'El id exacto de la pregunta (p. ej. "q3").' },
             score: { type: 'number', description: 'Puntos otorgados, entre 0 y el máximo de la pregunta.' },
             feedback: { type: 'string', description: 'Feedback breve y constructivo en español: qué está bien, qué falta y errores.' },
-            modelAnswer: { type: 'string', description: 'Respuesta modelo correcta y concisa en español.' }
+            modelAnswer: { type: 'string', description: 'Respuesta modelo correcta y concisa en español.' },
+            doubtResponse: { type: 'string', description: 'SOLO si el estudiante anotó una duda en esta pregunta: respuesta clara y directa a esa duda concreta, en español. Si no hay duda, deja este campo vacío o no lo incluyas.' }
           },
           required: ['questionId', 'score', 'feedback', 'modelAnswer']
         }
@@ -338,6 +353,8 @@ const CORRECTION_SYSTEM =
   'constructivo en español (qué está bien, qué falta, errores concretos) y proporciona una respuesta ' +
   'modelo correcta y concisa. Sé justo pero riguroso: si la respuesta está vacía, puntúa 0 y explica la ' +
   'solución. Valora la corrección técnica, no la redacción. Usa exactamente el id de cada pregunta. ' +
+  'Si en una pregunta el estudiante ha anotado una DUDA, respóndela de forma clara y directa en el campo ' +
+  'doubtResponse de esa pregunta (resuelve exactamente lo que pregunta, no repitas sin más la respuesta modelo). ' +
   'Devuelve TODO mediante la herramienta entregar_correccion.';
 
 async function correctAttempt(examId, attemptId) {
@@ -363,7 +380,12 @@ async function correctAttempt(examId, attemptId) {
       userText += 'Código de la pregunta (' + (q.codeLang || '') + '):\n' + q.codeLines.join('\n') + '\n';
     }
     const ans = (attempt.answers && attempt.answers[q.id]) || '';
-    userText += 'Respuesta del estudiante: ' + (String(ans).trim() ? ans : '(SIN RESPONDER)') + '\n\n';
+    userText += 'Respuesta del estudiante: ' + (String(ans).trim() ? ans : '(SIN RESPONDER)') + '\n';
+    const duda = (attempt.doubts && attempt.doubts[q.id]) || '';
+    if (String(duda).trim()) {
+      userText += 'DUDA del estudiante (resuélvela en doubtResponse): ' + duda + '\n';
+    }
+    userText += '\n';
   });
 
   const resp = await anthropicMessages(cfg.apiKey, {
@@ -380,6 +402,7 @@ async function correctAttempt(examId, attemptId) {
   const out = toolBlock.input;
 
   const corrections = {};
+  const doubtResponses = {};
   let sum = 0;
   (out.corrections || []).forEach(c => {
     const q = qmap[c.questionId];
@@ -393,10 +416,16 @@ async function correctAttempt(examId, attemptId) {
       feedback: String(c.feedback || ''),
       modelAnswer: String(c.modelAnswer || '')
     };
+    // Solo guardamos resolución de duda si el estudiante anotó una y la IA respondió.
+    const duda = (attempt.doubts && attempt.doubts[c.questionId]) || '';
+    if (String(duda).trim() && String(c.doubtResponse || '').trim()) {
+      doubtResponses[c.questionId] = String(c.doubtResponse);
+    }
     sum += score;
   });
 
   attempt.corrections = corrections;
+  attempt.doubtResponses = doubtResponses;
   attempt.totalScore = Math.round(sum * 100) / 100;
   attempt.globalFeedback = String(out.globalFeedback || '');
   attempt.status = 'corrected';
@@ -498,6 +527,13 @@ async function handleApi(req, res, parts) {
     return exam ? sendJson(res, 200, exam) : sendJson(res, 404, { error: 'exam not found' });
   }
 
+  // /api/pastexams/:id  -> exámenes reales de años anteriores de la asignatura
+  if (parts[0] === 'pastexams' && parts.length === 2 && method === 'GET') {
+    if (!safeId(parts[1])) return sendJson(res, 400, { error: 'bad id' });
+    const pe = getPastExams(parts[1]);
+    return pe ? sendJson(res, 200, pe) : sendJson(res, 404, { error: 'past exams not found' });
+  }
+
   // /api/attempts/:examId
   if (parts[0] === 'attempts' && parts.length === 2) {
     if (!safeId(parts[1])) return sendJson(res, 400, { error: 'bad id' });
@@ -534,6 +570,7 @@ async function handleApi(req, res, parts) {
     (parts[0] === 'config' && parts.length === 1) ? 'GET, POST' :
     (parts[0] === 'exams' && parts.length === 1) ? 'GET' :
     (parts[0] === 'exams' && parts.length === 2) ? 'GET' :
+    (parts[0] === 'pastexams' && parts.length === 2) ? 'GET' :
     (parts[0] === 'attempts' && parts.length === 2) ? 'GET, POST' :
     (parts[0] === 'attempts' && parts.length === 3) ? 'GET, PUT, DELETE' :
     (parts[0] === 'attempts' && parts.length === 4 && parts[3] === 'correct') ? 'POST' : null;

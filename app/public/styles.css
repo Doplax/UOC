@@ -17,7 +17,9 @@
   --bad: #dc2626;
   --bad-soft: #fee2e2;
   --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
-  --radius: 14px;
+  --radius: 16px;
+  --app-w: 1100px;
+  --read-w: 760px;
   --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   /* tokens de resaltado de sintaxis (tema claro) */
@@ -97,12 +99,18 @@ body {
 .icon-btn:hover { background: var(--card-2); transform: translateY(-1px); }
 
 /* ---- layout ---- */
-.app { max-width: 980px; margin: 0 auto; padding: 28px 20px 80px; }
+.app { max-width: var(--app-w); margin: 0 auto; padding: 32px 28px 96px; }
 .loading { text-align: center; color: var(--muted); padding: 60px; }
 
-h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.02em; }
-h2 { font-size: 18px; margin: 0; }
-.subtitle { color: var(--muted); margin: 0 0 26px; }
+h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -.02em; line-height: 1.2; }
+h2 { font-size: 19px; margin: 0; }
+.subtitle { color: var(--muted); margin: 0 0 26px; font-size: 15.5px; }
+
+/* En iPad/tablet: texto algo mayor y más aire para estudiar cómodo. */
+@media (min-width: 760px) {
+  body { font-size: 16.5px; line-height: 1.62; }
+  .app { padding: 36px 32px 110px; }
+}
 
 /* ---- buttons ---- */
 .btn {
@@ -183,19 +191,30 @@ a.card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var
 }
 
 .q {
-  background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--border);
-  border-radius: 12px; padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow);
+  background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--border);
+  border-radius: var(--radius); padding: 22px 26px; margin-bottom: 16px; box-shadow: var(--shadow);
 }
 .q.answered { border-left-color: var(--accent); }
 .q.good { border-left-color: var(--ok); }
 .q.bad { border-left-color: var(--bad); }
 .q.mid { border-left-color: var(--warn); }
-.q-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
-.q-num { font: 800 13px var(--mono); color: var(--accent-text); background: var(--accent-soft); padding: 2px 9px; border-radius: 7px; }
-.q-points { margin-left: auto; font-size: 12.5px; color: var(--muted); white-space: nowrap; }
-.q-prompt { font-size: 15.5px; font-weight: 500; }
-.q-hint { font-size: 13px; color: var(--muted); margin-top: 6px; font-style: italic; }
+.q-head { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num { font: 800 14px var(--mono); color: var(--accent-text); background: var(--accent-soft); padding: 3px 11px; border-radius: 8px; }
+.q-points { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.q-prompt { font-size: 16.5px; font-weight: 500; line-height: 1.6; }
+.q-hint { font-size: 13.5px; color: var(--muted); margin-top: 8px; font-style: italic; }
 .q-hint::before { content: "💡 "; }
+
+/* ---- badge de dificultad ---- */
+.q-diff { font-size: 11px; font-weight: 800; padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: .04em; }
+.d-facil { background: var(--ok-soft); color: var(--ok); }
+.d-media { background: var(--warn-soft); color: var(--warn); }
+.d-dificil { background: var(--bad-soft); color: var(--bad); }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.dot.d-facil { background: var(--ok); }
+.dot.d-media { background: var(--warn); }
+.dot.d-dificil { background: var(--bad); }
+.study-count { font-size: 13px; color: var(--muted); align-self: center; margin-left: auto; }
 
 pre.code {
   background: var(--card-2); border: 1px solid var(--border); border-radius: 10px;
@@ -351,8 +370,8 @@ details.answers-section > summary .section-title:hover { opacity: .85; }
 
 /* ---- bloque de texto de solución (reutilizable) ---- */
 pre.model-body {
-  background: var(--card-2); border: 1px solid var(--border); border-radius: 10px;
-  padding: 14px 16px; font-size: 13.5px; font-family: var(--mono); line-height: 1.6;
+  background: var(--card-2); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px 18px; font-size: 14.5px; font-family: var(--mono); line-height: 1.7;
   margin: 10px 0 0; white-space: pre-wrap; word-break: break-word; overflow-x: auto;
 }
 
@@ -371,26 +390,84 @@ details.solution[open] > summary { border-radius: 10px 10px 0 0; }
 /* ---- botón Solucionario en la página del examen ---- */
 .btn-study { background: var(--ok-soft); color: var(--ok); border-color: var(--ok); text-decoration: none; }
 .btn-study:hover { filter: brightness(1.03); }
+.btn-past { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); text-decoration: none; }
+.btn-past:hover { filter: brightness(1.03); }
+
+/* ---- exámenes anteriores (lista) ---- */
+.pastexam-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.pastexam-card {
+  background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--warn);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; gap: 8px; transition: .18s;
+}
+.pastexam-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--warn) 45%, var(--border)); }
+.pastexam-when { font-size: 17px; font-weight: 700; }
+.pastexam-sub { font-size: 13.5px; color: var(--muted); }
+.pastexam-diffs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+
+/* ---- anotar duda (mientras se practica) ---- */
+details.duda { margin-top: 10px; }
+details.duda > summary {
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13.5px; font-weight: 600; color: var(--accent-text);
+  background: var(--accent-soft); border: 1px dashed var(--accent); border-radius: 999px;
+  padding: 5px 14px; list-style: none; user-select: none; transition: .15s;
+}
+details.duda > summary::-webkit-details-marker { display: none; }
+details.duda > summary:hover { filter: brightness(1.03); }
+details.duda[open] > summary { border-radius: 10px 10px 0 0; }
+textarea.duda-input {
+  width: 100%; margin-top: 8px; min-height: 70px; resize: vertical;
+  padding: 11px 14px; border-radius: 10px; border: 1px dashed var(--accent);
+  background: var(--card-2); color: var(--text); font: inherit; font-size: 14px; line-height: 1.5;
+}
+textarea.duda-input:focus { outline: none; border-style: solid; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* ---- duda + resolución (en revisión / corrección) ---- */
+.duda-block { margin-top: 14px; display: grid; gap: 10px; }
+.duda-mine, .duda-resp {
+  border-radius: 10px; padding: 12px 14px; border: 1px solid var(--border);
+}
+.duda-mine { background: var(--accent-soft); border-left: 4px solid var(--accent); }
+.duda-resp { background: var(--ok-soft); border-left: 4px solid var(--ok); }
+.duda-lbl { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+.duda-mine .duda-lbl { color: var(--accent-text); }
+.duda-resp .duda-lbl { color: var(--ok); }
+.duda-text { white-space: pre-wrap; word-break: break-word; font-size: 14.5px; line-height: 1.55; }
+.duda-pending { font-size: 13px; color: var(--muted); font-style: italic; }
 
 /* ---- vista solucionario ---- */
-.study-section { margin-bottom: 8px; }
+.study-section { margin-bottom: 14px; }
 details.study-card {
-  background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--accent);
-  border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 10px; padding: 0;
+  background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--accent);
+  border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 12px; padding: 0;
+  transition: border-color .15s;
 }
+details.study-card[open] { border-left-color: var(--accent-text); }
 details.study-card > summary.study-summary {
   cursor: pointer; list-style: none; user-select: none;
-  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
-  padding: 14px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 18px 22px; border-radius: var(--radius);
 }
 details.study-card > summary.study-summary::-webkit-details-marker { display: none; }
-details.study-card > summary.study-summary:hover { background: var(--card-2); border-radius: var(--radius); }
-details.study-card[open] > summary.study-summary { border-bottom: 1px dashed var(--border); }
-.study-prompt { flex: 1 1 60%; font-weight: 600; min-width: 200px; }
-.study-card .study-body { padding: 16px 18px; }
+details.study-card > summary.study-summary:hover { background: var(--card-2); }
+details.study-card[open] > summary.study-summary { border-bottom: 1px dashed var(--border); border-radius: var(--radius) var(--radius) 0 0; }
+.study-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.study-meta .q-points { margin-left: auto; }
+.study-prompt { font-weight: 600; font-size: 16.5px; line-height: 1.55; }
+.study-card .study-body { padding: 18px 22px 22px; }
 .study-card .study-body pre.model-body { margin-top: 0; }
+.study-card summary::after {
+  content: "▸"; position: absolute; right: 22px; color: var(--muted); transition: transform .15s; font-size: 14px;
+}
+details.study-card[open] summary::after { transform: rotate(90deg); }
+.study-summary { position: relative; }
+.study-summary .study-prompt { padding-right: 24px; }
 
 @media (max-width: 560px) {
   .runner-head { top: 58px; }
   .result-hero { flex-direction: column; text-align: center; }
+  .app { padding: 22px 16px 80px; }
+  .study-card > summary.study-summary, .study-card .study-body { padding-left: 16px; padding-right: 16px; }
+  .q { padding: 18px 16px; }
 }
