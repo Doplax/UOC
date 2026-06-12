@@ -1,0 +1,149 @@
+{
+  "attemptId": "2026-06-12T08-31-18-638Z",
+  "examId": "FP047",
+  "examSubject": "FP.047 — Programa de comandos personalizados para el SO",
+  "title": "Examen completo · todas",
+  "mode": "completo",
+  "scope": "todas",
+  "durationMin": null,
+  "createdAt": "2026-06-12T08:31:18.638Z",
+  "submittedAt": "2026-06-12T08:54:20.279Z",
+  "correctedAt": "2026-06-12T09:10:00.000Z",
+  "status": "corrected",
+  "questionIds": [
+    "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10",
+    "q11", "q12", "q13", "q14", "q15", "q16", "q17", "q18", "q19", "q20",
+    "q21", "q22", "q23", "q24", "q25", "q26", "q27", "q28", "q29", "q30",
+    "q31", "q32", "q33", "q34", "q35", "q36", "q37", "q38", "q39", "q40",
+    "q41", "q42", "q43", "q44", "q45", "q46", "q47", "q48", "q49", "q50",
+    "q51", "q52"
+  ],
+  "answers": {
+    "q1": "el la seccion de debugger, breakpoints, la consola y ejecucion custom de scripts",
+    "q2": "se usan para parar el codigo en un punto concreto para ver los valores que tiene una variable en concreto",
+    "q3": "sirve para que solo se active cuando se cumpla una condicion,ya que hasta que esta condición no se da pueden pasar muchas iteraciones",
+    "q4": "vs studio tiene la opcion de instalar diferentes plugins para detectar errores de sintaxis en los diferentes lenguajes",
+    "q5": "se puede comprobar que el valor que almacena una variable o lo que ocurre dentro de una funcion sea lo que se espera",
+    "q6": "Esta pregunta no la entiendo",
+    "q7": "/n\nEOF",
+    "q8": "se crea creando un fichero nuevo, donde se defienen nuevas funciones y se debe importar al fichero de texto donde se quiera usar",
+    "q9": "proyecto.h es para ver los documentos y  ping.h para poder hacer ping. no se que singifica .h\n\nHuman creo",
+    "q10": "como las practicas son de pyton, no contestare a estas de  C",
+    "q15": "no lo se",
+    "q14": "no lo se",
+    "q27": "error de sintaxis es que te has dejado una coma, no has cerrado un parentesis o alguna cosa del estilo\nde runtime es que se intenta guardar un valor en un sitio incorrecto (una variable de un tipo diferente, guardar un valor fuera del rango de memoria...)\nde logica es cuando algo no puede ser, como poner condicionales de forma que nunca se entre en ese flujo de ejecucion",
+    "q28": "cuando haces un ping a cada dns, guardas el valor de lo que ha tardado, se comparan los valores y el númenro mas bajo es el que se coje",
+    "q29": "no tiene que estar todo en una linea, tiene que haber un intro en cada etiqueta pra que conserve una estructura en cascada y en forma de \"arbol\"",
+    "q30": "es una forma de escribir xml con html junto, permitiendo estructurar y mostrar datos en el html y hacerlo de forma condicional",
+    "q31": "crearia los ficheros o usaria un comando para crear un proyecto escribiria el codigo y cuando el programa estubiera listo le daria a compilar.\n\npara localizar un error, pondria diferentes endpoints cerca de la zona a depurar para ver el valor que tienen los datos en la zona que busco y iria ainando hasta encontrar la zona donde se esta produccuiendo el error",
+    "q32": "uno normal para siempre, uno condicional solo cuando se cumple una condicion\n\nel normal nlo usaria para que se parase el codigo en un punto en concreto para  ver su valor.\n\nel condicional, alomejor en un for le diriai algo como parate en la decima iteracion",
+    "q33": "esto deberia ser por pyton ya que los ejercicios no estan en C, cambialo",
+    "q34": "esto deberia ser por pyton ya que los ejercicios no estan en C, cambialo",
+    "q35": "esto deberia ser por pyton ya que los ejercicios no estan en C, cambialo"
+  },
+  "corrections": {
+    "q1": {
+      "score": 1.5,
+      "feedback": "Bien, identificas las herramientas (depurador, puntos de interrupción, consola). Te falta explicar la UTILIDAD de cada una, que es lo que pedía la pregunta. Di qué hace cada herramienta, no solo el nombre.",
+      "modelAnswer": "En VS Code contamos con: (1) puntos de interrupción (breakpoints) para detener la ejecución en una línea; (2) ejecución paso a paso (F10 step over / F11 step into) para avanzar instrucción a instrucción; (3) panel de Variables y Watch para inspeccionar el valor de las variables en cada momento; (4) la Call Stack (pila de llamadas) para ver qué función llamó a cuál; (5) la consola de depuración para evaluar expresiones en caliente."
+    },
+    "q2": {
+      "score": 1.75,
+      "feedback": "Correcto el concepto. Te faltó el EJEMPLO que pedía la pregunta.",
+      "modelAnswer": "Un punto de interrupción detiene la ejecución en una línea concreta para inspeccionar el estado del programa (valor de las variables, flujo). Ejemplo: pones un breakpoint dentro de un bucle for para comprobar, en cada vuelta, que el contador 'i' va tomando los valores esperados."
+    },
+    "q3": {
+      "score": 2.0,
+      "feedback": "Muy bien. Captas la idea: evita parar en cada iteración. Solo faltaría un ejemplo concreto (p. ej. 'parar solo cuando i > 250').",
+      "modelAnswer": "Un punto de interrupción condicional solo detiene la ejecución cuando se cumple una condición que tú defines (ej. n > 250). Es útil cuando el error aparece tras muchas iteraciones: en vez de parar en cada vuelta, configuras la condición y el depurador para justo en el caso que te interesa."
+    },
+    "q4": {
+      "score": 1.5,
+      "feedback": "Vas bien, pero matiza: el error de sintaxis (falta un ':' o un paréntesis) se detecta ANTES de ejecutar, al analizar/compilar el código — el editor lo subraya y Python lanza SyntaxError al arrancar. El depurador como tal sirve para errores de EJECUCIÓN; los de sintaxis los marca el propio intérprete/linter.",
+      "modelAnswer": "Sí: los errores de sintaxis se detectan antes de ejecutar. En Python, al lanzar el script el intérprete da un SyntaxError indicando línea y motivo; además VS Code (con Pylance/linter) los subraya mientras escribes. El depurador propiamente dicho (breakpoints, paso a paso) se usa para errores de ejecución y de lógica, no para los de sintaxis."
+    },
+    "q5": {
+      "score": 1.5,
+      "feedback": "Describes la inspección de variables, que es una herramienta, pero la pregunta es qué TIPOS de errores se solventan. Clasifícalos.",
+      "modelAnswer": "Las herramientas de depuración ayudan sobre todo con errores de EJECUCIÓN (runtime: una variable con valor inesperado, un fichero que no se abre, un índice fuera de rango) y de LÓGICA (el programa corre pero da un resultado incorrecto). Permiten parar, inspeccionar variables y seguir el flujo para localizar la causa. Los de SINTAXIS no, esos los marca el intérprete/linter."
+    },
+    "q6": {
+      "score": 0,
+      "feedback": "Sin responder ('no la entiendo'). Es una pregunta clave de ficheros: los MODOS de apertura. En Python se ven muy bien con open().",
+      "modelAnswer": "Modos de apertura con open(ruta, modo) en Python: 'r' lectura (cursor al inicio; error si no existe), 'w' escritura (crea/vacía el fichero; cursor al inicio), 'a' añadir (cursor al final, no borra), 'r+' lectura/escritura (cursor al inicio), 'x' creación exclusiva (falla si ya existe). Se añade 'b' para binario y 't' para texto (por defecto)."
+    },
+    "q7": {
+      "score": 2.0,
+      "feedback": "Correcto: el salto de línea (\\n) y el fin de fichero (EOF) son las dos marcas clave. Bien, aunque muy escueto.",
+      "modelAnswer": "Dos marcas importantes al trabajar con ficheros de texto: el salto de línea '\\n' (separa líneas) y el fin de fichero EOF (indica que no hay más datos; en Python, read()/readline() devuelven '' al llegar a él)."
+    },
+    "q8": {
+      "score": 2.0,
+      "feedback": "Bien. En Python eso es exactamente crear un MÓDULO e importarlo. Solo cuidado: no es 'fichero de texto', es otro fichero .py.",
+      "modelAnswer": "En Python creas un módulo: un fichero .py (p. ej. utilidades.py) con tus funciones. Desde otro fichero lo usas con 'import utilidades' y llamas a 'utilidades.mi_funcion()', o con 'from utilidades import mi_funcion'. Sirve para reutilizar y organizar el código en varios ficheros."
+    },
+    "q9": {
+      "score": 0.5,
+      "feedback": "Esta pregunta era de C (.h = ficheros de cabecera) y la convierto a Python (no existen los .h). El equivalente es el import de módulos. Te doy la versión Python.",
+      "modelAnswer": "En C, #include \"Proyecto.h\" incluía las cabeceras (declaraciones de funciones). En Python NO hay ficheros .h: para usar funciones de otro fichero usas import. Ejemplo: 'from ping import comprobar_ping' importa la función comprobar_ping del módulo ping.py. El equivalente a tener todo declarado es simplemente importar el módulo."
+    },
+    "q10": {
+      "score": 0,
+      "feedback": "Correcto que era de C (string.h) y por eso no la haces. La convierto a Python. Apréndete los equivalentes en cadenas de Python.",
+      "modelAnswer": "Equivalentes en Python a string.h: len(s) en vez de strlen; concatenar con '+' o ''.join() en vez de strcat; copiar es asignar (s2 = s1) en vez de strcpy; 'sub in s' o s.find('sub') en vez de strstr; s.split(sep) en vez de strtok; int(s) en vez de atoi."
+    },
+    "q14": {
+      "score": 0,
+      "feedback": "Sin responder. Reglas de un XML bien formado — importante para el Producto 4.",
+      "modelAnswer": "Un XML está bien formado si: (1) tiene UN único elemento raíz; (2) toda etiqueta abierta se cierra (<a>...</a>) o es vacía (<a/>); (3) las etiquetas están bien anidadas (no se solapan); (4) los valores de los atributos van entre comillas; (5) distingue mayúsculas/minúsculas (<A> ≠ <a>); (6) hay una sola declaración <?xml version=\"1.0\"?> al inicio (opcional)."
+    },
+    "q27": {
+      "score": 2.0,
+      "feedback": "Muy buena explicación de los tres tipos. Solo te faltó cerrar con la segunda parte: ¿cuáles detecta el depurador? (los de ejecución y ayuda con los de lógica; los de sintaxis los marca el intérprete).",
+      "modelAnswer": "Sintaxis: el código está mal escrito (falta ':', paréntesis...) → lo detecta el intérprete al analizar, antes de ejecutar. Ejecución (runtime): el programa arranca pero peta (división por cero, índice fuera de rango, fichero inexistente). Lógica: corre sin error pero da un resultado incorrecto. El depurador sirve para los de ejecución y lógica; los de sintaxis los detecta Python/el linter."
+    },
+    "q28": {
+      "score": 2.0,
+      "feedback": "Bien, has captado la idea (medir el tiempo de respuesta de cada DNS y quedarte con el menor). Para redondear: y si el actual no es el más rápido, lo cambias; en empate, desempatas por número de saltos.",
+      "modelAnswer": "Lees la lista de DNS del archivo, haces ping/consulta a cada uno y guardas su tiempo de respuesta. Eliges el de menor tiempo. Si el DNS configurado actualmente NO es ese, reconfiguras el adaptador con el más rápido. En caso de empate de tiempo, desempatas por el menor número de saltos (tracert)."
+    },
+    "q29": {
+      "score": 1.0,
+      "feedback": "Ojo: la indentación / los saltos de línea NO son requisitos para que un XML esté bien formado (eso es solo estético/legibilidad). Un XML en una sola línea puede estar perfectamente bien formado. Las reglas reales son otras (ver respuesta modelo). Sí acertaste en la idea de estructura de árbol/anidamiento.",
+      "modelAnswer": "Reglas reales: un único elemento raíz, etiquetas cerradas, bien anidadas, atributos entre comillas, sensible a mayúsculas. Ejemplo MAL formado: <adaptador><ip>192.168.1.1</adaptador></ip>  (mal anidado). Corregido: <adaptador><ip>192.168.1.1</ip></adaptador>."
+    },
+    "q30": {
+      "score": 1.25,
+      "feedback": "Te acercas pero mezclas conceptos. XSLT no es 'xml con html': es un lenguaje que TRANSFORMA un XML en otro formato (HTML, texto...). CSS solo da estilo visual; XSLT puede reestructurar, ordenar, filtrar y generar HTML nuevo a partir del XML.",
+      "modelAnswer": "XSLT es un lenguaje de transformación: toma un XML y genera otro documento (normalmente HTML) aplicando plantillas, pudiendo recorrer, ordenar y filtrar los datos. CSS, en cambio, solo aplica ESTILO (colores, fuentes, márgenes) a un documento ya existente, sin cambiar su estructura ni generar contenido nuevo."
+    },
+    "q31": {
+      "score": 2.0,
+      "feedback": "Buen planteamiento del proceso (crear proyecto, escribir, ejecutar) y de la depuración (poner breakpoints cerca del error e ir acotando). Nota: en VS Code son 'breakpoints', no 'endpoints'. Para Python: F5 arranca con depuración.",
+      "modelAnswer": "Crear carpeta/proyecto y un fichero .py, escribir el código, ejecutar (F5 para depurar). Para localizar un error de ejecución: pones breakpoints cerca de la zona sospechosa, arrancas con F5, avanzas paso a paso (F10/F11) e inspeccionas las variables hasta ver dónde un valor deja de ser el esperado. También puedes provocar el error a propósito para observar el traceback."
+    },
+    "q32": {
+      "score": 2.25,
+      "feedback": "Muy bien, con ejemplo incluido (parar en la iteración 10). Eso es exactamente un breakpoint condicional. Perfecto.",
+      "modelAnswer": "Breakpoint normal: para SIEMPRE que la ejecución llega a esa línea (útil para inspeccionar un punto concreto). Condicional: solo para cuando se cumple una condición (ej. en un for, configurar 'parar cuando i == 10' o 'cuando i > 250'), evitando detenerte en todas las vueltas."
+    },
+    "q33": {
+      "score": 0,
+      "feedback": "Tienes razón, era de C. La he convertido a Python (ya la verás en 'Nuevas'). Te dejo la versión Python como referencia.",
+      "modelAnswer": "import subprocess\nwith open('ips.txt') as f:\n    for linea in f:\n        ip = linea.strip()\n        print(ip)\n        res = subprocess.run(['ping', '-n', '1', ip], capture_output=True, text=True)\n        if res.returncode == 0:\n            print(ip, 'responde')"
+    },
+    "q34": {
+      "score": 0,
+      "feedback": "Era de C; convertida a Python. Referencia abajo.",
+      "modelAnswer": "import subprocess\nsalida = subprocess.run(['getmac'], capture_output=True, text=True).stdout\nwith open('informacionlocal.txt', 'w') as f:\n    f.write(salida)\n# También vale: subprocess.run('ipconfig /all > informacionlocal.txt', shell=True)"
+    },
+    "q35": {
+      "score": 0,
+      "feedback": "Era de C; convertida a Python. Idea: ejecutas ipconfig, vuelcas la salida a un fichero y la recorres buscando las líneas con strip()/split() o el operador 'in'.",
+      "modelAnswer": "import subprocess\nsalida = subprocess.run(['ipconfig'], capture_output=True, text=True).stdout\nfor linea in salida.splitlines():\n    if 'IPv4' in linea or 'Máscara' in linea or 'puerta' in linea.lower():\n        # la parte tras los ':' es el valor\n        print(linea.split(':')[-1].strip())"
+    }
+  },
+  "totalScore": 23.25,
+  "maxScore": 130,
+  "globalFeedback": "Nota: 23,25 / 130 → 1,8/10 en el global del examen completo (52 preguntas). PERO ojo: dejaste ~29 sin responder, así que ese número engaña. Sobre lo que SÍ intentaste, tu nivel está en torno a 4,4/10. Lo bueno: dominas bien la depuración (puntos de interrupción normales/condicionales, tipos de error: q3, q27, q31, q32 muy bien). A mejorar: (1) la indentación NO hace que un XML esté 'bien formado' (q29); (2) XSLT transforma, CSS solo da estilo (q30); (3) repasa los modos de apertura de ficheros (q6) y los métodos de cadena de Python (q10). IMPORTANTE: tenías razón con las de C — ya he convertido TODO el examen a Python (mira las preguntas otra vez). Te recomiendo hacer un intento nuevo en Python; este queda como histórico. ¡Buen primer intento!"
+}
